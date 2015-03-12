@@ -29,6 +29,10 @@ EL::StatusCode MiniReaderAlg :: setupJob (EL::Job& job)
   // sole advantage of putting it here is that it gets automatically
   // activated/deactivated when you add/remove the algorithm from your
   // job, which may or may not be of value to you.
+  job.useXAOD();
+
+  xAOD::Init("MiniReader").ignore(); // call before opening first file
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -74,6 +78,11 @@ EL::StatusCode MiniReaderAlg :: initialize ()
   // doesn't get called if no events are processed.  So any objects
   // you create here won't be available in the output if you have no
   // input events.
+  m_event = wk()->xaodEvent();
+
+  // as a check, let's see the number of events in our xAOD
+  Info("initialize()", "Number of events = %lli", m_event->getEntries());
+
   return EL::StatusCode::SUCCESS;
 }
 

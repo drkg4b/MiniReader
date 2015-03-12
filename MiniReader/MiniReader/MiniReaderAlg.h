@@ -1,6 +1,9 @@
 #ifndef MiniReader_MiniReaderAlg_H
 #define MiniReader_MiniReaderAlg_H
 
+// Infrastructure include(s):
+#include "xAODRootAccess/Init.h"
+#include "xAODRootAccess/TEvent.h"
 #include <EventLoop/Algorithm.h>
 
 class MiniReaderAlg : public EL::Algorithm
@@ -19,7 +22,7 @@ public:
   // Tree *myTree; //!
   // TH1 *myHist; //!
 
-
+  xAOD::TEvent *m_event;  //!
 
   // this is a standard constructor
   MiniReaderAlg ();
