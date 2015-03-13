@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
    // Construct the samples to run on:
    SH::SampleHandler sh;
 
-   const char *inputFilePath = gSystem->ExpandPathName("/home/drkg4b/work/input_samples/"); // using $ALRB_TutorialData previously defined
+   const char *inputFilePath = gSystem->ExpandPathName("/afs/cern.ch/work/g/gbertoli/public/input_samples/"); // using $ALRB_TutorialData previously defined
    SH::DiskListLocal list(inputFilePath);
    SH::scanDir(sh, list, "*");  // specifying one particular file for testing
 
