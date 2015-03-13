@@ -1,6 +1,10 @@
+// EDM includes:
+#include "xAODEventInfo/EventInfo.h"
 #include <EventLoop/Job.h>
 #include <EventLoop/StatusCode.h>
 #include <EventLoop/Worker.h>
+
+// This class header:
 #include <MiniReader/MiniReaderAlg.h>
 
 // this is needed to distribute the algorithm to the workers
@@ -8,7 +12,7 @@ ClassImp(MiniReaderAlg)
 
 
 
-MiniReaderAlg :: MiniReaderAlg ()
+MiniReaderAlg :: MiniReaderAlg () :  m_eventCounter(0)
 {
   // Here you put any code for the base initialization of variables,
   // e.g. initialize all pointers to 0.  Note that you should only put
@@ -94,6 +98,14 @@ EL::StatusCode MiniReaderAlg :: execute ()
   // events, e.g. read input variables, apply cuts, and fill
   // histograms and trees.  This is where most of your actual analysis
   // code will go.
+
+  // print every 100 events, so we know where we are:
+  if( (m_eventCounter % 100) ==0 )
+
+    Info("execute()", "Event number = %i", m_eventCounter);
+
+  m_eventCounter++;
+
   return EL::StatusCode::SUCCESS;
 }
 

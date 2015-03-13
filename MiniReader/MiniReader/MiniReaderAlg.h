@@ -22,10 +22,12 @@ public:
   // Tree *myTree; //!
   // TH1 *myHist; //!
 
-  xAOD::TEvent *m_event;  //!
+  xAOD::TEvent *m_event; //!
+
+  int m_eventCounter; //!
 
   // this is a standard constructor
-  MiniReaderAlg ();
+  MiniReaderAlg();
 
   // these are the functions inherited from Algorithm
   virtual EL::StatusCode setupJob (EL::Job& job);

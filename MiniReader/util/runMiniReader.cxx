@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
    EL::Job job;
    job.sampleHandler(sh);
    // Add our analysis to the job:
-   MiniReaderAlg *alg = new MiniReaderAlg();
+     MiniReaderAlg *alg = new MiniReaderAlg();
 
    job.algsAdd(alg);
 
