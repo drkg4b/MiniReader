@@ -1,0 +1,24 @@
+/************************************************
+
+        INSTALLATION
+
+************************************************/
+
+Check out the package
+
+   svn co svn+ssh://<username>@svn.cern.ch/reps/atlasinst/Institutes/Stockholm/MonoJetAnalysis/MiniReader_v1/
+
+Setup RootCore
+
+   cd trunk
+   rcSetup Base,2.1.27
+
+/************************************************
+
+        MISCELLANEA
+
+************************************************/
+
+Tagging
+
+   svn copy . svn+ssh://svn.cern.ch/reps/atlasinst/Institutes/Stockholm/MonoJetAnalysis/MiniReader_v1/tags/MiniReader-00-00-01 -m "Tagging MiniReader-00-00-01"
