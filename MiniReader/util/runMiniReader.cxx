@@ -13,6 +13,9 @@
 // STL include(s):
 #include <chrono>
 
+// ROOT Include(s):
+#include "TChain.h"
+
 int main(int argc, char *argv[])
 {
    std::chrono::time_point<std::chrono::system_clock> start, end;
@@ -23,27 +26,32 @@ int main(int argc, char *argv[])
    if (argc > 1) submitDir = argv[ 1 ];
 
    // Set up the job for xAOD access:
-   xAOD::Init().ignore();
+   // xAOD::Init().ignore();
+
+   TChain chain("MiniTree");
+
+   chain.Add("/home/drkg4b/work/input_samples/BP-v1/BP-01/hist-*.root");
 
    // Construct the samples to run on:
    SH::SampleHandler sh;
 
-   const char *inputFilePath = gSystem->ExpandPathName("/afs/cern.ch/work/g/gbertoli/public/input_samples/"); // using $ALRB_TutorialData previously defined
-   SH::DiskListLocal list(inputFilePath);
-   SH::scanDir(sh, list, "*");  // specifying one particular file for testing
+   sh.add(SH::makeFromTChain("ZnunuSamples", chain));
+   // const char *inputFilePath = gSystem->ExpandPathName("/home/drkg4b/work/input_samples/BP-v1/");
+   // SH::DiskListLocal list(inputFilePath);
+   // SH::scanDir(sh, list, "hist-mc14_13TeV.167844.Sherpa_CT10_ZnunuMassiveCBPt500_CVetoBVeto.merge.AOD.e2798_s1982_s2008_r5787_r5853.root");
 
-   // Set the name of the input TTree. It's always "CollectionTree"
+   // set the name of the input TTree. It's always "CollectionTree"
    // for xAOD files.
-   sh.setMetaString("nc_tree", "CollectionTree");
+   // sh.setMetaString("nc_tree", "MiniTree");
 
-   // Print what we found:
+   // print what we found:
    sh.print();
 
    // Create an EventLoop job:
    EL::Job job;
    job.sampleHandler(sh);
    // Add our analysis to the job:
-     MiniReaderAlg *alg = new MiniReaderAlg();
+   MiniReaderAlg *alg = new MiniReaderAlg();
 
    job.algsAdd(alg);
 

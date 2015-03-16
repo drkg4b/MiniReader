@@ -7,10 +7,8 @@
 // This class header:
 #include <MiniReader/MiniReaderAlg.h>
 
-// this is needed to distribute the algorithm to the workers
-ClassImp(MiniReaderAlg)
-
-
+// Local inclede(s):
+#include "MiniReader/MiniReaderJets.h"
 
 MiniReaderAlg :: MiniReaderAlg () :  m_eventCounter(0)
 {
@@ -33,7 +31,6 @@ EL::StatusCode MiniReaderAlg :: setupJob (EL::Job& job)
   // sole advantage of putting it here is that it gets automatically
   // activated/deactivated when you add/remove the algorithm from your
   // job, which may or may not be of value to you.
-  job.useXAOD();
 
   xAOD::Init("MiniReader").ignore(); // call before opening first file
 
@@ -67,6 +64,10 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
   // Here you do everything you need to do when we change input files,
   // e.g. resetting branch addresses on trees.  If you are using
   // D3PDReader or a similar service this method is not needed.
+  m_tree = wk()->tree();
+
+  m_jet.ReadBranches(m_tree);
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -82,10 +83,6 @@ EL::StatusCode MiniReaderAlg :: initialize ()
   // doesn't get called if no events are processed.  So any objects
   // you create here won't be available in the output if you have no
   // input events.
-  m_event = wk()->xaodEvent();
-
-  // as a check, let's see the number of events in our xAOD
-  Info("initialize()", "Number of events = %lli", m_event->getEntries());
 
   return EL::StatusCode::SUCCESS;
 }
@@ -98,6 +95,8 @@ EL::StatusCode MiniReaderAlg :: execute ()
   // events, e.g. read input variables, apply cuts, and fill
   // histograms and trees.  This is where most of your actual analysis
   // code will go.
+
+  wk()->tree()->GetEntry (wk()->treeEntry());
 
   // print every 100 events, so we know where we are:
   if( (m_eventCounter % 100) ==0 )

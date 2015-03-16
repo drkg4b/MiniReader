@@ -6,6 +6,12 @@
 #include "xAODRootAccess/TEvent.h"
 #include <EventLoop/Algorithm.h>
 
+// ROOT include(s):
+#include "TTree.h"
+
+// Local inclede(s):
+#include "MiniReader/MiniReaderJets.h"
+
 class MiniReaderAlg : public EL::Algorithm
 {
   // put your configuration variables here as public variables.
@@ -22,7 +28,9 @@ public:
   // Tree *myTree; //!
   // TH1 *myHist; //!
 
-  xAOD::TEvent *m_event; //!
+  MiniReaderJets m_jet; //!
+
+  TTree *m_tree; //!
 
   int m_eventCounter; //!
 
