@@ -1,5 +1,6 @@
 16-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Added support to read MiniTree
+	* Added functions to plot histograms
 
 14-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Added classes to read jets
