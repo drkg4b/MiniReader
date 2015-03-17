@@ -2,7 +2,6 @@
 #include "xAODEventInfo/EventInfo.h"
 #include <EventLoop/Job.h>
 #include <EventLoop/StatusCode.h>
-#include <EventLoop/Worker.h>
 
 // This class header:
 #include <MiniReader/MiniReaderAlg.h>
@@ -18,6 +17,15 @@ MiniReaderAlg :: MiniReaderAlg () :  m_eventCounter(0)
   // called on both the submission and the worker node.  Most of your
   // initialization code will go into histInitialize() and
   // initialize().
+
+  m_jet_mult = 0;
+  m_jet_pt = 0;
+
+  // b_jet_pt = 0;
+  // b_jet_mult = 0;
+
+  // Reserve space for the histo for efficency:
+  m_HistoContainer.reserve(200);
 }
 
 
@@ -45,6 +53,10 @@ EL::StatusCode MiniReaderAlg :: histInitialize ()
   // beginning on each worker node, e.g. create histograms and output
   // trees.  This method gets called before any input files are
   // connected.
+
+  // Initialize all the histograms:
+  InitHisto();
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -64,7 +76,10 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
   // Here you do everything you need to do when we change input files,
   // e.g. resetting branch addresses on trees.  If you are using
   // D3PDReader or a similar service this method is not needed.
-  m_tree = wk()->tree();
+  TTree *m_tree = wk()->tree();
+
+  m_tree->SetBranchAddress("jet_mult", &m_jet_mult, &b_jet_mult);
+  m_tree->SetBranchAddress("jet_pt", &m_jet_pt, &b_jet_pt);
 
   m_jet.ReadBranches(m_tree);
 
@@ -97,6 +112,11 @@ EL::StatusCode MiniReaderAlg :: execute ()
   // code will go.
 
   wk()->tree()->GetEntry (wk()->treeEntry());
+
+  PR(m_jet_mult);
+  PR(m_jet_pt->size());
+
+  FillJets();
 
   // print every 100 events, so we know where we are:
   if( (m_eventCounter % 100) ==0 )

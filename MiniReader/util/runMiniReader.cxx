@@ -23,7 +23,8 @@ int main(int argc, char *argv[])
 
    // Take the submit directory from the input if provided:
    std::string submitDir = "submitDir";
-   if (argc > 1) submitDir = argv[ 1 ];
+
+   if (argc > 1) submitDir = argv[1];
 
    // Set up the job for xAOD access:
    // xAOD::Init().ignore();
@@ -36,13 +37,6 @@ int main(int argc, char *argv[])
    SH::SampleHandler sh;
 
    sh.add(SH::makeFromTChain("ZnunuSamples", chain));
-   // const char *inputFilePath = gSystem->ExpandPathName("/home/drkg4b/work/input_samples/BP-v1/");
-   // SH::DiskListLocal list(inputFilePath);
-   // SH::scanDir(sh, list, "hist-mc14_13TeV.167844.Sherpa_CT10_ZnunuMassiveCBPt500_CVetoBVeto.merge.AOD.e2798_s1982_s2008_r5787_r5853.root");
-
-   // set the name of the input TTree. It's always "CollectionTree"
-   // for xAOD files.
-   // sh.setMetaString("nc_tree", "MiniTree");
 
    // print what we found:
    sh.print();
@@ -50,6 +44,7 @@ int main(int argc, char *argv[])
    // Create an EventLoop job:
    EL::Job job;
    job.sampleHandler(sh);
+
    // Add our analysis to the job:
    MiniReaderAlg *alg = new MiniReaderAlg();
 

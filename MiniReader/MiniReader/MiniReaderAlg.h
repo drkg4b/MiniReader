@@ -5,12 +5,17 @@
 #include "xAODRootAccess/Init.h"
 #include "xAODRootAccess/TEvent.h"
 #include <EventLoop/Algorithm.h>
+#include <EventLoop/Worker.h>
 
 // ROOT include(s):
 #include "TTree.h"
+#include "TH1F.h"
+#include "TBranch.h"
 
 // Local inclede(s):
 #include "MiniReader/MiniReaderJets.h"
+
+#define PR(x) std::cout << #x << " = " << x << std::endl
 
 class MiniReaderAlg : public EL::Algorithm
 {
@@ -28,11 +33,25 @@ public:
   // Tree *myTree; //!
   // TH1 *myHist; //!
 
+  int *m_jet_mult; //!
+  TBranch *b_jet_mult; //!
+
+  std::vector<double> *m_jet_pt; //!
+  TBranch *b_jet_pt; //!
+
   MiniReaderJets m_jet; //!
 
-  TTree *m_tree; //!
+  /* TTree *m_tree; //! */
 
   int m_eventCounter; //!
+
+  std::vector<TH1F*> m_HistoContainer; //!
+
+  void DefineHisto(int, int, float, float); //!
+  void InitHisto(); //!
+
+  void FillJets(); //!
+
 
   // this is a standard constructor
   MiniReaderAlg();
