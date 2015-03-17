@@ -10,6 +10,8 @@
 
 class MiniReaderJets {
 
+  friend class MiniReaderAlg;
+
  private:
 
   int *m_jet_mult;
@@ -35,31 +37,10 @@ class MiniReaderJets {
   std::vector<int> *m_jet_isbad;
   std::vector<int> *m_jet_passFilter;
 
-  TBranch *b_jet_mult;
-  TBranch *b_jet_pt;
-  TBranch *b_jet_eta;
-  TBranch *b_jet_phi;
-  TBranch *b_jet_e;
-  TBranch *b_jet_jvf;
-  TBranch *b_jet_emf;
-  TBranch *b_jet_chf;
-  TBranch *b_jet_fmax;
-  TBranch *b_jet_time;
-  TBranch *b_jet_flavour_weight;
-  TBranch *b_jet_constscale_eta;
-  TBranch *b_jet_Cpt;
-  TBranch *b_jet_Ceta;
-  TBranch *b_jet_Cphi;
-  TBranch *b_jet_Ce;
-  TBranch *b_jet_passOR;
-  TBranch *b_jet_isbase;
-  TBranch *b_jet_isbad;
-  TBranch *b_jet_passFilter;
-
  public:
 
   MiniReaderJets();
-  void ReadBranches(TTree *);
+  void ReadJetBranches(TTree *);
 };
 
 #endif // MINIREADER_MINIREADERJETS_H

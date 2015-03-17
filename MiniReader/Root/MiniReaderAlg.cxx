@@ -18,12 +18,6 @@ MiniReaderAlg :: MiniReaderAlg () :  m_eventCounter(0)
   // initialization code will go into histInitialize() and
   // initialize().
 
-  m_jet_mult = 0;
-  m_jet_pt = 0;
-
-  // b_jet_pt = 0;
-  // b_jet_mult = 0;
-
   // Reserve space for the histo for efficency:
   m_HistoContainer.reserve(200);
 }
@@ -76,12 +70,9 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
   // Here you do everything you need to do when we change input files,
   // e.g. resetting branch addresses on trees.  If you are using
   // D3PDReader or a similar service this method is not needed.
-  TTree *m_tree = wk()->tree();
+  TTree *tree = wk()->tree();
 
-  m_tree->SetBranchAddress("jet_mult", &m_jet_mult, &b_jet_mult);
-  m_tree->SetBranchAddress("jet_pt", &m_jet_pt, &b_jet_pt);
-
-  m_jet.ReadBranches(m_tree);
+  m_jet.ReadJetBranches(tree);
 
   return EL::StatusCode::SUCCESS;
 }
@@ -111,11 +102,12 @@ EL::StatusCode MiniReaderAlg :: execute ()
   // histograms and trees.  This is where most of your actual analysis
   // code will go.
 
-  wk()->tree()->GetEntry (wk()->treeEntry());
+  wk()->tree()->GetEntry(wk()->treeEntry());
 
-  PR(m_jet_mult);
-  PR(m_jet_pt->size());
+  PR(m_jet.m_jet_mult);
+  std::cout << std::dec << m_jet.m_jet_mult << '\n';
 
+  // Fill Histos:
   FillJets();
 
   // print every 100 events, so we know where we are:

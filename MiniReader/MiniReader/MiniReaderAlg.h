@@ -33,15 +33,7 @@ public:
   // Tree *myTree; //!
   // TH1 *myHist; //!
 
-  int *m_jet_mult; //!
-  TBranch *b_jet_mult; //!
-
-  std::vector<double> *m_jet_pt; //!
-  TBranch *b_jet_pt; //!
-
   MiniReaderJets m_jet; //!
-
-  /* TTree *m_tree; //! */
 
   int m_eventCounter; //!
 

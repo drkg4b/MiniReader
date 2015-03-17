@@ -1,4 +1,4 @@
-#include "MiniReader/MiniReader.h"
+#include "MiniReader/MiniReaderAlg.h"
 #include <math.h>
 
 #define MINETA -5.
@@ -35,5 +35,5 @@ void MiniReaderAlg::InitHisto()
 
 void MiniReaderAlg::FillJets()
 {
-  m_HistoContainer[jetMultiplicity]->Fill(m_jet_mult);
+  // m_HistoContainer[jetMultiplicity]->Fill(m_jet.m_jet_mult);
 }
