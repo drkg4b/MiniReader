@@ -3,6 +3,7 @@
 	* Added MiniReaderMuon class
 	* Added MiniReaderMissingET class
 	* Added MiniReaderEventInfo class
+	* Added MiniReaderCrossSection class
 
 16-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Manage to read TTree

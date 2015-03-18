@@ -18,6 +18,7 @@
 #include "MiniReader/MiniReaderJets.h"
 #include "MiniReader/MiniReaderMissingET.h"
 #include "MiniReader/MiniReaderEventInfo.h"
+#include "MiniReader/MiniReaderCrossSection.h"
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -42,6 +43,7 @@ public:
   MiniReaderJets m_jet; //!
   MiniReaderMissingET m_met; //!
   MiniReaderEventInfo m_runp; //!
+  MiniReaderCrossSection m_cross; //!
 
   int m_eventCounter; //!
 
