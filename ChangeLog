@@ -5,6 +5,7 @@
 	* Added MiniReaderEventInfo class
 	* Added MiniReaderCrossSection class
 	* Added MiniReaderPrimaryVertex class
+	* Added MiniReaderTruthParticles class
 
 16-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Manage to read TTree

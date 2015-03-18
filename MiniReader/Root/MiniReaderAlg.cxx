@@ -79,6 +79,7 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
   m_runp.ReadEventInfoBranches(tree);
   m_cross.ReadCrossSectionBranches(tree);
   m_pvtx.ReadPrimaryVertexBranches(tree);
+  m_truth.ReadTruthParticlesBranches(tree);
 
   return EL::StatusCode::SUCCESS;
 }
@@ -118,6 +119,7 @@ EL::StatusCode MiniReaderAlg :: execute ()
   PR(m_cross.m_process_xs8);
   PR(*m_cross.m_process_name8);
   PR(m_pvtx.m_pvtx_n);
+  PR(m_truth.m_true_zpt);
 
   // Fill Histos:
   FillJets();

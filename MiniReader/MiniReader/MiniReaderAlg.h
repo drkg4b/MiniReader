@@ -20,6 +20,7 @@
 #include "MiniReader/MiniReaderEventInfo.h"
 #include "MiniReader/MiniReaderCrossSection.h"
 #include "MiniReader/MiniReaderPrimaryVertex.h"
+#include "MiniReader/MiniReaderTruthParticles.h"
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -46,6 +47,7 @@ public:
   MiniReaderEventInfo m_runp; //!
   MiniReaderCrossSection m_cross; //!
   MiniReaderPrimaryVertex m_pvtx; //!
+  MiniReaderTruthParticles m_truth; //!
 
   int m_eventCounter; //!
 
