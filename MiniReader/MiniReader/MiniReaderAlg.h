@@ -14,6 +14,7 @@
 
 // Local inclede(s):
 #include "MiniReader/MiniReaderJets.h"
+#include "MiniReader/MiniReaderElectrons.h"
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -34,6 +35,7 @@ public:
   // TH1 *myHist; //!
 
   MiniReaderJets m_jet; //!
+  MiniReaderElectrons m_el; //!
 
   int m_eventCounter; //!
 

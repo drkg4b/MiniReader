@@ -4,6 +4,7 @@
 #include "SampleHandler/DiskListLocal.h"
 #include "SampleHandler/ToolsDiscovery.h"
 #include "EventLoop/DirectDriver.h"
+#include "EventLoop/ProofDriver.h"
 #include "EventLoop/Job.h"
 #include <TSystem.h>
 
@@ -26,8 +27,12 @@ int main(int argc, char *argv[])
 
    if (argc > 1) submitDir = argv[1];
 
-   // Set up the job for xAOD access:
-   // xAOD::Init().ignore();
+   // Recomended way to access samples:
+   // SH::ScanDir()
+   //  .maxDepth(0)
+   //  .filePattern("hist-*.root")
+   //   .sampleRename("*","ZnunuSamples")
+   //   .scan("/home/drkg4b/work/input_samples/BP-v1/BP-01/");
 
    TChain chain("MiniTree");
 
@@ -64,6 +69,7 @@ int main(int argc, char *argv[])
 
    // Run the job using the local/direct driver:
    EL::DirectDriver driver;
+   // EL::ProofDriver driver;
    driver.submit(job, submitDir);
 
    end = std::chrono::system_clock::now();

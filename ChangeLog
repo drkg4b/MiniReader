@@ -1,4 +1,7 @@
 16-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
+	* Added MiniReaderElectron class
+
+16-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Manage to read TTree
 
 16-03-2015 Gabriele Bertoli <gbertoli@cern.ch>

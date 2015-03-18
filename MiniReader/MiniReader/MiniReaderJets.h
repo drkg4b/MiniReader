@@ -2,7 +2,6 @@
 #define MINIREADER_MINIREADERJETS_H
 
 // ROOT include(s):
-#include <TBranch.h>
 #include <TTree.h>
 
 // STL include(s):
@@ -14,7 +13,7 @@ class MiniReaderJets {
 
  private:
 
-  int *m_jet_mult;
+  int m_jet_mult;
 
   std::vector<double> *m_jet_pt;
   std::vector<double> *m_jet_eta;

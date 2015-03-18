@@ -73,6 +73,7 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
   TTree *tree = wk()->tree();
 
   m_jet.ReadJetBranches(tree);
+  m_el.ReadElectronBranches(tree);
 
   return EL::StatusCode::SUCCESS;
 }
@@ -104,8 +105,8 @@ EL::StatusCode MiniReaderAlg :: execute ()
 
   wk()->tree()->GetEntry(wk()->treeEntry());
 
-  PR(m_jet.m_jet_mult);
-  std::cout << std::dec << m_jet.m_jet_mult << '\n';
+  PR(m_jet.m_jet_pt->size());
+  PR(m_el.m_ele_pt->size());
 
   // Fill Histos:
   FillJets();

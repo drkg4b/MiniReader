@@ -35,5 +35,5 @@ void MiniReaderAlg::InitHisto()
 
 void MiniReaderAlg::FillJets()
 {
-  // m_HistoContainer[jetMultiplicity]->Fill(m_jet.m_jet_mult);
+  m_HistoContainer[jetMultiplicity]->Fill(m_jet.m_jet_mult);
 }
