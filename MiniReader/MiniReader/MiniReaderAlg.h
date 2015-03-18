@@ -19,6 +19,7 @@
 #include "MiniReader/MiniReaderMissingET.h"
 #include "MiniReader/MiniReaderEventInfo.h"
 #include "MiniReader/MiniReaderCrossSection.h"
+#include "MiniReader/MiniReaderPrimaryVertex.h"
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -44,6 +45,7 @@ public:
   MiniReaderMissingET m_met; //!
   MiniReaderEventInfo m_runp; //!
   MiniReaderCrossSection m_cross; //!
+  MiniReaderPrimaryVertex m_pvtx; //!
 
   int m_eventCounter; //!
 
