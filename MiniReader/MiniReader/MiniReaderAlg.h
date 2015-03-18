@@ -13,8 +13,10 @@
 #include "TBranch.h"
 
 // Local inclede(s):
-#include "MiniReader/MiniReaderJets.h"
 #include "MiniReader/MiniReaderElectrons.h"
+#include "MiniReader/MiniReaderMuons.h"
+#include "MiniReader/MiniReaderJets.h"
+#include "MiniReader/MiniReaderMissingET.h"
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -34,8 +36,10 @@ public:
   // Tree *myTree; //!
   // TH1 *myHist; //!
 
-  MiniReaderJets m_jet; //!
   MiniReaderElectrons m_el; //!
+  MiniReaderMuons m_mu; //!
+  MiniReaderJets m_jet; //!
+  MiniReaderMissingET m_met; //!
 
   int m_eventCounter; //!
 
