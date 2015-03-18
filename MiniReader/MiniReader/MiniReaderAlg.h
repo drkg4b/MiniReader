@@ -17,6 +17,7 @@
 #include "MiniReader/MiniReaderMuons.h"
 #include "MiniReader/MiniReaderJets.h"
 #include "MiniReader/MiniReaderMissingET.h"
+#include "MiniReader/MiniReaderEventInfo.h"
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -40,6 +41,7 @@ public:
   MiniReaderMuons m_mu; //!
   MiniReaderJets m_jet; //!
   MiniReaderMissingET m_met; //!
+  MiniReaderEventInfo m_runp; //!
 
   int m_eventCounter; //!
 

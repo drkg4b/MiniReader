@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
    job.algsAdd(alg);
 
    // Set max number of events:
-   // job.options()->setDouble(EL::Job::optMaxEvents, 1000);
+   job.options()->setDouble(EL::Job::optMaxEvents, 1000);
 
    // Use TTreeCache with 100 Mb:
    job.options()->setDouble(EL::Job::optCacheSize, 100 * 1024 * 1024);

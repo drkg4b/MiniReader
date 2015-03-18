@@ -76,6 +76,7 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
   m_el.ReadElectronBranches(tree);
   m_mu.ReadMuonBranches(tree);
   m_met.ReadMissingETBranches(tree);
+  m_runp.ReadEventInfoBranches(tree);
 
   return EL::StatusCode::SUCCESS;
 }
@@ -110,7 +111,8 @@ EL::StatusCode MiniReaderAlg :: execute ()
   PR(m_jet.m_jet_pt->size());
   PR(m_el.m_ele_pt->size());
   PR(m_mu.m_mu_pt->size());
-  PR(m_met.m_WEtMiss);
+  PR(m_met.m_EtMissMuVeto);
+  PR(m_runp.m_actualInteractionsPerCrossing);
 
   // Fill Histos:
   FillJets();
