@@ -1,4 +1,7 @@
-16-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
+19-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
+	* Tagging MiniReader-00-00-01
+
+18-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Added MiniReaderElectron class
 	* Added MiniReaderMuon class
 	* Added MiniReaderMissingET class
