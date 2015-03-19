@@ -111,7 +111,12 @@ EL::StatusCode MiniReaderAlg :: execute ()
 
   wk()->tree()->GetEntry(wk()->treeEntry());
 
+  if(!passEventSelection()) return EL::StatusCode::SUCCESS;
+
+  PR(deltaPhi(m_jet.m_jet_phi->at(0), m_met.m_EtMissMuVetoPhi));
+
   PR(m_jet.m_jet_pt->size());
+  PR(m_jet.m_jet_pt->at(0));
   PR(m_el.m_ele_pt->size());
   PR(m_mu.m_mu_pt->size());
   PR(m_met.m_EtMissMuVeto);
@@ -122,6 +127,7 @@ EL::StatusCode MiniReaderAlg :: execute ()
   PR(m_truth.m_true_zpt);
 
   // Fill Histos:
+  FillEventInfo();
   FillJets();
 
   // print every 100 events, so we know where we are:
@@ -174,5 +180,8 @@ EL::StatusCode MiniReaderAlg :: histFinalize ()
   // outputs have been merged.  This is different from finalize() in
   // that it gets called on all worker nodes regardless of whether
   // they processed input events.
+
+  PlotJetEfficency();
+
   return EL::StatusCode::SUCCESS;
 }

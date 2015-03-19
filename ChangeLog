@@ -4,6 +4,7 @@
 	* Adding MiniReaderAuxFunctions containing auxiliary functions
 	* Adding DefineSR defining the signal regions cuts
 	* Adding MiniReaderEventFilter to filter events
+	* Adding skeleton to produse the jetEfficency plot
 
 18-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Added MiniReaderElectron class
