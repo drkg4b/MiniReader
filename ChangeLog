@@ -1,5 +1,7 @@
 19-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Tagging MiniReader-00-00-01
+	* Adding MiniReaderSelectionCuts to define cuts
+	* Adding MiniReaderAuxFunctions containing auxiliary functions
 
 18-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Added MiniReaderElectron class
