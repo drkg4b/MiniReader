@@ -15,7 +15,7 @@ void MiniReaderEventInfo::ReadEventInfoBranches(TTree *tree)
 {
   tree->SetBranchAddress("EventNumber", &m_EventNumber);
   tree->SetBranchAddress("RunNumber", &m_RunNumber);
-  tree->SetBranchAddress("mchannel_number", &m_mc_channel_number);
+  tree->SetBranchAddress("MCChannelNumber", &m_mc_channel_number);
   tree->SetBranchAddress("actualInteractionsPerCrossing", &m_actualInteractionsPerCrossing);
   tree->SetBranchAddress("averageInteractionsPerCrossing", &m_averageInteractionsPerCrossing);
   tree->SetBranchAddress("global_event_weight", &m_global_event_weight);

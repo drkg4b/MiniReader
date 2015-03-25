@@ -22,6 +22,9 @@
 #include "MiniReader/MiniReaderPrimaryVertex.h"
 #include "MiniReader/MiniReaderTruthParticles.h"
 
+// STL include(s):
+#include <string>
+
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
 class MiniReaderAlg : public EL::Algorithm {
@@ -39,12 +42,15 @@ class MiniReaderAlg : public EL::Algorithm {
   // Tree *myTree; //!
   // TH1 *myHist; //!
 
+  // Submission dir:
+  std:: string m_submitDir;
+
   // To read the branches:
   MiniReaderElectrons m_el; //!
   MiniReaderMuons m_mu; //!
   MiniReaderJets m_jet; //!
   MiniReaderMissingET m_met; //!
-  MiniReaderEventInfo m_runp; //!
+  MiniReaderEventInfo m_info; //!
   MiniReaderCrossSection m_cross; //!
   MiniReaderPrimaryVertex m_pvtx; //!
   MiniReaderTruthParticles m_truth; //!
@@ -75,6 +81,10 @@ class MiniReaderAlg : public EL::Algorithm {
 
   // Plot functions:
   void PlotJetEfficency();
+
+  std::string m_sample_name;
+
+  float m_sample_weight;
 
   // this is a standard constructor
   MiniReaderAlg();

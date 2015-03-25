@@ -3,6 +3,7 @@
 #include "SampleHandler/SampleHandler.h"
 #include "SampleHandler/DiskListLocal.h"
 #include "SampleHandler/ToolsDiscovery.h"
+#include "SampleHandler/ScanDir.h"
 #include "EventLoop/DirectDriver.h"
 #include "EventLoop/ProofDriver.h"
 #include "EventLoop/Job.h"
@@ -28,20 +29,23 @@ int main(int argc, char *argv[])
    if (argc > 1) submitDir = argv[1];
 
    // Recomended way to access samples:
-   // SH::ScanDir()
-   //  .maxDepth(0)
-   //  .filePattern("hist-*.root")
+   // SH::ScanDir().maxDepth(0)
+   //   .filePattern("hist-*.root")
    //   .sampleRename("*","ZnunuSamples")
-   //   .scan("/home/drkg4b/work/input_samples/BP-v1/BP-01/");
+   //   .scan(sh, "/home/drkg4b/work/input_samples/BP-v1/BP-01/");
 
    TChain chain("MiniTree");
 
    chain.Add("/home/drkg4b/work/input_samples/BP-v1/BP-01/hist-*.root");
 
+   // chain.Add("/home/drkg4b/work/input_samples/user.cclement.t02.mc14_13TeV.191040.MadGraphPythia_AUET2BMSTW2008LO_D5_400_1000_MET100_hist-output.root.19926114/*.root");
+
    // Construct the samples to run on:
    SH::SampleHandler sh;
 
    sh.add(SH::makeFromTChain("ZnunuSamples", chain));
+
+   // sh.add(SH::makeFromTChain("D5", chain));
 
    // print what we found:
    sh.print();
@@ -52,6 +56,8 @@ int main(int argc, char *argv[])
 
    // Add our analysis to the job:
    MiniReaderAlg *alg = new MiniReaderAlg();
+
+   alg->m_submitDir = submitDir;
 
    job.algsAdd(alg);
 
@@ -65,7 +71,7 @@ int main(int argc, char *argv[])
    job.options()->setDouble(EL::Job::optCacheLearnEntries, 30);
 
    // Set log level:
-
+   // alg->msg().setLevel( MSG::DEBUG );
 
    // Run the job using the local/direct driver:
    EL::DirectDriver driver;

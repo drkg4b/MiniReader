@@ -2,6 +2,12 @@
 #include "xAODEventInfo/EventInfo.h"
 #include <EventLoop/Job.h>
 #include <EventLoop/StatusCode.h>
+#include "SampleHandler/ToolsDiscovery.h"
+#include "SampleHandler/Sample.h"
+
+// ROOT includes:
+#include <TChain.h>
+#include <TFile.h>
 
 // This class header:
 #include <MiniReader/MiniReaderAlg.h>
@@ -9,7 +15,8 @@
 // Local inclede(s):
 #include "MiniReader/MiniReaderJets.h"
 
-MiniReaderAlg :: MiniReaderAlg () :  m_eventCounter(0)
+MiniReaderAlg :: MiniReaderAlg() : m_submitDir("submitDir"), m_eventCounter(0),
+				   m_sample_name("no_sample"), m_sample_weight(0)
 {
   // Here you put any code for the base initialization of variables,
   // e.g. initialize all pointers to 0.  Note that you should only put
@@ -24,7 +31,7 @@ MiniReaderAlg :: MiniReaderAlg () :  m_eventCounter(0)
 
 
 
-EL::StatusCode MiniReaderAlg :: setupJob (EL::Job& job)
+EL::StatusCode MiniReaderAlg :: setupJob(EL::Job &job)
 {
   // Here you put code that sets up the job on the submission object
   // so that it is ready to work with your algorithm, e.g. you can
@@ -41,7 +48,7 @@ EL::StatusCode MiniReaderAlg :: setupJob (EL::Job& job)
 
 
 
-EL::StatusCode MiniReaderAlg :: histInitialize ()
+EL::StatusCode MiniReaderAlg :: histInitialize()
 {
   // Here you do everything that needs to be done at the very
   // beginning on each worker node, e.g. create histograms and output
@@ -56,7 +63,7 @@ EL::StatusCode MiniReaderAlg :: histInitialize ()
 
 
 
-EL::StatusCode MiniReaderAlg :: fileExecute ()
+EL::StatusCode MiniReaderAlg :: fileExecute()
 {
   // Here you do everything that needs to be done exactly once for every
   // single file, e.g. collect a list of all lumi-blocks processed
@@ -65,7 +72,7 @@ EL::StatusCode MiniReaderAlg :: fileExecute ()
 
 
 
-EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
+EL::StatusCode MiniReaderAlg :: changeInput(bool firstFile)
 {
   // Here you do everything you need to do when we change input files,
   // e.g. resetting branch addresses on trees.  If you are using
@@ -76,7 +83,7 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
   m_el.ReadElectronBranches(tree);
   m_mu.ReadMuonBranches(tree);
   m_met.ReadMissingETBranches(tree);
-  m_runp.ReadEventInfoBranches(tree);
+  m_info.ReadEventInfoBranches(tree);
   m_cross.ReadCrossSectionBranches(tree);
   m_pvtx.ReadPrimaryVertexBranches(tree);
   m_truth.ReadTruthParticlesBranches(tree);
@@ -86,7 +93,7 @@ EL::StatusCode MiniReaderAlg :: changeInput (bool firstFile)
 
 
 
-EL::StatusCode MiniReaderAlg :: initialize ()
+EL::StatusCode MiniReaderAlg :: initialize()
 {
   // Here you do everything that you need to do after the first input
   // file has been connected and before the first event is processed,
@@ -97,52 +104,67 @@ EL::StatusCode MiniReaderAlg :: initialize ()
   // you create here won't be available in the output if you have no
   // input events.
 
+
   return EL::StatusCode::SUCCESS;
 }
 
 
 
-EL::StatusCode MiniReaderAlg :: execute ()
+EL::StatusCode MiniReaderAlg :: execute()
 {
   // Here you do everything that needs to be done on every single
   // events, e.g. read input variables, apply cuts, and fill
   // histograms and trees.  This is where most of your actual analysis
   // code will go.
 
+  // print every 100 events, so we know where we are:
+  if ((m_eventCounter % 100) == 0)
+
+    Info("execute()", "Event number = %i", m_eventCounter);
+
+  m_eventCounter++;
+
   wk()->tree()->GetEntry(wk()->treeEntry());
 
-  if(!passEventSelection()) return EL::StatusCode::SUCCESS;
+  if(m_sample_name != *m_cross.m_process_name8) {
 
-  PR(deltaPhi(m_jet.m_jet_phi->at(0), m_met.m_EtMissMuVetoPhi));
+    SH::SampleHandler sh;
 
-  PR(m_jet.m_jet_pt->size());
-  PR(m_jet.m_jet_pt->at(0));
-  PR(m_el.m_ele_pt->size());
-  PR(m_mu.m_mu_pt->size());
-  PR(m_met.m_EtMissMuVeto);
-  PR(m_runp.m_actualInteractionsPerCrossing);
-  PR(m_cross.m_process_xs8);
-  PR(*m_cross.m_process_name8);
+    sh.load("/home/drkg4b/work/ATLAS/sw/MonoJetAnalysis/MiniReader_v1/trunk/" + m_submitDir + "/input/");
+
+    SH::Sample *sample = sh.get("ZnunuSamples");
+
+    TChain *chain = sample->makeTChain();
+
+    TH1F *h1 = (TH1F*)(chain->GetFile()->Get("h_TrackNeventsWgt"));
+
+    m_sample_name = *m_cross.m_process_name8;
+    m_sample_weight = h1->GetBinContent(1);
+  }
+
+  if (!passEventSelection()) return EL::StatusCode::SUCCESS;
+
+  // double lumi = 5000;
+  // double event_weight = (m_cross.m_process_xs13 *
+  //                        m_cross.m_process_kfactor13 *
+  //                        m_cross.m_process_eff13 *
+  //                        lumi * m_info.m_global_event_weight);
+
   PR(m_pvtx.m_pvtx_n);
-  PR(m_truth.m_true_zpt);
+  PR(m_jet.m_jet_mult);
+  PR(m_sample_weight);
 
   // Fill Histos:
   FillEventInfo();
   FillJets();
 
-  // print every 100 events, so we know where we are:
-  if( (m_eventCounter % 100) ==0 )
-
-    Info("execute()", "Event number = %i", m_eventCounter);
-
-  m_eventCounter++;
 
   return EL::StatusCode::SUCCESS;
 }
 
 
 
-EL::StatusCode MiniReaderAlg :: postExecute ()
+EL::StatusCode MiniReaderAlg :: postExecute()
 {
   // Here you do everything that needs to be done after the main event
   // processing.  This is typically very rare, particularly in user
@@ -152,7 +174,7 @@ EL::StatusCode MiniReaderAlg :: postExecute ()
 
 
 
-EL::StatusCode MiniReaderAlg :: finalize ()
+EL::StatusCode MiniReaderAlg :: finalize()
 {
   // This method is the mirror image of initialize(), meaning it gets
   // called after the last event has been processed on the worker node
@@ -168,7 +190,7 @@ EL::StatusCode MiniReaderAlg :: finalize ()
 
 
 
-EL::StatusCode MiniReaderAlg :: histFinalize ()
+EL::StatusCode MiniReaderAlg :: histFinalize()
 {
   // This method is the mirror image of histInitialize(), meaning it
   // gets called after the last event has been processed on the worker

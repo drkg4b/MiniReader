@@ -13,6 +13,11 @@ bool MiniReaderAlg::passEventSelection()
 							m_jet.m_jet_phi->cend(),
   [&](double phi) {
      return deltaPhi(phi, m_met.m_EtMissMuVetoPhi) < DPHI_JETMET &&
+            m_jet.m_jet_isbad &&
+            m_pvtx.m_pvtx_n > N_PVTX &&
+            m_met.m_EtMissMuVeto > MET_CUT &&
+            m_jet.m_jet_pt->at(0) > JET_PT &&
+            std::fabs(m_jet.m_jet_eta->at(0)) < JET_ETA &&
             m_jet.m_jet_mult > N_JETS;
   });
 

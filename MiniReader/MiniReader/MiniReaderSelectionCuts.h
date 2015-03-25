@@ -22,7 +22,11 @@ namespace M9Cuts {
 namespace EventFilter {
 
   static constexpr const float DPHI_JETMET = .4;
-  static constexpr const float N_JETS = 3;
+  static constexpr const float N_JETS = -1; // WARNING!!!! to be changed
+  static constexpr const float N_PVTX = 0;
+  static constexpr const float MET_CUT = 250000;
+  static constexpr const float JET_PT = 250000;
+  static constexpr const float JET_ETA = 2.8;
 }
 
 #endif // MINIREADER_MINIREADERSELECTIONCUTS_H

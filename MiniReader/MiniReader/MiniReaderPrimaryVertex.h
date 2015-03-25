@@ -20,7 +20,7 @@ class MiniReaderPrimaryVertex {
   std::vector<double> *m_pvtx_y;
   std::vector<double> *m_pvtx_z;
   std::vector<double> *m_pvtx_ndof;
-  std::vector<double> *em_pvtx_chi2;
+  std::vector<double> *m_pvtx_chi2;
 
  public:
 
