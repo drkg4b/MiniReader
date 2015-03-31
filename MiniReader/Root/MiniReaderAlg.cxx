@@ -5,10 +5,6 @@
 #include "SampleHandler/ToolsDiscovery.h"
 #include "SampleHandler/Sample.h"
 
-// ROOT includes:
-#include <TChain.h>
-#include <TFile.h>
-
 // This class header:
 #include <MiniReader/MiniReaderAlg.h>
 
@@ -16,7 +12,12 @@
 #include "MiniReader/MiniReaderJets.h"
 
 MiniReaderAlg :: MiniReaderAlg() : m_submitDir("submitDir"), m_eventCounter(0),
-				   m_sample_name("no_sample"), m_sample_weight(0)
+				   m_lumi(5000), m_sample_name("no_sample"),
+				   m_sample_weight(0), m_n_bad_jets(0),
+				   m_met_cut(0), m_jet1_pt(0),
+				   m_ele_mult_cut(0), m_mu_mult_cut(0),
+				   m_n_jet_cut(0), m_dphi_jetmet_cut(0),
+				   m_met_hard_cut(0), m_jet1_pt_hard_cut(0)
 {
   // Here you put any code for the base initialization of variables,
   // e.g. initialize all pointers to 0.  Note that you should only put
@@ -88,6 +89,18 @@ EL::StatusCode MiniReaderAlg :: changeInput(bool firstFile)
   m_pvtx.ReadPrimaryVertexBranches(tree);
   m_truth.ReadTruthParticlesBranches(tree);
 
+  m_sample_weight = 0;
+  PR(m_sample_weight);
+
+  TFile *file = wk()->inputFile();
+
+  TH1F *h1 = (TH1F*)(file->Get("h_TrackNeventsWgt"));
+
+  m_sample_weight = h1->GetBinContent(1);
+
+  PR(m_sample_name);
+  PR(m_sample_weight);
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -104,7 +117,6 @@ EL::StatusCode MiniReaderAlg :: initialize()
   // you create here won't be available in the output if you have no
   // input events.
 
-
   return EL::StatusCode::SUCCESS;
 }
 
@@ -117,47 +129,37 @@ EL::StatusCode MiniReaderAlg :: execute()
   // histograms and trees.  This is where most of your actual analysis
   // code will go.
 
-  // print every 100 events, so we know where we are:
-  if ((m_eventCounter % 100) == 0)
-
-    Info("execute()", "Event number = %i", m_eventCounter);
-
   m_eventCounter++;
 
   wk()->tree()->GetEntry(wk()->treeEntry());
 
-  if(m_sample_name != *m_cross.m_process_name8) {
+  if(!m_truth.m_pass_zpt) return EL::StatusCode::SUCCESS;
 
-    SH::SampleHandler sh;
+  m_jet.SkimJets();
 
-    sh.load("/home/drkg4b/work/ATLAS/sw/MonoJetAnalysis/MiniReader_v1/trunk/" + m_submitDir + "/input/");
+  double event_weight = 1.;
 
-    SH::Sample *sample = sh.get("ZnunuSamples");
+  // doCutFlow();
 
-    TChain *chain = sample->makeTChain();
+  if(m_sample_weight != 0)
 
-    TH1F *h1 = (TH1F*)(chain->GetFile()->Get("h_TrackNeventsWgt"));
+    event_weight = m_cross.m_process_xs13 *
+                   m_cross.m_process_kfactor13 *
+                   m_cross.m_process_eff13 *
+                   m_lumi /  m_sample_weight;
 
-    m_sample_name = *m_cross.m_process_name8;
-    m_sample_weight = h1->GetBinContent(1);
+  if(isZnunuBaseLine()) {
+
+    if(isM0()) {
+
+      // Fill Histos:
+      FillMET(event_weight);
+      FillEventInfo(event_weight);
+      FillJets(event_weight);
+    }
   }
 
   if (!passEventSelection()) return EL::StatusCode::SUCCESS;
-
-  // double lumi = 5000;
-  // double event_weight = (m_cross.m_process_xs13 *
-  //                        m_cross.m_process_kfactor13 *
-  //                        m_cross.m_process_eff13 *
-  //                        lumi * m_info.m_global_event_weight);
-
-  PR(m_pvtx.m_pvtx_n);
-  PR(m_jet.m_jet_mult);
-  PR(m_sample_weight);
-
-  // Fill Histos:
-  FillEventInfo();
-  FillJets();
-
 
   return EL::StatusCode::SUCCESS;
 }
@@ -185,6 +187,17 @@ EL::StatusCode MiniReaderAlg :: finalize()
   // submission node after all your histogram outputs have been
   // merged.  This is different from histFinalize() in that it only
   // gets called on worker nodes that processed input events.
+
+  PR(m_n_bad_jets);
+  PR(m_met_cut);
+  PR(m_jet1_pt);
+  PR(m_ele_mult_cut);
+  PR(m_mu_mult_cut);
+  PR(m_n_jet_cut);
+  PR(m_dphi_jetmet_cut);
+  PR(m_met_hard_cut);
+  PR(m_jet1_pt_hard_cut);
+
   return EL::StatusCode::SUCCESS;
 }
 

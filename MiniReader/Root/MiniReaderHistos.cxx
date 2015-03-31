@@ -1,37 +1,38 @@
 #include "MiniReader/MiniReaderAlg.h"
 #include <math.h>
 
-#define MINETA -5.
-#define MAXETA 5.
+static constexpr const float MINETA = -5.;
+static constexpr const float MAXETA = 5.;
 
-#define SOME_ENUM(DO)  	      	\
-  DO(InteractionPerCrossing)   	\
+#define SOME_ENUM(DO)		\
+  DO(EtMissMuVeto)		\
+  DO(InteractionPerCrossing)    \
   DO(jetMultiplicityNoCut)	\
   DO(n_pvtx_noCut)		\
-  DO(n_pvtx_3jets)		\
   DO(n_pvtx_3jets_jetpt30)	\
   DO(n_pvtx_3jets_jetpt40)	\
   DO(n_pvtx_3jets_jetpt50)	\
-  DO(n_pvtx_4jets)              \
+  DO(n_pvtx_3jets_jetpt70)	\
   DO(n_pvtx_4jets_jetpt30)	\
   DO(n_pvtx_4jets_jetpt40)	\
   DO(n_pvtx_4jets_jetpt50)	\
-  DO(n_pvtx_5jets)		\
+  DO(n_pvtx_4jets_jetpt70)	\
   DO(n_pvtx_5jets_jetpt30)	\
   DO(n_pvtx_5jets_jetpt40)	\
   DO(n_pvtx_5jets_jetpt50)	\
-  DO(jetEfficency_3jets)	\
+  DO(n_pvtx_5jets_jetpt70)	\
   DO(jetEfficency_3jets_jetpt30)\
   DO(jetEfficency_3jets_jetpt40)\
   DO(jetEfficency_3jets_jetpt50)\
-  DO(jetEfficency_4jets)	\
+  DO(jetEfficency_3jets_jetpt70)\
   DO(jetEfficency_4jets_jetpt30)\
   DO(jetEfficency_4jets_jetpt40)\
   DO(jetEfficency_4jets_jetpt50)\
-  DO(jetEfficency_5jets)	\
+  DO(jetEfficency_4jets_jetpt70)\
   DO(jetEfficency_5jets_jetpt30)\
   DO(jetEfficency_5jets_jetpt40)\
   DO(jetEfficency_5jets_jetpt50)\
+  DO(jetEfficency_5jets_jetpt70)\
 
 
 #define MAKE_ENUM(VAR) VAR,
@@ -50,117 +51,130 @@ void MiniReaderAlg::DefineHisto(int name, int nbin, float x_low, float x_max)
   TH1F *temp_pointer = new TH1F(HistoNamesString[name],
                                 HistoNamesString[name], nbin, x_low, x_max);
 
+  TH1::SetDefaultSumw2(true);
+
   m_HistoContainer.push_back(temp_pointer);
   wk()->addOutput(temp_pointer);
 }
 
 void MiniReaderAlg::InitHisto()
 {
+  // MET Histos:
+  DefineHisto(EtMissMuVeto, 100, 0, 1100);
+
   // Jet Histos:
-  DefineHisto(InteractionPerCrossing, 20, 0, 40);
+  DefineHisto(InteractionPerCrossing, 60, 0, 40);
   DefineHisto(jetMultiplicityNoCut, 20, 0, 100);
 
   DefineHisto(n_pvtx_noCut, 40, 0, 80);
 
-  DefineHisto(n_pvtx_3jets, 40, 0, 80);
   DefineHisto(n_pvtx_3jets_jetpt30, 40, 0, 80);
   DefineHisto(n_pvtx_3jets_jetpt40, 40, 0, 80);
   DefineHisto(n_pvtx_3jets_jetpt50, 40, 0, 80);
+  DefineHisto(n_pvtx_3jets_jetpt70, 40, 0, 80);
 
-  DefineHisto(n_pvtx_4jets, 40, 0, 80);
   DefineHisto(n_pvtx_4jets_jetpt30, 40, 0, 80);
   DefineHisto(n_pvtx_4jets_jetpt40, 40, 0, 80);
   DefineHisto(n_pvtx_4jets_jetpt50, 40, 0, 80);
+  DefineHisto(n_pvtx_4jets_jetpt70, 40, 0, 80);
 
-  DefineHisto(n_pvtx_5jets, 40, 0, 80);
   DefineHisto(n_pvtx_5jets_jetpt30, 40, 0, 80);
   DefineHisto(n_pvtx_5jets_jetpt40, 40, 0, 80);
   DefineHisto(n_pvtx_5jets_jetpt50, 40, 0, 80);
+  DefineHisto(n_pvtx_5jets_jetpt70, 40, 0, 80);
 
-  DefineHisto(jetEfficency_3jets, 40, 0, 80);
   DefineHisto(jetEfficency_3jets_jetpt30, 40, 0, 80);
   DefineHisto(jetEfficency_3jets_jetpt40, 40, 0, 80);
   DefineHisto(jetEfficency_3jets_jetpt50, 40, 0, 80);
+  DefineHisto(jetEfficency_3jets_jetpt70, 40, 0, 80);
 
-  DefineHisto(jetEfficency_4jets, 40, 0, 80);
   DefineHisto(jetEfficency_4jets_jetpt30, 40, 0, 80);
   DefineHisto(jetEfficency_4jets_jetpt40, 40, 0, 80);
   DefineHisto(jetEfficency_4jets_jetpt50, 40, 0, 80);
+  DefineHisto(jetEfficency_4jets_jetpt70, 40, 0, 80);
 
-  DefineHisto(jetEfficency_5jets, 40, 0, 80);
   DefineHisto(jetEfficency_5jets_jetpt30, 40, 0, 80);
   DefineHisto(jetEfficency_5jets_jetpt40, 40, 0, 80);
   DefineHisto(jetEfficency_5jets_jetpt50, 40, 0, 80);
+  DefineHisto(jetEfficency_5jets_jetpt70, 40, 0, 80);
 }
 
-void MiniReaderAlg::FillJets()
+void MiniReaderAlg::FillMET(double weight)
 {
-  m_HistoContainer[jetMultiplicityNoCut]->Fill(m_jet.m_jet_mult);
-  m_HistoContainer[n_pvtx_noCut]->Fill(m_pvtx.m_pvtx_n);
-
-  if(m_jet.m_jet_mult == 3) {
-
-    m_HistoContainer[n_pvtx_3jets]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 30000 && m_jet.m_jet_pt->at(0) < 40000)
-
-      m_HistoContainer[n_pvtx_3jets_jetpt30]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 40000 && m_jet.m_jet_pt->at(0) < 50000)
-
-      m_HistoContainer[n_pvtx_3jets_jetpt40]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 50000)
-
-      m_HistoContainer[n_pvtx_3jets_jetpt50]->Fill(m_pvtx.m_pvtx_n);
-  }
-
-
-  if(m_jet.m_jet_mult == 4) {
-
-    m_HistoContainer[n_pvtx_4jets]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 30000 && m_jet.m_jet_pt->at(0) < 40000)
-
-      m_HistoContainer[n_pvtx_4jets_jetpt30]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 40000 && m_jet.m_jet_pt->at(0) < 50000)
-
-      m_HistoContainer[n_pvtx_4jets_jetpt40]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 50000)
-
-      m_HistoContainer[n_pvtx_4jets_jetpt50]->Fill(m_pvtx.m_pvtx_n);
+  m_HistoContainer[EtMissMuVeto]->Fill(toGeV(m_met.m_EtMissMuVeto), weight);
 }
 
-  if(m_jet.m_jet_mult == 5) {
-
-    m_HistoContainer[n_pvtx_5jets]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 30000 && m_jet.m_jet_pt->at(0) < 40000)
-
-      m_HistoContainer[n_pvtx_5jets_jetpt30]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 40000 && m_jet.m_jet_pt->at(0) < 50000)
-
-      m_HistoContainer[n_pvtx_5jets_jetpt40]->Fill(m_pvtx.m_pvtx_n);
-
-    if(m_jet.m_jet_pt->at(0) >= 50000)
-
-      m_HistoContainer[n_pvtx_5jets_jetpt50]->Fill(m_pvtx.m_pvtx_n);
-  }
-}
-
-void MiniReaderAlg::FillEventInfo()
+void MiniReaderAlg::FillJets(double weight)
 {
-  m_HistoContainer[InteractionPerCrossing]->Fill(m_info.m_actualInteractionsPerCrossing);
+  m_HistoContainer[jetMultiplicityNoCut]->Fill(m_jet.m_jet_mult, weight);
+  m_HistoContainer[n_pvtx_noCut]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  // Event survives if at most 3 jets or if there are more than 3 jets but the
+  // pt of the third is less than some threshold (Mind the vector counting start
+  // from 0):
+  if (m_jet.m_jet_mult < 4 || (m_jet.m_jet_mult > 2 && m_jet.m_jet_pt->at(2) < 30000))
+
+    m_HistoContainer[n_pvtx_3jets_jetpt30]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 4 || (m_jet.m_jet_mult > 2 && m_jet.m_jet_pt->at(2) < 40000))
+
+    m_HistoContainer[n_pvtx_3jets_jetpt40]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 4 || (m_jet.m_jet_mult > 2 && m_jet.m_jet_pt->at(2) < 50000))
+
+    m_HistoContainer[n_pvtx_3jets_jetpt50]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 4 || (m_jet.m_jet_mult > 2 && m_jet.m_jet_pt->at(2) < 70000))
+
+    m_HistoContainer[n_pvtx_3jets_jetpt70]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  // Event survives if at most 4 jets or if there are more than 4 jets but the
+  // pt of the fourth is less than some threshold (Mind the vector counting start
+  // from 0):
+  if (m_jet.m_jet_mult < 5 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 30000))
+
+    m_HistoContainer[n_pvtx_4jets_jetpt30]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 5 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 40000))
+
+    m_HistoContainer[n_pvtx_4jets_jetpt40]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 5 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 50000))
+
+    m_HistoContainer[n_pvtx_4jets_jetpt50]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 5 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 70000))
+
+    m_HistoContainer[n_pvtx_4jets_jetpt70]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  // Event survives if at most 4 jets or if there are more than 4 jets but the
+  // pt of the fourth is less than some threshold (Mind the vector counting start
+  // from 0):
+  if (m_jet.m_jet_mult < 6 || (m_jet.m_jet_mult > 4 && m_jet.m_jet_pt->at(4) < 30000))
+
+    m_HistoContainer[n_pvtx_5jets_jetpt30]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 6 || (m_jet.m_jet_mult > 4 && m_jet.m_jet_pt->at(4) < 40000))
+
+    m_HistoContainer[n_pvtx_5jets_jetpt40]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 6 || (m_jet.m_jet_mult > 4 && m_jet.m_jet_pt->at(4) < 50000))
+
+    m_HistoContainer[n_pvtx_5jets_jetpt50]->Fill(m_pvtx.m_pvtx_n, weight);
+
+  if (m_jet.m_jet_mult < 6 || (m_jet.m_jet_mult > 4 && m_jet.m_jet_pt->at(4) < 70000))
+
+    m_HistoContainer[n_pvtx_5jets_jetpt70]->Fill(m_pvtx.m_pvtx_n, weight);
+}
+
+void MiniReaderAlg::FillEventInfo(double weight)
+{
+  m_HistoContainer[InteractionPerCrossing]->Fill(m_info.m_actualInteractionsPerCrossing,
+      weight);
 }
 
 void MiniReaderAlg::PlotJetEfficency()
 {
-  m_HistoContainer[jetEfficency_3jets]->Divide(m_HistoContainer[n_pvtx_3jets],
-					       m_HistoContainer[n_pvtx_noCut]);
-
   m_HistoContainer[jetEfficency_3jets_jetpt30]->Divide(m_HistoContainer[n_pvtx_3jets_jetpt30],
 						       m_HistoContainer[n_pvtx_noCut]);
 
@@ -170,8 +184,8 @@ void MiniReaderAlg::PlotJetEfficency()
   m_HistoContainer[jetEfficency_3jets_jetpt50]->Divide(m_HistoContainer[n_pvtx_3jets_jetpt50],
 						       m_HistoContainer[n_pvtx_noCut]);
 
-  m_HistoContainer[jetEfficency_4jets]->Divide(m_HistoContainer[n_pvtx_4jets],
-					       m_HistoContainer[n_pvtx_noCut]);
+  m_HistoContainer[jetEfficency_3jets_jetpt70]->Divide(m_HistoContainer[n_pvtx_3jets_jetpt70],
+						       m_HistoContainer[n_pvtx_noCut]);
 
   m_HistoContainer[jetEfficency_4jets_jetpt30]->Divide(m_HistoContainer[n_pvtx_4jets_jetpt30],
 						       m_HistoContainer[n_pvtx_noCut]);
@@ -182,8 +196,8 @@ void MiniReaderAlg::PlotJetEfficency()
   m_HistoContainer[jetEfficency_4jets_jetpt50]->Divide(m_HistoContainer[n_pvtx_4jets_jetpt50],
 						       m_HistoContainer[n_pvtx_noCut]);
 
-  m_HistoContainer[jetEfficency_5jets]->Divide(m_HistoContainer[n_pvtx_5jets],
-					       m_HistoContainer[n_pvtx_noCut]);
+  m_HistoContainer[jetEfficency_4jets_jetpt70]->Divide(m_HistoContainer[n_pvtx_4jets_jetpt70],
+						       m_HistoContainer[n_pvtx_noCut]);
 
   m_HistoContainer[jetEfficency_5jets_jetpt30]->Divide(m_HistoContainer[n_pvtx_5jets_jetpt30],
 						       m_HistoContainer[n_pvtx_noCut]);
@@ -194,4 +208,6 @@ void MiniReaderAlg::PlotJetEfficency()
   m_HistoContainer[jetEfficency_5jets_jetpt50]->Divide(m_HistoContainer[n_pvtx_5jets_jetpt50],
 						       m_HistoContainer[n_pvtx_noCut]);
 
+  m_HistoContainer[jetEfficency_5jets_jetpt70]->Divide(m_HistoContainer[n_pvtx_5jets_jetpt70],
+						       m_HistoContainer[n_pvtx_noCut]);
 }

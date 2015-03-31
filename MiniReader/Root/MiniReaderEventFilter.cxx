@@ -2,9 +2,6 @@
 #include "MiniReader/MiniReaderAlg.h"
 #include "MiniReader/MiniReaderSelectionCuts.h"
 
-// SDL include(s):
-#include <algorithm>
-
 bool MiniReaderAlg::passEventSelection()
 {
   using namespace EventFilter;
@@ -16,6 +13,7 @@ bool MiniReaderAlg::passEventSelection()
             m_jet.m_jet_isbad &&
             m_pvtx.m_pvtx_n > N_PVTX &&
             m_met.m_EtMissMuVeto > MET_CUT &&
+            m_jet.m_jet_pt->size() != 0 &&
             m_jet.m_jet_pt->at(0) > JET_PT &&
             std::fabs(m_jet.m_jet_eta->at(0)) < JET_ETA &&
             m_jet.m_jet_mult > N_JETS;

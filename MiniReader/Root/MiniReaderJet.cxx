@@ -1,5 +1,6 @@
+// Local include(s):
 #include "MiniReader/MiniReaderJets.h"
-#include <iostream>
+#include "MiniReader/MiniReaderSelectionCuts.h"
 
 MiniReaderJets::MiniReaderJets()
 {
@@ -48,4 +49,37 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_isbase", &m_jet_isbase);
   tree->SetBranchAddress("jet_isbad", &m_jet_isbad);
   tree->SetBranchAddress("jet_passFilter", &m_jet_passFilter);
+}
+
+void MiniReaderJets::SkimJets()
+{
+  using namespace GoodJetCuts;
+
+  std::vector<double> jet_pt;
+  std::vector<double> jet_eta;
+  std::vector<double> jet_phi;
+  std::vector<double> jet_jvf;
+  std::vector<double> jet_flavour_weight;
+  std::vector<double> jet_constscale_eta;
+
+  for(int i = 0; i < m_jet_mult; ++i) {
+
+    if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) > PT_CUT) {
+
+      jet_pt.push_back(m_jet_pt->at(i));
+      jet_eta.push_back(m_jet_eta->at(i));
+      jet_phi.push_back(m_jet_phi->at(i));
+      jet_jvf.push_back(m_jet_jvf->at(i));
+      jet_flavour_weight.push_back(m_jet_flavour_weight->at(i));
+      jet_constscale_eta.push_back(m_jet_constscale_eta->at(i));
+    }
+  }
+
+  m_jet_mult = jet_pt.size();
+  *m_jet_pt = jet_pt;
+  *m_jet_eta = jet_eta;
+  *m_jet_phi = jet_phi;
+  *m_jet_jvf = jet_jvf;
+  *m_jet_flavour_weight = jet_flavour_weight;
+  *m_jet_constscale_eta = jet_constscale_eta;
 }

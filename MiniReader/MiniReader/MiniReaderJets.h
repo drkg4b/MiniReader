@@ -6,6 +6,7 @@
 
 // STL include(s):
 #include <vector>
+#include <algorithm>
 
 class MiniReaderJets {
 
@@ -40,6 +41,7 @@ class MiniReaderJets {
 
   MiniReaderJets();
   void ReadJetBranches(TTree *);
+  void SkimJets();
 };
 
 #endif // MINIREADER_MINIREADERJETS_H

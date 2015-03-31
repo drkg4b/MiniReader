@@ -11,6 +11,8 @@
 #include "TTree.h"
 #include "TH1F.h"
 #include "TBranch.h"
+#include <TChain.h>
+#include <TFile.h>
 
 // Local inclede(s):
 #include "MiniReader/MiniReaderElectrons.h"
@@ -24,6 +26,7 @@
 
 // STL include(s):
 #include <string>
+#include <algorithm>
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -57,6 +60,9 @@ class MiniReaderAlg : public EL::Algorithm {
 
   int m_eventCounter; //!
 
+  // Luminosity:
+  double m_lumi;
+
   // The histogram container:
   std::vector<TH1F *> m_HistoContainer; //!
 
@@ -64,27 +70,45 @@ class MiniReaderAlg : public EL::Algorithm {
   void DefineHisto(int, int, float, float); //!
   void InitHisto(); //!
 
-  void FillJets(); //!
-  void FillEventInfo(); //!
+  void FillMET(double); //!
+  void FillJets(double); //!
+  void FillEventInfo(double); //!
 
   // Auxiliary functions:
-  double deltaPhi(double, double);
-  double deltaR(double, double, double, double);
+  double deltaPhi(double, double); //!
+  double deltaR(double, double, double, double); //!
+  bool isDeltaPhiJetMetLessThanN(float); //!
+  bool elPassOR(); //!
+  bool muPassOR(); //!
+  double toGeV(double); //!
+  void doCutFlow(); //!
 
   // SR definitions:
-  bool isM0();
-  bool isM5();
-  bool isM9();
+  bool isZnunuBaseLine(); //!
+  bool isM0(); //!
+  bool isM5(); //!
+  bool isM9(); //!
 
   // Event definition:
-  bool passEventSelection();
+  bool passEventSelection(); //!
 
   // Plot functions:
-  void PlotJetEfficency();
+  void PlotJetEfficency(); //!
 
   std::string m_sample_name;
 
-  float m_sample_weight;
+  float m_sample_weight; //!
+
+  // Cut Flow variables:
+  int m_n_bad_jets; //!
+  int m_met_cut; //!
+  int m_jet1_pt; //!
+  int m_ele_mult_cut; //!
+  int m_mu_mult_cut; //!
+  int m_n_jet_cut; //!
+  int m_dphi_jetmet_cut; //!
+  int m_met_hard_cut; //!
+  int m_jet1_pt_hard_cut; //!
 
   // this is a standard constructor
   MiniReaderAlg();
