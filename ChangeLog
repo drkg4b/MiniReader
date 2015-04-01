@@ -1,5 +1,6 @@
 01-04-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Adding plotJetEfficiency macro to plot nice plots
+	* Improvd EventFilter with more proper cuts
 
 30-03-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Added Znunu cuts and cut Flow functions
