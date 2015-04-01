@@ -8,11 +8,13 @@
 #include <EventLoop/Worker.h>
 
 // ROOT include(s):
-#include "TTree.h"
-#include "TH1F.h"
-#include "TBranch.h"
+#include <TTree.h>
+#include <TH1F.h>
+#include <TBranch.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TGraphAsymmErrors.h>
+#include <TCanvas.h>
 
 // Local inclede(s):
 #include "MiniReader/MiniReaderElectrons.h"
@@ -59,6 +61,7 @@ class MiniReaderAlg : public EL::Algorithm {
   MiniReaderTruthParticles m_truth; //!
 
   int m_eventCounter; //!
+  std::string m_current_sample_name; //!
 
   // Luminosity:
   double m_lumi;

@@ -12,9 +12,9 @@
 #include "MiniReader/MiniReaderJets.h"
 
 MiniReaderAlg :: MiniReaderAlg() : m_submitDir("submitDir"), m_eventCounter(0),
-				   m_lumi(5000), m_sample_name("no_sample"),
-				   m_sample_weight(0), m_n_bad_jets(0),
-				   m_met_cut(0), m_jet1_pt(0),
+				   m_current_sample_name("no_sample"),
+				   m_lumi(5000), m_sample_weight(0),
+				   m_n_bad_jets(0), m_met_cut(0), m_jet1_pt(0),
 				   m_ele_mult_cut(0), m_mu_mult_cut(0),
 				   m_n_jet_cut(0), m_dphi_jetmet_cut(0),
 				   m_met_hard_cut(0), m_jet1_pt_hard_cut(0)
@@ -89,17 +89,11 @@ EL::StatusCode MiniReaderAlg :: changeInput(bool firstFile)
   m_pvtx.ReadPrimaryVertexBranches(tree);
   m_truth.ReadTruthParticlesBranches(tree);
 
-  m_sample_weight = 0;
-  PR(m_sample_weight);
-
   TFile *file = wk()->inputFile();
 
-  TH1F *h1 = (TH1F*)(file->Get("h_TrackNeventsWgt"));
+  TH1F *h1 = (TH1F *)(file->Get("h_TrackNeventsWgt"));
 
   m_sample_weight = h1->GetBinContent(1);
-
-  PR(m_sample_name);
-  PR(m_sample_weight);
 
   return EL::StatusCode::SUCCESS;
 }
@@ -116,7 +110,11 @@ EL::StatusCode MiniReaderAlg :: initialize()
   // doesn't get called if no events are processed.  So any objects
   // you create here won't be available in the output if you have no
   // input events.
+  PR(m_current_sample_name);
 
+  m_current_sample_name = wk()->metaData()->getString("sample_name");
+
+  PR(m_current_sample_name);
   return EL::StatusCode::SUCCESS;
 }
 
@@ -129,28 +127,32 @@ EL::StatusCode MiniReaderAlg :: execute()
   // histograms and trees.  This is where most of your actual analysis
   // code will go.
 
-  m_eventCounter++;
-
   wk()->tree()->GetEntry(wk()->treeEntry());
 
-  if(!m_truth.m_pass_zpt) return EL::StatusCode::SUCCESS;
+  if (!m_truth.m_pass_zpt) return EL::StatusCode::SUCCESS;
 
   m_jet.SkimJets();
 
+  if (!passEventSelection()) return EL::StatusCode::SUCCESS;
+
   double event_weight = 1.;
 
-  // doCutFlow();
+  if (wk()->metaData()->getString("sample_name") == "cutFlow")
 
-  if(m_sample_weight != 0)
+    doCutFlow();
+
+  if (m_sample_weight != 0)
 
     event_weight = m_cross.m_process_xs13 *
                    m_cross.m_process_kfactor13 *
                    m_cross.m_process_eff13 *
                    m_lumi /  m_sample_weight;
 
-  if(isZnunuBaseLine()) {
+  if (isZnunuBaseLine()) {
 
-    if(isM0()) {
+    m_eventCounter++;
+
+    if (isM0()) {
 
       // Fill Histos:
       FillMET(event_weight);
@@ -158,8 +160,6 @@ EL::StatusCode MiniReaderAlg :: execute()
       FillJets(event_weight);
     }
   }
-
-  if (!passEventSelection()) return EL::StatusCode::SUCCESS;
 
   return EL::StatusCode::SUCCESS;
 }
@@ -188,6 +188,7 @@ EL::StatusCode MiniReaderAlg :: finalize()
   // merged.  This is different from histFinalize() in that it only
   // gets called on worker nodes that processed input events.
 
+  PR(m_eventCounter);
   PR(m_n_bad_jets);
   PR(m_met_cut);
   PR(m_jet1_pt);
