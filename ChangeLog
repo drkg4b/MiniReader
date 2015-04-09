@@ -1,5 +1,6 @@
 09-04-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Changed m_jet.m_jet_isbad to m_jet.m_jet_isnotbad
+	* Added commpressed spectra samples
 
 01-04-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Adding plotJetEfficiency macro to plot nice plots

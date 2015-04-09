@@ -98,7 +98,10 @@ class MiniReaderAlg : public EL::Algorithm {
   // Plot functions:
   void PlotJetEfficency(); //!
 
-  std::string m_sample_name;
+  std::string m_sample_name; //!
+
+  float m_process_xs13; //!
+  float m_process_eff13; //!
 
   float m_sample_weight; //!
 

@@ -95,6 +95,44 @@ EL::StatusCode MiniReaderAlg :: changeInput(bool firstFile)
 
   m_sample_weight = h1->GetBinContent(1);
 
+  std::string file_name = file->GetName();
+
+  if(file_name.find("5088310") != std::string::npos) {
+
+    m_process_xs13 = 0.42481E+01;
+    m_process_eff13 = .5585;
+  }
+
+  if(file_name.find("5088315") != std::string::npos) {
+
+    m_process_xs13 = 0.19164E+01;
+    m_process_eff13 = .4639;
+  }
+
+  if(file_name.find("5088318") != std::string::npos) {
+
+    m_process_xs13 = 0.60441E+00;
+    m_process_eff13 = .4877;
+  }
+
+  if(file_name.find("5088323") != std::string::npos) {
+
+    m_process_xs13 = 0.19826E+01;
+    m_process_eff13 = .5486;
+  }
+
+  if(file_name.find("5088327") != std::string::npos) {
+
+    m_process_xs13 = 0.94110E+00;
+    m_process_eff13 = .4331;
+  }
+
+  if(file_name.find("5088330") != std::string::npos) {
+
+    m_process_xs13 = 0.31134E+00;
+    m_process_eff13 = .4763;
+  }
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -110,11 +148,9 @@ EL::StatusCode MiniReaderAlg :: initialize()
   // doesn't get called if no events are processed.  So any objects
   // you create here won't be available in the output if you have no
   // input events.
-  PR(m_current_sample_name);
 
   m_current_sample_name = wk()->metaData()->getString("sample_name");
 
-  PR(m_current_sample_name);
   return EL::StatusCode::SUCCESS;
 }
 
@@ -141,12 +177,21 @@ EL::StatusCode MiniReaderAlg :: execute()
 
     doCutFlow();
 
+
   if (m_sample_weight != 0)
 
     event_weight = m_cross.m_process_xs13 *
                    m_cross.m_process_kfactor13 *
                    m_cross.m_process_eff13 *
                    m_lumi /  m_sample_weight;
+
+  if(m_current_sample_name == "Compressed1" || m_current_sample_name == "Compressed2") {
+
+    event_weight = m_process_xs13 *
+                   m_process_eff13 *
+                   m_lumi / m_sample_weight;
+  }
+
 
   if (isZnunuBaseLine()) {
 

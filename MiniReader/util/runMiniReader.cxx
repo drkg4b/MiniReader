@@ -42,6 +42,14 @@ int main(int argc, char *argv[])
 
    chain1.Add("/home/drkg4b/work/input_samples/signals/user.cclement.t02.mc14_13TeV.191040.MadGraphPythia_AUET2BMSTW2008LO_D5_400_1000_MET100_hist-output.root.19926114/*.root");
 
+   TChain chain2("MiniTree");
+
+   chain2.Add("/home/drkg4b/work/input_samples/signals/compressed/model1/*.root");
+
+   TChain chain3("MiniTree");
+
+   chain3.Add("/home/drkg4b/work/input_samples/signals/compressed/model2/*.root");
+
    // TChain chain1("MiniTree");
 
    // chain1.Add("/home/drkg4b/work/input_samples/cutFlow-00/hist-*ZnunuMassive*.root");
@@ -51,6 +59,8 @@ int main(int argc, char *argv[])
 
    sh.add(SH::makeFromTChain("ZnunuSamples", chain));
    sh.add(SH::makeFromTChain("D5", chain1));
+   sh.add(SH::makeFromTChain("Compressed1", chain2));
+   sh.add(SH::makeFromTChain("Compressed2", chain3));
    // sh.add(SH::makeFromTChain("cutFlowSamples", chain2));
 
    // print what we found:
