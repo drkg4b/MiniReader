@@ -18,63 +18,97 @@ void plotJetEfficiency(std::string in_sample)
 
   if(in_sample.find("Znunu") != std::string::npos)
 
-    processing_sample = "Znunu";
+    processing_sample = "Znunu_";
 
   if(in_sample.find("D5") != std::string::npos)
 
-    processing_sample = "D5";
+    processing_sample = "D5_";
 
-  for(int i = 3; i < 6; ++i) {
+  if(in_sample.find("Compressed1") != std::string::npos)
 
-    TCanvas *c1 = new TCanvas();
+    processing_sample = "Compressed1_";
 
-    TGraphAsymmErrors *g1 = new TGraphAsymmErrors();
-    TGraphAsymmErrors *g2 = new TGraphAsymmErrors();
-    TGraphAsymmErrors *g3 = new TGraphAsymmErrors();
-    TGraphAsymmErrors *g4 = new TGraphAsymmErrors();
+  if(in_sample.find("Compressed2") != std::string::npos)
 
-    std::string n_jets = std::to_string(i) + "jets";
+    processing_sample = "Compressed2_";
 
-    g1->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt30").c_str()),
-	       (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+  for(int k = 0; k < 2; ++k) {
 
-    g2->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt40").c_str()),
-	       (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+    std::string jvf_acc = "";
+    std::string jvf_leg = "";
 
-    g3->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt50").c_str()),
-	       (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+    if (k == 1) {
 
-    g4->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt70").c_str()),
-	       (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+      jvf_acc = "_jvf_acc";
+      jvf_leg = ", |#eta| < 2.4, JVF > .5";
+    }
 
-    TLegend *leg = new TLegend(.15, .15, .36, .40);
+    for(int i = 3; i < 6; ++i) {
 
-    leg->SetFillColor(0);
-    leg->SetBorderSize(0);
+      TCanvas *c1 = new TCanvas();
 
-    leg->AddEntry(g1, "P_{T} 3rd Jet < 30 GeV", "L");
-    leg->AddEntry(g2, "P_{T} 3rd Jet < 40 GeV", "L");
-    leg->AddEntry(g3, "P_{T} 3rd Jet < 50 GeV", "L");
-    leg->AddEntry(g4, "P_{T} 3rd Jet < 70 GeV", "L");
+      TGraphAsymmErrors *g1 = new TGraphAsymmErrors();
+      TGraphAsymmErrors *g2 = new TGraphAsymmErrors();
+      TGraphAsymmErrors *g3 = new TGraphAsymmErrors();
+      TGraphAsymmErrors *g4 = new TGraphAsymmErrors();
 
-    g1->SetLineColor(6);
-    g2->SetLineColor(4);
-    g3->SetLineColor(3);
-    g4->SetLineColor(2);
+      std::string n_jets = std::to_string(i) + "jets";
 
-    g1->GetXaxis()->SetTitle("N_{PV}");
-    g1->GetYaxis()->SetTitle("Jet Efficiency");
+      g1->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt30" + jvf_acc).c_str()),
+		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
 
-    g1->Draw("AP");
-    g2->Draw("PSAME");
-    g3->Draw("PSAME");
-    g4->Draw("PSAME");
+      g2->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt40" + jvf_acc).c_str()),
+		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
 
-    leg->Draw();
+      g3->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt50" + jvf_acc).c_str()),
+		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
 
-    std::string pdf_name = processing_sample + n_jets + ".pdf";
+      g4->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt70" + jvf_acc).c_str()),
+		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
 
-    c1->Print(pdf_name.c_str());
+      TLegend *leg = new TLegend(.15, .15, .36, .40);
+
+      leg->SetFillColor(0);
+      leg->SetBorderSize(0);
+
+      std::string suffix;
+
+      if(i < 4)
+
+	suffix = "rd";
+
+      else
+
+	suffix = "th";
+
+      leg->AddEntry(g1, ("P_{T} " + std::to_string(i) + suffix +
+			 " Jet < 30 GeV" + jvf_leg).c_str(), "L");
+      leg->AddEntry(g2, ("P_{T} " + std::to_string(i) + suffix +
+			 " Jet < 40 GeV" + jvf_leg).c_str(), "L");
+      leg->AddEntry(g3, ("P_{T} " + std::to_string(i) + suffix +
+			 " Jet < 50 GeV" + jvf_leg).c_str(), "L");
+      leg->AddEntry(g4, ("P_{T} " + std::to_string(i) + suffix +
+			 " Jet < 70 GeV" + jvf_leg).c_str(), "L");
+
+      g1->SetLineColor(6);
+      g2->SetLineColor(4);
+      g3->SetLineColor(3);
+      g4->SetLineColor(2);
+
+      g1->GetXaxis()->SetTitle("N_{PV}");
+      g1->GetYaxis()->SetTitle("Jet Efficiency");
+
+      g1->Draw("AP");
+      g2->Draw("PSAME");
+      g3->Draw("PSAME");
+      g4->Draw("PSAME");
+
+      leg->Draw();
+
+      std::string pdf_name = processing_sample + n_jets + jvf_acc + ".pdf";
+
+      c1->Print(pdf_name.c_str());
+    }
   }
 }
 
@@ -91,9 +125,13 @@ int main(int argc, char **argv)
 {
 
   gROOT->Reset();
-  TApplication app("ROOT Application", &argc, argv);
-  StandaloneApplication(app.Argc(), app.Argv());
-  app.Run();
+  // TApplication app("ROOT Application", &argc, argv);
+  // StandaloneApplication(app.Argc(), app.Argv());
+  // app.Run();
+
+  std::string in_dir = argv[1];
+
+  plotJetEfficiency(in_dir);
 
   return 0;
 }

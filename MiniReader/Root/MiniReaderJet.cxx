@@ -23,7 +23,7 @@ MiniReaderJets::MiniReaderJets()
 
   m_jet_passOR = 0;
   m_jet_isbase = 0;
-  m_jet_isbad = 0;
+  m_jet_isnotbad = 0;
   m_jet_passFilter = 0;
 }
 
@@ -47,7 +47,7 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_Ce", &m_jet_Ce);
   tree->SetBranchAddress("jet_passOR", &m_jet_passOR);
   tree->SetBranchAddress("jet_isbase", &m_jet_isbase);
-  tree->SetBranchAddress("jet_isbad", &m_jet_isbad);
+  tree->SetBranchAddress("jet_isbad", &m_jet_isnotbad);
   tree->SetBranchAddress("jet_passFilter", &m_jet_passFilter);
 }
 
@@ -65,6 +65,8 @@ void MiniReaderJets::SkimJets()
   for(int i = 0; i < m_jet_mult; ++i) {
 
     if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) > PT_CUT) {
+    // if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) >
+    //    PT_CUT && std::fabs(m_jet_eta->at(i)) < 2.4 && m_jet_jvf->at(i) > .5) {
 
       jet_pt.push_back(m_jet_pt->at(i));
       jet_eta.push_back(m_jet_eta->at(i));
