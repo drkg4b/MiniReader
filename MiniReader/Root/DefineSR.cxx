@@ -7,7 +7,7 @@ bool MiniReaderAlg::isZnunuBaseLine()
   using namespace ZnunuCuts;
 
   return m_jet.m_jet_pt->size() != 0 &&
-         m_jet.m_jet_isbad &&
+         m_jet.m_jet_isnotbad &&
          (m_el.m_ele_mult == 0 || !elPassOR()) &&
          (m_mu.m_mu_mult == 0 || !muPassOR()) &&
          m_jet.m_jet_mult < N_JETS &&

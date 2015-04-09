@@ -34,7 +34,7 @@ class MiniReaderJets {
 
   std::vector<int> *m_jet_passOR;
   std::vector<int> *m_jet_isbase;
-  std::vector<int> *m_jet_isbad;
+  std::vector<int> *m_jet_isnotbad;
   std::vector<int> *m_jet_passFilter;
 
  public:

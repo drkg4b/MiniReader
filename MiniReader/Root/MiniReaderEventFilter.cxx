@@ -7,7 +7,7 @@ bool MiniReaderAlg::passEventSelection()
   using namespace EventFilter;
 
   return m_jet.m_jet_mult != 0 &&
-         m_jet.m_jet_isbad &&
+         m_jet.m_jet_isnotbad &&
          m_pvtx.m_pvtx_n > N_PVTX &&
          m_met.m_EtMissMuVeto > MET_CUT &&
          m_jet.m_jet_pt->at(0) > JET_PT &&
