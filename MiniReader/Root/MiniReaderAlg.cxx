@@ -28,6 +28,9 @@ MiniReaderAlg :: MiniReaderAlg() : m_submitDir("submitDir"), m_eventCounter(0),
 
   // Reserve space for the histo for efficency:
   m_HistoContainer.reserve(200);
+  m_ScatterPlotContainer.reserve(200);
+
+  m_SensitivityTree = new TTree("SensTree", "SensTree");
 }
 
 
@@ -151,6 +154,8 @@ EL::StatusCode MiniReaderAlg :: initialize()
 
   m_current_sample_name = wk()->metaData()->getString("sample_name");
 
+  DefineTreeBranches();
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -203,6 +208,10 @@ EL::StatusCode MiniReaderAlg :: execute()
       FillMET(event_weight);
       FillEventInfo(event_weight);
       FillJets(event_weight);
+      FillScatterPlots(event_weight);
+
+      // Fill sensitivity study tree:
+      m_SensitivityTree->Fill();
     }
   }
 
@@ -243,6 +252,12 @@ EL::StatusCode MiniReaderAlg :: finalize()
   PR(m_dphi_jetmet_cut);
   PR(m_met_hard_cut);
   PR(m_jet1_pt_hard_cut);
+
+  TProfile *prof = m_ScatterPlotContainer[0]->ProfileX();
+  TProfile *prof1 = m_ScatterPlotContainer[1]->ProfileX();
+
+  wk()->addOutput(prof);
+  wk()->addOutput(prof1);
 
   return EL::StatusCode::SUCCESS;
 }

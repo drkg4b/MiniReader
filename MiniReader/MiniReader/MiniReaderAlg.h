@@ -10,11 +10,13 @@
 // ROOT include(s):
 #include <TTree.h>
 #include <TH1F.h>
+#include <TH2F.h>
 #include <TBranch.h>
 #include <TChain.h>
 #include <TFile.h>
 #include <TGraphAsymmErrors.h>
 #include <TCanvas.h>
+#include <TProfile.h>
 
 // Local inclede(s):
 #include "MiniReader/MiniReaderElectrons.h"
@@ -68,14 +70,17 @@ class MiniReaderAlg : public EL::Algorithm {
 
   // The histogram container:
   std::vector<TH1F *> m_HistoContainer; //!
+  std::vector<TH2F *> m_ScatterPlotContainer; //!
 
   // To fill the histograms:
   void DefineHisto(int, int, float, float); //!
+  void DefineScatterPlot(int, int, double, double, int, double, double); //!
   void InitHisto(); //!
 
   void FillMET(double); //!
   void FillJets(double); //!
   void FillEventInfo(double); //!
+  void FillScatterPlots(double weight); //!
 
   // Auxiliary functions:
   double deltaPhi(double, double); //!
@@ -104,6 +109,10 @@ class MiniReaderAlg : public EL::Algorithm {
   float m_process_eff13; //!
 
   float m_sample_weight; //!
+
+  // Sensitivity study TMVA tree:
+  TTree *m_SensitivityTree;
+  void DefineTreeBranches();
 
   // Cut Flow variables:
   int m_n_bad_jets; //!
