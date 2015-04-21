@@ -2,6 +2,7 @@
 	* Adding profiling plot for the number of jets as function of N_PV
 	  for both jets and jets with jvf accepted
 	* Added TTree to perform sensitivity optimization cuts
+	* Addin AtlasStyle macros to the package
 
 09-04-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Changed m_jet.m_jet_isbad to m_jet.m_jet_isnotbad
