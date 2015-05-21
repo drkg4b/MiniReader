@@ -26,6 +26,8 @@ MiniReaderAlg :: MiniReaderAlg() : m_submitDir("submitDir"), m_eventCounter(0),
   // initialization code will go into histInitialize() and
   // initialize().
 
+  m_event_weight = 1.;
+
   // Reserve space for the histo for efficency:
   m_HistoContainer.reserve(200);
   m_ScatterPlotContainer.reserve(200);
@@ -177,6 +179,7 @@ EL::StatusCode MiniReaderAlg :: execute()
   if (!passEventSelection()) return EL::StatusCode::SUCCESS;
 
   double event_weight = 1.;
+  m_event_weight = 1.;
 
   if (wk()->metaData()->getString("sample_name") == "cutFlow")
 
@@ -188,19 +191,30 @@ EL::StatusCode MiniReaderAlg :: execute()
     event_weight = m_cross.m_process_xs13 *
                    m_cross.m_process_kfactor13 *
                    m_cross.m_process_eff13 *
+                   m_info.m_global_event_weight *
                    m_lumi /  m_sample_weight;
 
   if(m_current_sample_name == "Compressed1" || m_current_sample_name == "Compressed2") {
 
+    float process_kfactor13 = 1.7;
+
     event_weight = m_process_xs13 *
                    m_process_eff13 *
+                   process_kfactor13 *
+                   m_info.m_global_event_weight *
                    m_lumi / m_sample_weight;
   }
 
+  // WARNING Quick FIX TO BE CHANGED!!!!!!!!!!!!!!
+  if(m_current_sample_name == "ttbarJVTSamples")
+
+    event_weight = 1.;
 
   if (isZnunuBaseLine()) {
 
-    m_eventCounter++;
+    if (m_jet.m_jet_mult <= 3 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 30000))
+
+      m_eventCounter++;
 
     if (isM0()) {
 
@@ -211,6 +225,9 @@ EL::StatusCode MiniReaderAlg :: execute()
       FillScatterPlots(event_weight);
 
       // Fill sensitivity study tree:
+      m_event_weight = event_weight;
+
+      m_jet.FillJetTreeVariables();
       m_SensitivityTree->Fill();
     }
   }

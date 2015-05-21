@@ -78,6 +78,11 @@ class MiniReaderAlg : public EL::Algorithm {
   void InitHisto(); //!
 
   void FillMET(double); //!
+  template <typename T>
+    void fillNjetPt(int, int, int, double, T); //!
+  template <typename T>
+    void fillNjetPtJVF(std::vector<float>, int, int, int, double, T); //!
+  void DivideHisto(int, int, int); //!
   void FillJets(double); //!
   void FillEventInfo(double); //!
   void FillScatterPlots(double weight); //!
@@ -109,6 +114,8 @@ class MiniReaderAlg : public EL::Algorithm {
   float m_process_eff13; //!
 
   float m_sample_weight; //!
+
+  float m_event_weight; //!
 
   // Sensitivity study TMVA tree:
   TTree *m_SensitivityTree;
