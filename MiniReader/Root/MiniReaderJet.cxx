@@ -10,6 +10,7 @@ MiniReaderJets::MiniReaderJets()
   m_jet_phi = 0;
   m_jet_e = 0;
   m_jet_jvf = 0;
+  m_jet_jvt = 0;
   m_jet_emf = 0;
   m_jet_chf = 0;
   m_jet_fmax = 0;
@@ -35,6 +36,7 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_phi", &m_jet_phi);
   tree->SetBranchAddress("jet_e", &m_jet_e);
   tree->SetBranchAddress("jet_jvf", &m_jet_jvf);
+  tree->SetBranchAddress("jet_jvt", &m_jet_jvt);
   tree->SetBranchAddress("jet_emf", &m_jet_emf);
   tree->SetBranchAddress("jet_chf", &m_jet_chf);
   tree->SetBranchAddress("jet_fmax", &m_jet_fmax);
@@ -59,6 +61,7 @@ void MiniReaderJets::SkimJets()
   std::vector<double> jet_eta;
   std::vector<double> jet_phi;
   std::vector<double> jet_jvf;
+  // std::vector<double> jet_jvt;
   std::vector<double> jet_flavour_weight;
   std::vector<double> jet_constscale_eta;
 
@@ -66,12 +69,13 @@ void MiniReaderJets::SkimJets()
 
     if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) > PT_CUT) {
     // if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) >
-    //    PT_CUT && std::fabs(m_jet_eta->at(i)) < 2.4 && m_jet_jvf->at(i) > .5) {
+    //    PT_CUT && std::fabs(m_jet_eta->at(i)) < 2.4 /*&& m_jet_jvf->at(i) > .5*/) {
 
       jet_pt.push_back(m_jet_pt->at(i));
       jet_eta.push_back(m_jet_eta->at(i));
       jet_phi.push_back(m_jet_phi->at(i));
       jet_jvf.push_back(m_jet_jvf->at(i));
+      // jet_jvt.push_back(m_jet_jvt->at(i));
       jet_flavour_weight.push_back(m_jet_flavour_weight->at(i));
       jet_constscale_eta.push_back(m_jet_constscale_eta->at(i));
     }
@@ -82,6 +86,33 @@ void MiniReaderJets::SkimJets()
   *m_jet_eta = jet_eta;
   *m_jet_phi = jet_phi;
   *m_jet_jvf = jet_jvf;
+  // *m_jet_jvt = jet_jvt;
   *m_jet_flavour_weight = jet_flavour_weight;
   *m_jet_constscale_eta = jet_constscale_eta;
+
+  std::sort(m_jet_pt->begin(), m_jet_pt->end(), std::greater<double>());
+}
+
+void MiniReaderJets::FillJetTreeVariables()
+{
+  m_jet1_pt = m_jet_pt->at(0);
+
+  m_n_jet30 = 0;
+  m_n_jet40 = 0;
+  m_n_jet50 = 0;
+
+  for(int i = 0; i < m_jet_mult; ++i) {
+
+    if(m_jet_pt->at(i) > 30000)
+
+      m_n_jet30++;
+
+    if(m_jet_pt->at(i) > 40000)
+
+      m_n_jet40++;
+
+    if(m_jet_pt->at(i) > 50000)
+
+      m_n_jet50++;
+  }
 }

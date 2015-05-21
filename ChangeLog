@@ -1,5 +1,6 @@
 21-05-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Adding TMVA classes for sensitivity studies
+	* Adding jet efficiency plots as function of mu
 
 21-04-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Adding profiling plot for the number of jets as function of N_PV

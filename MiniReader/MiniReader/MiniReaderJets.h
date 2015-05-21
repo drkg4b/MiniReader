@@ -21,6 +21,7 @@ class MiniReaderJets {
   std::vector<double> *m_jet_phi;
   std::vector<double> *m_jet_e;
   std::vector<double> *m_jet_jvf;
+  std::vector<double> *m_jet_jvt;
   std::vector<double> *m_jet_emf;
   std::vector<double> *m_jet_chf;
   std::vector<double> *m_jet_fmax;
@@ -32,6 +33,12 @@ class MiniReaderJets {
   std::vector<double> *m_jet_Cphi;
   std::vector<double> *m_jet_Ce;
 
+  // Needed to fill the tree for TMVA:
+  double m_jet1_pt;
+  int m_n_jet30;
+  int m_n_jet40;
+  int m_n_jet50;
+
   std::vector<int> *m_jet_passOR;
   std::vector<int> *m_jet_isbase;
   std::vector<int> *m_jet_isnotbad;
@@ -41,6 +48,7 @@ class MiniReaderJets {
 
   MiniReaderJets();
   void ReadJetBranches(TTree *);
+  void FillJetTreeVariables();
   void SkimJets();
 };
 
