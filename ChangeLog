@@ -4,6 +4,7 @@
 	* Adding micro tree for sensitivity studies with TMVA
 	* Adding flag for multithreading
 	* Added loop to produce all jet efficiency plots in one go
+	* Added automatic output filename string
 
 21-04-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Adding profiling plot for the number of jets as function of N_PV

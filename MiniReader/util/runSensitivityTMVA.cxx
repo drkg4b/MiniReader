@@ -19,6 +19,9 @@ int main(int argc, char **argv)
 
     signal_sample = "D5_";
 
+  if (signal_name.find("Compressed1") != std::string::npos)
+
+    signal_sample = "Compressed1_";
 
   std::string init_object = signal_sample + use_var;
 
