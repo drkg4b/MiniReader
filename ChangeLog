@@ -1,3 +1,6 @@
+21-05-2015 Gabriele Bertoli <gbertoli@cern.ch>
+	* Adding TMVA classes for sensitivity studies
+
 21-04-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Adding profiling plot for the number of jets as function of N_PV
 	  for both jets and jets with jvf accepted
