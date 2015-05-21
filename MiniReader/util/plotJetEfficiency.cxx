@@ -10,6 +10,7 @@
 #include <TH1F.h>
 
 // STL include(s):
+#include <iostream>
 #include <string>
 
 // Atlas Style:
@@ -23,115 +24,170 @@ void plotJetEfficiency(std::string in_sample, std::string out_dir)
 
   std::string processing_sample;
 
-  if(in_sample.find("Znunu") != std::string::npos)
+  if (in_sample.find("Znunu") != std::string::npos)
 
     processing_sample = "Znunu_";
 
-  if(in_sample.find("D5") != std::string::npos)
+  if (in_sample.find("ttbar") != std::string::npos)
+
+    processing_sample = "ttbar_";
+
+  if (in_sample.find("JVT") != std::string::npos)
+
+    processing_sample = "ttbarJVT_";
+
+  if (in_sample.find("D5") != std::string::npos)
 
     processing_sample = "D5_";
 
-  if(in_sample.find("Compressed1") != std::string::npos)
+  if (in_sample.find("Compressed1") != std::string::npos)
 
     processing_sample = "Compressed1_";
 
-  if(in_sample.find("Compressed2") != std::string::npos)
+  if (in_sample.find("Compressed2") != std::string::npos)
 
     processing_sample = "Compressed2_";
 
-  for(int k = 0; k < 2; ++k) {
+  for (int j = 0; j < 2; ++j) {
 
-    std::string jvf_acc = "";
-    std::string jvf_leg = "";
+    std::string plot_pref = "n_pvtx_";
+    std::string suffix = "";
+    std::string x_label = "N_{PV}";
+    std::string den_plot = "n_pvtx_noCut";
 
-    if (k == 1) {
+    if(j == 1) {
 
-      jvf_acc = "_jvf_acc";
-      jvf_leg = ", |#eta| < 2.4, JVF > .5";
+      plot_pref = "mu_";
+      x_label = "<#mu>";
+      den_plot = "InteractionPerCrossing";
     }
 
-    for(int i = 3; i < 6; ++i) {
+    for (int k = 0; k < 2; ++k) {
 
-      TCanvas *c1 = new TCanvas();
+      std::string jvf_acc = "";
+      std::string jvf_leg = "";
 
-      TGraphAsymmErrors *g1 = new TGraphAsymmErrors();
-      TGraphAsymmErrors *g2 = new TGraphAsymmErrors();
-      TGraphAsymmErrors *g3 = new TGraphAsymmErrors();
-      TGraphAsymmErrors *g4 = new TGraphAsymmErrors();
+      if (k == 1) {
 
-      std::string n_jets = std::to_string(i) + "jets";
+        jvf_acc = "_jvf_acc";
+        jvf_leg = ", |#eta| < 2.4, JVF > .5";
 
-      g1->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt30" + jvf_acc).c_str()),
-		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+	if(j == 0)
 
-      g2->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt40" + jvf_acc).c_str()),
-		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+	  den_plot = "n_pvtx_eta24";
 
-      g3->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt50" + jvf_acc).c_str()),
-		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+	if(j == 1)
 
-      g4->Divide((TH1F*)file.Get(("n_pvtx_" + n_jets + "_jetpt70" + jvf_acc).c_str()),
-		 (TH1F*)file.Get("n_pvtx_noCut"), "cl=0.683 b(1,1) mode");
+	  den_plot = "InteractionPerCrossing_eta24";
+      }
 
-      TLegend *leg = new TLegend(.18, .2, .4, .45);
+      for (int i = 3; i < 6; ++i) {
 
-      leg->SetFillColor(0);
-      leg->SetBorderSize(0);
+        TCanvas *c1 = new TCanvas();
 
-      leg->AddEntry(g1, ("P_{T} " + std::to_string(i + 1) + "th Jet < 30 GeV" +
-			 jvf_leg).c_str(), "L");
-      leg->AddEntry(g2, ("P_{T} " + std::to_string(i + 1) + "th Jet < 40 GeV" +
-			 jvf_leg).c_str(), "L");
-      leg->AddEntry(g3, ("P_{T} " + std::to_string(i + 1) + "th Jet < 50 GeV" +
-			 jvf_leg).c_str(), "L");
-      leg->AddEntry(g4, ("P_{T} " + std::to_string(i + 1) + "th Jet < 70 GeV" +
-			 jvf_leg).c_str(), "L");
+        TGraphAsymmErrors *g1 = new TGraphAsymmErrors();
+        TGraphAsymmErrors *g2 = new TGraphAsymmErrors();
+        TGraphAsymmErrors *g3 = new TGraphAsymmErrors();
+        TGraphAsymmErrors *g4 = new TGraphAsymmErrors();
 
-      g1->SetLineColor(6);
-      g1->SetMarkerColor(6);
-      g2->SetLineColor(4);
-      g2->SetMarkerColor(4);
-      g3->SetLineColor(3);
-      g3->SetMarkerColor(3);
-      g4->SetLineColor(2);
-      g4->SetMarkerColor(2);
+        std::string n_jets = std::to_string(i) + "jets";
 
-      g1->GetXaxis()->SetTitle("N_{PV}");
-      g1->GetYaxis()->SetTitle("Jet Veto Efficiency");
+        g1->Divide((TH1F *)file.Get((plot_pref + n_jets + "_jetpt30" + jvf_acc).c_str()),
+                   (TH1F *)file.Get(den_plot.c_str()), "cl=0.683 b(1,1) mode");
 
-      g1->Draw("AP");
-      g2->Draw("PSAME");
-      g3->Draw("PSAME");
-      g4->Draw("PSAME");
+        g2->Divide((TH1F *)file.Get((plot_pref + n_jets + "_jetpt40" + jvf_acc).c_str()),
+                   (TH1F *)file.Get(den_plot.c_str()), "cl=0.683 b(1,1) mode");
 
-      leg->Draw();
+        g3->Divide((TH1F *)file.Get((plot_pref + n_jets + "_jetpt50" + jvf_acc).c_str()),
+                   (TH1F *)file.Get(den_plot.c_str()), "cl=0.683 b(1,1) mode");
 
-      std::string pdf_name = out_dir + processing_sample + n_jets + jvf_acc + ".pdf";
+        g4->Divide((TH1F *)file.Get((plot_pref + n_jets + "_jetpt70" + jvf_acc).c_str()),
+                   (TH1F *)file.Get(den_plot.c_str()), "cl=0.683 b(1,1) mode");
 
-      c1->Print(pdf_name.c_str());
+	TLegend *leg = 0;
+
+	if(processing_sample == "ttbar_" || processing_sample == "ttbarJVT_" )
+
+	  leg = new TLegend(.4, .8, .6, 1.05);
+
+	else
+
+	  leg = new TLegend(.18, .2, .4, .45);
+
+        leg->SetFillColor(0);
+        leg->SetBorderSize(0);
+
+        leg->AddEntry(g1, ("P_{T} " + std::to_string(i + 1) + "th Jet < 30 GeV" +
+                           jvf_leg).c_str(), "L");
+        leg->AddEntry(g2, ("P_{T} " + std::to_string(i + 1) + "th Jet < 40 GeV" +
+                           jvf_leg).c_str(), "L");
+        leg->AddEntry(g3, ("P_{T} " + std::to_string(i + 1) + "th Jet < 50 GeV" +
+                           jvf_leg).c_str(), "L");
+        leg->AddEntry(g4, ("P_{T} " + std::to_string(i + 1) + "th Jet < 70 GeV" +
+                           jvf_leg).c_str(), "L");
+
+        g1->SetLineColor(6);
+        g1->SetMarkerColor(6);
+        g1->GetXaxis()->SetRangeUser(0, 43);
+        g1->GetYaxis()->SetRangeUser(0, 1.3);
+
+        g2->SetLineColor(4);
+        g2->SetMarkerColor(4);
+
+        g3->SetLineColor(3);
+        g3->SetMarkerColor(3);
+
+        g4->SetLineColor(2);
+        g4->SetMarkerColor(2);
+
+        g1->GetXaxis()->SetTitle(x_label.c_str());
+        g1->GetYaxis()->SetTitle("Jet Veto Efficiency");
+
+        g1->Draw("AP");
+        g2->Draw("PSAME");
+        g3->Draw("PSAME");
+        g4->Draw("PSAME");
+
+        leg->Draw();
+
+        std::string pdf_name = out_dir + processing_sample +
+	  n_jets + jvf_acc;
+
+	if(j == 0)
+
+	  pdf_name += ".pdf";
+
+	else
+
+	  pdf_name += "_mu.pdf";
+
+        c1->Print(pdf_name.c_str());
+      }
     }
   }
+  if (processing_sample == "Znunu_") {
 
-  TCanvas *c1 = new TCanvas();
+    TCanvas *c1 = new TCanvas();
 
-  gStyle->SetOptStat(0);
+    gStyle->SetOptStat(0);
 
-  TH1F *h1 = (TH1F*)file.Get("n_jet_per_n_pvtx_pfx");
-  TH1F *h2 = (TH1F*)file.Get("n_jet_per_n_pvtx_jvf_acc_pfx");
+    TH1F *h1 = (TH1F *)file.Get("n_jet_per_n_pvtx_pfx");
+    TH1F *h2 = (TH1F *)file.Get("n_jet_per_n_pvtx_jvf_acc_pfx");
 
-  h1->SetTitle("");
-  h1->GetXaxis()->SetTitle("N_{PV}");
-  h1->GetYaxis()->SetTitle("<N_{Jets}>");
-  h1->Draw();
+    h1->SetTitle("");
+    h1->GetXaxis()->SetTitle("N_{PV}");
+    h1->GetYaxis()->SetTitle("<N_{Jets}>");
+    h1->Draw();
 
-  c1->Print((out_dir + "n_jet_per_n_pvtx.pdf").c_str());
+    c1->Print((out_dir + "n_jet_per_n_pvtx.pdf").c_str());
 
-  h2->SetTitle("");
-  h2->GetXaxis()->SetTitle("N_{PV}");
-  h2->GetYaxis()->SetTitle("<N_{Jets}>");
-  h2->Draw();
+    h2->SetTitle("");
+    h2->GetXaxis()->SetTitle("N_{PV}");
+    h2->GetYaxis()->SetTitle("<N_{Jets}>");
+    h2->Draw();
 
-  c1->Print((out_dir + "n_jet_per_n_pvtx_jvf_acc.pdf").c_str());
+    c1->Print((out_dir + "n_jet_per_n_pvtx_jvf_acc.pdf").c_str());
+  }
 }
 
 #ifndef __CINT__
