@@ -13,7 +13,7 @@ PACKAGE          = MiniReader
 PACKAGE_PRELOAD  =
 
 # additional compilation flags to pass (not propagated to dependent packages):
-PACKAGE_CXXFLAGS = -std=c++11 -pipe -O2 -g -Wall -Wextra -pedantic -pipe
+PACKAGE_CXXFLAGS = -std=c++11 -pipe -O2 -g -Wall -Wextra -pedantic -pipe -pthread
 
 # additional compilation flags to pass (propagated to dependent packages):
 PACKAGE_OBJFLAGS =
@@ -22,7 +22,7 @@ PACKAGE_OBJFLAGS =
 PACKAGE_LDFLAGS  =
 
 # additional linker flags to pass (for compiling binaries):
-PACKAGE_BINFLAGS =
+PACKAGE_BINFLAGS = -lTMVA
 
 # additional linker flags to pass (propagated to client libraries):
 PACKAGE_LIBFLAGS =
