@@ -50,6 +50,14 @@ int main(int argc, char *argv[])
 
    chain3.Add("/home/drkg4b/work/input_samples/signals/compressed/model2/*.root");
 
+   TChain chain4("MiniTree");
+
+   chain4.Add("/home/drkg4b/work/input_samples/background/ttbar/*.root");
+
+   TChain chain5("MiniTree");
+
+   chain5.Add("/home/drkg4b/work/input_samples/background/ttbar_jvt/*.root");
+
    // TChain chain1("MiniTree");
 
    // chain1.Add("/home/drkg4b/work/input_samples/cutFlow-00/hist-*ZnunuMassive*.root");
@@ -61,6 +69,8 @@ int main(int argc, char *argv[])
    sh.add(SH::makeFromTChain("D5", chain1));
    sh.add(SH::makeFromTChain("Compressed1", chain2));
    sh.add(SH::makeFromTChain("Compressed2", chain3));
+   // sh.add(SH::makeFromTChain("ttbarSamples", chain4));
+   // sh.add(SH::makeFromTChain("ttbarJVTSamples", chain5));
    // sh.add(SH::makeFromTChain("cutFlowSamples", chain2));
 
    // print what we found:
