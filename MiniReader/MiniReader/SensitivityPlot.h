@@ -8,7 +8,6 @@
 #include "TMVA/MethodCuts.h"
 
 // STL include(s):
-#include <functional>
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -17,7 +16,6 @@
 #include <utility>
 #include <math.h>
 #include <array>
-#include <map>
 
 // ROOT include(s):
 #include <TCanvas.h>
@@ -29,6 +27,9 @@
 
 // EDM include(s):
 #include "CxxUtils/make_unique.h"
+
+// Atlas Style:
+#include "MiniReader/AtlasStyle.h"
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
 
@@ -59,30 +60,24 @@ class SensitivityPlot {
 
   std::vector<double> m_sensitivity;
 
-  void SetSigBkgEvent();
-  void SetTotalSigEvents();
-  void SetTotalBkgEvents();
-  void GetEfficiencyPerBin();
   TGraph SistParam();
   double GetSistFromParam(double);
   void PrintCutsAtMaximum(double);
 
  public:
 
+  void SetSigBkgEvent();
+  void SetTotalSigEvents();
+  void SetTotalBkgEvents();
+  void GetEfficiencyPerBin(std::string);
   SensitivityPlot(const std::string &, const std::string &);
   void RegisterToReader(const std::string &);
   void RegisterMVA(const std::string &, const std::string &, const std::string &);
 
-  template <typename T>
-    void PrepareTree(const std::string &var_name, T &var)
-    {
-      m_sig_tree->SetBranchAddress(var_name.c_str(), &var);
-    }
-
   void CalcMethodEffForEff(float);
   void PrintCuts();
   void CalculateSensitivity();
-  void DoSensitivityPlot();
+  void DoSensitivityPlot(std::string);
 };
 
 #endif // MINIREADER_SENSITIVITYPLOT_H

@@ -164,32 +164,33 @@ TGraph SensitivityPlot::SistParam()
 
   std::array<double, 3> x, y;
 
-  std::vector<double> cuts_copy = EtMiss_cutsMin;
+  // std::vector<double> cuts_copy = EtMiss_cutsMin;
 
-  std::sort(std::begin(cuts_copy), std::end(cuts_copy), std::greater<double>());
+  // std::sort(std::begin(cuts_copy), std::end(cuts_copy), std::greater<double>());
 
-  int mid_point = EtMiss_cutsMin.size() / 2;
+  // int mid_point = EtMiss_cutsMin.size() / 2;
 
-  PR(cuts_copy.size());
-  PR(cuts_copy.back());
+  x[0] = 250000; //cuts_copy[cuts_copy.size() - 1];
+  x[1] = 400000; //cuts_copy[mid_point];
+  x[2] = 850000; //cuts_copy[2];
 
-  PR(cuts_copy[0]);
-  PR(cuts_copy[mid_point]);
-  PR(cuts_copy[cuts_copy.size()]);
+  PR(x[0]);
+  PR(x[1]);
+  PR(x[2]);
 
-  x[0] = cuts_copy[0];
-  x[1] = cuts_copy[mid_point];
-  x[2] = cuts_copy[cuts_copy.size()];
-
-  y[2] = .025;
+  y[0] = .025;
   y[1] = .035;
-  y[0] = .075;
+  y[2] = .075;
 
   TCanvas c1;
 
   TGraph gr(n, &x[0], &y[0]);
 
   gr.Fit("pol2");
+
+  gr.SetTitle("");
+  gr.GetXaxis()->SetTitle("#slash{E}_{T}");
+  gr.GetYaxis()->SetTitle("#sigma");
 
   gr.Draw("AP");
 
@@ -213,9 +214,11 @@ double SensitivityPlot::GetSistFromParam(double EtMissValue)
 ////////////////////////////////////////////////////////////////////////////////
 ////
 ////////////////////////////////////////////////////////////////////////////////
-void SensitivityPlot::GetEfficiencyPerBin()
+void SensitivityPlot::GetEfficiencyPerBin(std::string sig_var)
 {
-  TFile *file = new TFile("TMVASensitivityCuts.root");
+  std::string open_file = "TMVASensitivityCuts_" + sig_var +  ".root";
+
+  TFile *file = new TFile(open_file.c_str());
 
   if (file->IsOpen())
 
@@ -270,7 +273,7 @@ void SensitivityPlot::SetTotalBkgEvents()
 ////////////////////////////////////////////////////////////////////////////////
 void SensitivityPlot::CalculateSensitivity()
 {
-  PR(GetSistFromParam(EtMiss_cutsMin[0]));
+  GetSistFromParam(EtMiss_cutsMin[0]);
 
   for (size_t i = 0; i < m_sig_events.size(); ++i) {
 
@@ -285,14 +288,9 @@ void SensitivityPlot::CalculateSensitivity()
 ////////////////////////////////////////////////////////////////////////////////
 ////
 ////////////////////////////////////////////////////////////////////////////////
-void SensitivityPlot::DoSensitivityPlot()
+void SensitivityPlot::DoSensitivityPlot(std::string out_name)
 {
-  SetSigBkgEvent();
-  GetEfficiencyPerBin();
-  SetTotalSigEvents();
-  SetTotalBkgEvents();
-
-  CalculateSensitivity();
+  SetAtlasStyle();
 
   TCanvas c1;
 
@@ -311,9 +309,9 @@ void SensitivityPlot::DoSensitivityPlot()
 
   h0->Draw();
 
-  c1.Print("sensitivity.pdf");
+  c1.Print((out_name + ".pdf").c_str());
 
-  SistParam();
+  // SistParam();
 
   int bin_max = h0->GetMaximumBin();
   double max_eff = h0->GetXaxis()->GetBinCenter(bin_max);

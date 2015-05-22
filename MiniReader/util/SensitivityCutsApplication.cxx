@@ -12,6 +12,18 @@ int main(int argc, char *argv[])
   // Get the signal sample:
   std::string sig_sample = argv[1];
   std::string bkg_sample = argv[2];
+  std::string use_var = argv[3];
+  std::string out_dir = argv[4];
+
+  std::string sig_name;
+
+  if (sig_sample.find("D5") != std::string::npos)
+
+    sig_name = "D5_";
+
+  if (sig_sample.find("Compressed1") != std::string::npos)
+
+    sig_name = "Compressed1_";
 
   // Create the object:
   SensitivityPlot sens(sig_sample, bkg_sample);
@@ -19,20 +31,24 @@ int main(int argc, char *argv[])
   // Add variables to the TMVA reader:
   sens.RegisterToReader("EtMissMuVeto");
   sens.RegisterToReader("jet1_pt");
-  sens.RegisterToReader("n_jet30");
+  sens.RegisterToReader(use_var.c_str());
+
+  std::string weight_dir = "weight" + sig_name + use_var + "/";
 
   // Book the MVA method:
-  sens.RegisterMVA("weights/", "TMVAClassification", "CutsGA");
-
-  double EtMissMuVeto = 0;
-
-  sens.PrepareTree("EtMissMuVeto", EtMissMuVeto);
+  sens.RegisterMVA(weight_dir.c_str(), "TMVAClassification", "CutsGA");
 
   sens.PrintCuts();
 
-  float bkg_sist = .02;
+  std::string plot_name = out_dir + sig_name + use_var;
 
-  sens.DoSensitivityPlot();
+  sens.SetSigBkgEvent();
+  sens.GetEfficiencyPerBin(sig_name + use_var);
+  sens.SetTotalSigEvents();
+  sens.SetTotalBkgEvents();
+  sens.CalculateSensitivity();
+
+  sens.DoSensitivityPlot(plot_name);
 
   // Get elapsed time:
   end = std::chrono::system_clock::now();
