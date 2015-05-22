@@ -186,13 +186,18 @@ EL::StatusCode MiniReaderAlg :: execute()
     doCutFlow();
 
 
-  if (m_sample_weight != 0)
+  if(m_sample_weight != 0)
 
     event_weight = m_cross.m_process_xs13 *
                    m_cross.m_process_kfactor13 *
                    m_cross.m_process_eff13 *
                    m_info.m_global_event_weight *
                    m_lumi /  m_sample_weight;
+
+  // WARNING FIX FOR AN ERROR IN THE CROSS SECTION IN THE INPUT TREE
+  if(m_current_sample_name == "D5")
+
+    event_weight *= 1000;
 
   if(m_current_sample_name == "Compressed1" || m_current_sample_name == "Compressed2") {
 
@@ -212,13 +217,12 @@ EL::StatusCode MiniReaderAlg :: execute()
 
   if (isZnunuBaseLine()) {
 
-    if (m_jet.m_jet_mult <= 3 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 30000))
 
-      m_eventCounter++;
 
     if (isM0()) {
 
       // Fill Histos:
+      //if (m_jet.m_jet_mult <= 3 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 30000))
       FillMET(event_weight);
       FillEventInfo(event_weight);
       FillJets(event_weight);

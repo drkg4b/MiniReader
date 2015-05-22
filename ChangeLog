@@ -1,6 +1,8 @@
 22-05-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Implementing automatic naming for output files in the
 	  Sensitivity studies
+	* Fixing weight problem for the D5 sample
+
 21-05-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Adding TMVA classes for sensitivity studies
 	* Adding jet efficiency plots as function of mu
