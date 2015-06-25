@@ -36,7 +36,7 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_phi", &m_jet_phi);
   tree->SetBranchAddress("jet_e", &m_jet_e);
   tree->SetBranchAddress("jet_jvf", &m_jet_jvf);
-  tree->SetBranchAddress("jet_jvt", &m_jet_jvt);
+  // tree->SetBranchAddress("jet_jvt", &m_jet_jvt);
   tree->SetBranchAddress("jet_emf", &m_jet_emf);
   tree->SetBranchAddress("jet_chf", &m_jet_chf);
   tree->SetBranchAddress("jet_fmax", &m_jet_fmax);
@@ -49,7 +49,17 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_Ce", &m_jet_Ce);
   tree->SetBranchAddress("jet_passOR", &m_jet_passOR);
   tree->SetBranchAddress("jet_isbase", &m_jet_isbase);
-  tree->SetBranchAddress("jet_isbad", &m_jet_isnotbad);
+
+  try {
+
+    tree->SetBranchAddress("jet_isnotbad", &m_jet_isnotbad);
+    throw 20;
+
+  } catch (int e)
+    {
+      tree->SetBranchAddress("jet_isbad", &m_jet_isnotbad);
+    }
+
   tree->SetBranchAddress("jet_passFilter", &m_jet_passFilter);
 }
 

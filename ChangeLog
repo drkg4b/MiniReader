@@ -1,4 +1,21 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 13:54:24 2015 +0200
+
+	Adding exception handling for jet_isbad and jet_isnotbad
+	branch in
+	MiniReaderJet.cxx
+
+	+  try {
+	+
+	+    tree->SetBranchAddress("jet_isnotbad", &m_jet_isnotbad);
+	+    throw 20;
+	+
+	+  } catch (int e)
+	+    {
+	+      tree->SetBranchAddress("jet_isbad", &m_jet_isnotbad);
+	+    }
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 13:39:58 2015 +0200
 
 	Moving the MET cut after the PT cut in
