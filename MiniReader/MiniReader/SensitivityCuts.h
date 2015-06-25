@@ -33,5 +33,5 @@ public:
   ~SensitivityCuts();
   void RegisterFactoryVariable(std::string);
   void SetEventWeights(std::string);
-  void RunFactory(std::string, std::string);
+  void RunFactory(std::string, std::vector<std::string>);
 };

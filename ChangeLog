@@ -1,4 +1,13 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 12:27:34 2015 +0200
+
+	Modified RunFactory() signature in SensitivityCuts.h.
+
+	-  void RunFactory(std::string, std::string);
+	+  void RunFactory(std::string, std::vector<std::string>);
+	+  void RunFactory(std::string, std::vector<std::string>);
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 12:24:48 2015 +0200
 
 	Modified selection cuts in MiniReaderSelectionCuts.h.
