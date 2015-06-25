@@ -1,4 +1,14 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 13:39:58 2015 +0200
+
+	Moving the MET cut after the PT cut in
+	MiniReaderEventFilter.cxx.
+
+	-         m_met.m_EtMissMuVeto > MET_CUT &&
+	m_jet.m_jet_pt->at(0) > JET_PT &&
+	+         m_met.m_EtMissMuVeto > MET_CUT &&
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 13:37:41 2015 +0200
 
 	Removing variables associated with no more present branches in
