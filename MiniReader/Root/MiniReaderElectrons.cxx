@@ -13,8 +13,6 @@ MiniReaderElectrons::MiniReaderElectrons()
   m_ele_charge = 0;
   m_ele_d0 = 0;
   m_ele_z0 = 0;
-  m_ele_topoetcone_corr30 = 0;
-  m_ele_topoetcone_corr40 = 0;
   m_ele_ptcone20 = 0;
   m_ele_ptcone30 = 0;
   m_ele_ptcone40 = 0;
@@ -39,8 +37,6 @@ void MiniReaderElectrons::ReadElectronBranches(TTree *tree)
   tree->SetBranchAddress("ele_charge", &m_ele_charge);
   tree->SetBranchAddress("ele_d0", &m_ele_d0);
   tree->SetBranchAddress("ele_z0", &m_ele_z0);
-  tree->SetBranchAddress("ele_topoetcone_corr30", &m_ele_topoetcone_corr30);
-  tree->SetBranchAddress("ele_topoetcone_corr40", &m_ele_topoetcone_corr40);
   tree->SetBranchAddress("ele_ptcone20", &m_ele_ptcone20);
   tree->SetBranchAddress("ele_ptcone30", &m_ele_ptcone30);
   tree->SetBranchAddress("ele_ptcone40", &m_ele_ptcone40);

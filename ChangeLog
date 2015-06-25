@@ -1,4 +1,25 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 13:37:41 2015 +0200
+
+	Removing variables associated with no more present branches in
+	MiniReaderElectrons.cxx.
+
+	Removing
+
+	-  m_ele_topoetcone_corr30 = 0;
+	-  m_ele_topoetcone_corr40 = 0;
+	-  tree->SetBranchAddress("ele_topoetcone_corr30",
+	&m_ele_topoetcone_corr30);
+	-  tree->SetBranchAddress("ele_topoetcone_corr40",
+	&m_ele_topoetcone_corr40);
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 13:33:34 2015 +0200
+
+	Adjusted the number of jet cut in MiniReaderAuxFunctions.cxx.
+	Changed the max number of jets to 4 for the cut flow comparison.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 13:25:04 2015 +0200
 
 	Changing to non deprecated memeber functions in
