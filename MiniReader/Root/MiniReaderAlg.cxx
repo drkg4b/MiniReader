@@ -154,7 +154,7 @@ EL::StatusCode MiniReaderAlg :: initialize()
   // you create here won't be available in the output if you have no
   // input events.
 
-  m_current_sample_name = wk()->metaData()->getString("sample_name");
+  m_current_sample_name = wk()->metaData()->castString("sample_name");
 
   DefineTreeBranches();
 
@@ -181,7 +181,7 @@ EL::StatusCode MiniReaderAlg :: execute()
   double event_weight = 1.;
   m_event_weight = 1.;
 
-  if (wk()->metaData()->getString("sample_name") == "cutFlow")
+  if (wk()->metaData()->castString("sample_name") == "cutFlowSamples")
 
     doCutFlow();
 
@@ -222,7 +222,6 @@ EL::StatusCode MiniReaderAlg :: execute()
     if (isM0()) {
 
       // Fill Histos:
-      //if (m_jet.m_jet_mult <= 3 || (m_jet.m_jet_mult > 3 && m_jet.m_jet_pt->at(3) < 30000))
       FillMET(event_weight);
       FillEventInfo(event_weight);
       FillJets(event_weight);
@@ -265,8 +264,8 @@ EL::StatusCode MiniReaderAlg :: finalize()
 
   PR(m_eventCounter);
   PR(m_n_bad_jets);
-  PR(m_met_cut);
   PR(m_jet1_pt);
+  PR(m_met_cut);
   PR(m_ele_mult_cut);
   PR(m_mu_mult_cut);
   PR(m_n_jet_cut);
