@@ -3,15 +3,28 @@
 
 // STL include(s):
 #include <chrono>
+#include <unistd.h>
 
 int main(int argc, char **argv)
 {
   std::chrono::time_point<std::chrono::system_clock> start, end;
   start = std::chrono::system_clock::now();
 
+  std::vector<std::string> back_names;
+
   std::string signal_name = argv[1];
-  std::string back_name = argv[2];
-  std::string use_var = argv[3];
+  // std::string back_name = argv[2];
+
+  back_names.push_back(argv[2]);
+  back_names.push_back(argv[3]);
+  back_names.push_back(argv[4]);
+  back_names.push_back(argv[5]);
+  back_names.push_back(argv[6]);
+  back_names.push_back(argv[7]);
+  back_names.push_back(argv[8]);
+  back_names.push_back(argv[9]);
+
+  std::string use_var = argv[10];
 
   std::string signal_sample;
 
@@ -34,7 +47,7 @@ int main(int argc, char **argv)
 
   sens_obj.SetEventWeights("event_weight");
 
-  sens_obj.RunFactory(signal_name, back_name);
+  sens_obj.RunFactory(signal_name, back_names);
 
   // Get elapsed time:
   end = std::chrono::system_clock::now();
