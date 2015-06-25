@@ -1,4 +1,91 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 16:06:55 2015 +0200
+
+	SensitivityPlot.cxx: Fixed indexing problem in PrintCuts(),
+	added WriteCutsToFile(), different parametrization to SistParam(),
+	added debug printout in CalculateSensitivity(), Added
+	CalculateBinError(), Added the bin error and axex labels in
+	DoSensitivityPlot()
+
+	Fixed indexing problem in PrintCuts():
+
+	-    for (float i = 0.01; i < 1.; i += 0.01) {
+	+    for (size_t i = 0; i < m_effS_vec.size(); ++i) {
+	+
+	+      mcuts->GetCuts(m_effS_vec[i], cutsMin, cutsMax);
+
+	-      mcuts->GetCuts(i, cutsMin, cutsMax);
+	+      PR(cutsMin[0]);
+
+	-      if(cutsMin[0] != 0)
+	+      if (cutsMin[0] != 0)
+
+	-       EtMiss_cutsMin.push_back(cutsMin[0]);
+	+        EtMiss_cutsMin.push_back(cutsMin[0]);
+
+	std::cout << "---
+	------------------------------------------------------\n";
+	-      std::cout << "--- Retrieve cut values for signal
+	efficiency of " << i <<
+	+      std::cout << "--- Retrieve cut values for signal
+	efficiency of " << m_effS_vec[i] <<
+	" from Reader\n";
+
+	-      for (uint i = 0; i < cutsMin.size(); ++i) {
+	+      for (uint j = 0; j < cutsMin.size(); ++j) {
+
+	std::cout << "... Cut: "
+	-                  << cutsMin[i]
+	+                  << cutsMin[j]
+	<< " < \""
+	-                  << mcuts->GetInputVar(i)
+	+                  << mcuts->GetInputVar(j)
+	<< "\" <= "
+	-                  << cutsMax[i] << std::endl;
+	+                  << cutsMax[j] << std::endl;
+
+	Different parametrization to SistParam():
+
+	+  int n = 7;
+	+
+	+  std::array<double, 7> x, y;
+	+
+	+  x[0] = 250000;
+	+  x[1] = 300000;
+	+  x[2] = 350000;
+	+  x[3] = 400000;
+	+  x[4] = 450000;
+	+  x[5] = 600000;
+	+  x[6] = 700000;
+	+
+	+  y[0] = .0264;
+	+  y[1] = .0282;
+	+  y[2] = .0328;
+	+  y[3] = .0344;
+	+  y[4] = .0375;
+	+  y[5] = .0576;
+	+  y[6] = .0822;
+
+	Added debug printout in CalculateSensitivity():
+
+	+    std::cout << "EtMiss_cutsMin = " << EtMiss_cutsMin[i] <<
+	"\tbkg_err = " <<
+	+      bkg_err << "\tm_sig_events[i] = " << m_sig_events[i] <<
+	"\tm_bkg_events[i] = "
+	+             << m_bkg_events[i] << std::endl;
+
+	Added the bin error and axex labels in DoSensitivityPlot():
+
+	+      h0->SetBinError(i, m_bin_error[i]);
+	+    }
+	+
+	+  h0->GetXaxis()->SetTitle("#varepsilon_{s}");
+	+  h0->GetYaxis()->SetTitle("F.O.M.");
+
+	-  h0->Draw();
+	+  h0->Draw("E");"\""}}}}
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 14:01:04 2015 +0200
 
 	Added the possibility to run over multiple samples to

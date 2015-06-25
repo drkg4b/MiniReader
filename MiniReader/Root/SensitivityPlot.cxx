@@ -34,6 +34,8 @@ SensitivityPlot::SensitivityPlot(const std::string &sig_sample, const
   m_bkg_events.reserve(100);
 
   m_sensitivity.reserve(100);
+
+  m_bin_error.reserve(100);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,8 +74,6 @@ void SensitivityPlot::SetSigBkgEvent()
 
   m_sigE = h0->Integral();
   m_bkgE = h1->Integral();
-  // m_sigE = m_sig_tree->GetEntries("jet1_pt*event_weight");
-  // m_bkgE = m_bkg_tree->GetEntries("jet1_pt*event_weight");
 }
 
 void SensitivityPlot::CalcMethodEffForEff(float effS)
@@ -96,31 +96,89 @@ void SensitivityPlot::PrintCuts()
     std::vector<double> cutsMin;
     std::vector<double> cutsMax;
 
-    for (float i = 0.01; i < 1.; i += 0.01) {
+    for (size_t i = 0; i < m_effS_vec.size(); ++i) {
 
-      mcuts->GetCuts(i, cutsMin, cutsMax);
+      mcuts->GetCuts(m_effS_vec[i], cutsMin, cutsMax);
 
-      if(cutsMin[0] != 0)
+      PR(cutsMin[0]);
 
-	EtMiss_cutsMin.push_back(cutsMin[0]);
+      if (cutsMin[0] != 0)
+
+        EtMiss_cutsMin.push_back(cutsMin[0]);
 
       std::cout << "--- ------------------------------------------------------\n";
-      std::cout << "--- Retrieve cut values for signal efficiency of " << i <<
+      std::cout << "--- Retrieve cut values for signal efficiency of " << m_effS_vec[i] <<
                 " from Reader\n";
 
-      for (uint i = 0; i < cutsMin.size(); ++i) {
+      for (uint j = 0; j < cutsMin.size(); ++j) {
 
         std::cout << "... Cut: "
-                  << cutsMin[i]
+                  << cutsMin[j]
                   << " < \""
-                  << mcuts->GetInputVar(i)
+                  << mcuts->GetInputVar(j)
                   << "\" <= "
-                  << cutsMax[i] << std::endl;
+                  << cutsMax[j] << std::endl;
       }
 
       std::cout << "--- ------------------------------------------------------\n";
     }
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////
+////////////////////////////////////////////////////////////////////////////////
+void SensitivityPlot::WriteCutsToFile(double max_pos, const std::string
+				      &sig_name, const std::string &use_var)
+{
+  TMVA::MethodCuts *mcuts = m_reader->FindCutsMVA("CutsGA");
+
+  std::string file_name = sig_name + use_var + "_cuts.log";
+
+  std::ofstream out_file(file_name, std::ios::out);
+
+  if(out_file.is_open())
+    PR(file_name);
+
+  if (mcuts) {
+
+    std::vector<double> cutsMin;
+    std::vector<double> cutsMax;
+
+    for (size_t i = 0; i < m_effS_vec.size(); ++i) {
+
+      mcuts->GetCuts(m_effS_vec[i], cutsMin, cutsMax);
+
+      // cannot comapre float need to use this hack:
+      if(std::fabs(m_effS_vec[i] - max_pos) < .0001)
+
+	out_file << "!";
+
+      if(i != 0)
+
+	out_file << m_effS_vec[i];
+
+      for (uint j = 0; j < cutsMin.size(); ++j) {
+
+	if(i == 0 && j == 0)
+
+	  out_file << "eff" << std::setw(15) <<
+	    mcuts->GetInputVar(0) << ">" << std::setw(15) <<
+	    mcuts->GetInputVar(0) << "<=" << std::setw(15) <<
+	    mcuts->GetInputVar(1) << ">" << std::setw(15) <<
+	    mcuts->GetInputVar(1) << "<=" << std::setw(15) <<
+	    mcuts->GetInputVar(2) << ">" << std::setw(15) <<
+	    mcuts->GetInputVar(2) << "<=" << std::setw(15) <<  "\n" << i;
+
+	out_file << std::setw(15) << cutsMin[j] << std::setw(15) <<
+	  cutsMax[j];
+      }
+
+      out_file << "\n";
+    }
+  }
+
+  out_file.close();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -139,16 +197,16 @@ void SensitivityPlot::PrintCutsAtMaximum(double max_pos)
 
     std::cout << "--- ------------------------------------------------------\n";
     std::cout << "--- Retrieve cut values for max signal efficiency of " <<
-      max_pos << " from Reader\n";
+              max_pos << " from Reader\n";
 
     for (uint i = 0; i < cutsMin.size(); ++i) {
 
       std::cout << "... Cut: "
-		<< cutsMin[i]
-		<< " < \""
-		<< mcuts->GetInputVar(i)
-		<< "\" <= "
-		<< cutsMax[i] << std::endl;
+                << cutsMin[i]
+                << " < \""
+                << mcuts->GetInputVar(i)
+                << "\" <= "
+                << cutsMax[i] << std::endl;
     }
 
     std::cout << "--- ------------------------------------------------------\n";
@@ -160,41 +218,39 @@ void SensitivityPlot::PrintCutsAtMaximum(double max_pos)
 ////////////////////////////////////////////////////////////////////////////////
 TGraph SensitivityPlot::SistParam()
 {
-  int n = 3;
+  int n = 7;
 
-  std::array<double, 3> x, y;
+  std::array<double, 7> x, y;
 
-  // std::vector<double> cuts_copy = EtMiss_cutsMin;
+  x[0] = 250000;
+  x[1] = 300000;
+  x[2] = 350000;
+  x[3] = 400000;
+  x[4] = 450000;
+  x[5] = 600000;
+  x[6] = 700000;
 
-  // std::sort(std::begin(cuts_copy), std::end(cuts_copy), std::greater<double>());
-
-  // int mid_point = EtMiss_cutsMin.size() / 2;
-
-  x[0] = 250000; //cuts_copy[cuts_copy.size() - 1];
-  x[1] = 400000; //cuts_copy[mid_point];
-  x[2] = 850000; //cuts_copy[2];
-
-  PR(x[0]);
-  PR(x[1]);
-  PR(x[2]);
-
-  y[0] = .025;
-  y[1] = .035;
-  y[2] = .075;
+  y[0] = .0264;
+  y[1] = .0282;
+  y[2] = .0328;
+  y[3] = .0344;
+  y[4] = .0375;
+  y[5] = .0576;
+  y[6] = .0822;
 
   TCanvas c1;
 
   TGraph gr(n, &x[0], &y[0]);
 
-  gr.Fit("pol2");
+  gr.Fit("pol2", "q");
 
-  gr.SetTitle("");
-  gr.GetXaxis()->SetTitle("#slash{E}_{T}");
-  gr.GetYaxis()->SetTitle("#sigma");
+  // gr.SetTitle("");
+  // gr.GetXaxis()->SetTitle("#slash{E}_{T}");
+  // gr.GetYaxis()->SetTitle("#sigma");
 
-  gr.Draw("AP");
+  // gr.Draw("AP");
 
-  c1.Print("graph.pdf");
+  // c1.Print("graph.pdf");
 
   return gr;
 }
@@ -273,11 +329,13 @@ void SensitivityPlot::SetTotalBkgEvents()
 ////////////////////////////////////////////////////////////////////////////////
 void SensitivityPlot::CalculateSensitivity()
 {
-  GetSistFromParam(EtMiss_cutsMin[0]);
-
   for (size_t i = 0; i < m_sig_events.size(); ++i) {
 
     double bkg_err = GetSistFromParam(EtMiss_cutsMin[i]);
+
+    std::cout << "EtMiss_cutsMin = " << EtMiss_cutsMin[i] << "\tbkg_err = " <<
+      bkg_err << "\tm_sig_events[i] = " << m_sig_events[i] << "\tm_bkg_events[i] = "
+	      << m_bkg_events[i] << std::endl;
 
     m_sensitivity.push_back(m_sig_events[i] /
                             std::sqrt(m_bkg_events[i] +
@@ -288,9 +346,60 @@ void SensitivityPlot::CalculateSensitivity()
 ////////////////////////////////////////////////////////////////////////////////
 ////
 ////////////////////////////////////////////////////////////////////////////////
-void SensitivityPlot::DoSensitivityPlot(std::string out_name)
+void SensitivityPlot::CalculateBinError()
+{
+  std::vector<double> first_term;
+  std::vector<double> second_term;
+  std::vector<double> bkg_err;
+  std::vector<double> sig_err;
+
+  m_sig_tree->Draw("event_weight");
+
+  TH1F *htemp = (TH1F *)gPad->GetPrimitive("htemp");
+
+  double sig_weight_mean = htemp->GetMean();
+  long sig_entries = htemp->GetEntries();
+
+  m_bkg_tree->Draw("event_weight");
+
+  htemp = (TH1F *)gPad->GetPrimitive("htemp");
+
+  double bkg_weight_mean = htemp->GetMean();
+  long bkg_entries = htemp->GetEntries();
+
+  for (size_t i = 0; i < m_sig_events.size(); ++i) {
+
+    double bkg_rel_err = GetSistFromParam(EtMiss_cutsMin[i]);
+
+    bkg_err.push_back(bkg_weight_mean * std::sqrt(bkg_entries * m_effB_vec[i] *
+                      (1 - m_effB_vec[i])));
+
+    sig_err.push_back(sig_weight_mean * std::sqrt(sig_entries * m_effS_vec[i] *
+                      (1 - m_effS_vec[i])));
+
+    first_term .push_back(std::pow(bkg_err[i] / std::sqrt(m_bkg_events[i] +
+                                   std::pow(bkg_rel_err *
+                                            m_bkg_events[i], 2)), 2));
+
+    second_term .push_back(std::pow(sig_err[i] * m_sig_events[i] *
+                                    (1 + std::pow(bkg_rel_err, 2) * m_bkg_events[i])
+                                    / (2 * std::pow(m_bkg_events[i] +
+                                        std::pow(bkg_rel_err *
+                                            m_bkg_events[i], 2), 1.5)), 2));
+
+    m_bin_error.push_back(std::sqrt(first_term[i] + second_term[i]));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////
+////////////////////////////////////////////////////////////////////////////////
+void SensitivityPlot::DoSensitivityPlot(const std::string &out_dir, const std::string
+					&sig_name, const std::string &use_var)
 {
   SetAtlasStyle();
+
+  std::string out_name = out_dir + sig_name + use_var;
 
   TCanvas c1;
 
@@ -303,11 +412,16 @@ void SensitivityPlot::DoSensitivityPlot(std::string out_name)
 
       h0->SetBinContent(i, 0.);
 
-    else
+    else {
 
       h0->SetBinContent(i, m_sensitivity[i]);
+      h0->SetBinError(i, m_bin_error[i]);
+    }
 
-  h0->Draw();
+  h0->GetXaxis()->SetTitle("#varepsilon_{s}");
+  h0->GetYaxis()->SetTitle("F.O.M.");
+
+  h0->Draw("E");
 
   c1.Print((out_name + ".pdf").c_str());
 
@@ -317,6 +431,7 @@ void SensitivityPlot::DoSensitivityPlot(std::string out_name)
   double max_eff = h0->GetXaxis()->GetBinCenter(bin_max);
 
   PrintCutsAtMaximum(max_eff);
+  WriteCutsToFile(max_eff, sig_name, use_var);
   PR(m_sigE);
   PR(m_bkgE);
 }
