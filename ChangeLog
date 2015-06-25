@@ -1,4 +1,17 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 13:22:41 2015 +0200
+
+	Added function definitions to SensitivityPlot.h.
+
+	+  std::vector<double> m_bin_error;
+	+  SensitivityPlot(const std::string &, const std::string &);
+	+  void CalculateBinError();
+	+  void WriteCutsToFile(double, const std::string &, const
+	std::string &);
+	+  void DoSensitivityPlot(const std::string &, const
+	std::string &, const std::string &);
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 12:27:34 2015 +0200
 
 	Modified RunFactory() signature in SensitivityCuts.h.

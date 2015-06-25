@@ -16,6 +16,7 @@
 #include <utility>
 #include <math.h>
 #include <array>
+#include <fstream>
 
 // ROOT include(s):
 #include <TCanvas.h>
@@ -60,24 +61,28 @@ class SensitivityPlot {
 
   std::vector<double> m_sensitivity;
 
+  std::vector<double> m_bin_error;
+
   TGraph SistParam();
   double GetSistFromParam(double);
   void PrintCutsAtMaximum(double);
 
  public:
 
+  SensitivityPlot(const std::string &, const std::string &);
+
   void SetSigBkgEvent();
   void SetTotalSigEvents();
   void SetTotalBkgEvents();
   void GetEfficiencyPerBin(std::string);
-  SensitivityPlot(const std::string &, const std::string &);
+  void CalculateBinError();
   void RegisterToReader(const std::string &);
   void RegisterMVA(const std::string &, const std::string &, const std::string &);
-
   void CalcMethodEffForEff(float);
   void PrintCuts();
+  void WriteCutsToFile(double, const std::string &, const std::string &);
   void CalculateSensitivity();
-  void DoSensitivityPlot(std::string);
+  void DoSensitivityPlot(const std::string &, const std::string &, const std::string &);
 };
 
 #endif // MINIREADER_SENSITIVITYPLOT_H
