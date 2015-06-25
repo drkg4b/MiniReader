@@ -73,19 +73,20 @@ void MiniReaderAlg::doCutFlow()
 
     m_n_bad_jets++;
 
-  if (m_jet.m_jet_isnotbad &&
-      m_met.m_EtMissMuVeto > 250000)
-
-    m_met_cut++;
-
-  if (m_jet.m_jet_isnotbad &&
-      m_met.m_EtMissMuVeto > 250000 &&
+  if (/*m_jet.m_jet_isnotbad &&*/
       m_jet.m_jet_pt->size() != 0 &&
       m_jet.m_jet_pt->at(0) > 250000)
 
     m_jet1_pt++;
 
-  if (m_jet.m_jet_isnotbad &&
+  if (/*m_jet.m_jet_isnotbad &&*/
+      m_jet.m_jet_pt->size() != 0 &&
+      m_jet.m_jet_pt->at(0) > 250000 &&
+      m_met.m_EtMissMuVeto > 250000)
+
+    m_met_cut++;
+
+  if (/*m_jet.m_jet_isnotbad &&*/
       m_met.m_EtMissMuVeto > 250000 &&
       m_jet.m_jet_pt->size() != 0 &&
       m_jet.m_jet_pt->at(0) > 250000 &&
@@ -113,7 +114,7 @@ void MiniReaderAlg::doCutFlow()
       !elPassOR()) &&
       (m_mu.m_mu_mult == 0 ||
        !muPassOR()) &&
-      m_jet.m_jet_pt->size() < 4)
+      m_jet.m_jet_pt->size() < 5)
 
 
     m_n_jet_cut++;
@@ -126,7 +127,7 @@ void MiniReaderAlg::doCutFlow()
       !elPassOR()) &&
       (m_mu.m_mu_mult == 0 ||
        !muPassOR()) &&
-      (m_jet.m_jet_pt->size() < 4 ||
+      (m_jet.m_jet_pt->size() < 5 ||
        m_jet.m_jet_pt->at(3) < 30000) &&
       !isDeltaPhiJetMetLessThanN(.4))
 
@@ -140,7 +141,7 @@ void MiniReaderAlg::doCutFlow()
       !elPassOR()) &&
       (m_mu.m_mu_mult == 0 ||
        !muPassOR()) &&
-      m_jet.m_jet_mult < 4 &&
+      m_jet.m_jet_mult < 5 &&
       !isDeltaPhiJetMetLessThanN(.4) &&
       m_met.m_EtMissMuVeto > 400000)
 
@@ -154,7 +155,7 @@ void MiniReaderAlg::doCutFlow()
       !elPassOR()) &&
       (m_mu.m_mu_mult == 0 ||
        !muPassOR()) &&
-      m_jet.m_jet_mult < 4 &&
+      m_jet.m_jet_mult < 5 &&
       !isDeltaPhiJetMetLessThanN(.4) &&
       m_met.m_EtMissMuVeto > 400000 &&
       m_jet.m_jet_pt->at(0) > 400000)
