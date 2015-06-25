@@ -1,4 +1,23 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 13:57:40 2015 +0200
+
+	Removing variables that are no longer branches in the tree
+	from
+	MiniReaderPrimaryVertex.cxx
+
+	Removed
+
+	-  m_pvtx_x = 0;
+	-  m_pvtx_y = 0;
+	-  m_pvtx_ndof = 0;
+	-  m_pvtx_chi2 = 0;
+
+	-  tree->SetBranchAddress("pvtx_x", &m_pvtx_x);
+	-  tree->SetBranchAddress("pvtx_y", &m_pvtx_y);
+	-  tree->SetBranchAddress("pvtx_ndof", &m_pvtx_ndof);
+	-  tree->SetBranchAddress("pvtx_chi2", &m_pvtx_chi2);
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 13:54:24 2015 +0200
 
 	Adding exception handling for jet_isbad and jet_isnotbad
