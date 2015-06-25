@@ -34,44 +34,74 @@ int main(int argc, char *argv[])
    //   .sampleRename("*","ZnunuSamples")
    //   .scan(sh, "/home/drkg4b/work/input_samples/BP-v1/BP-01/");
 
-   TChain chain("MiniTree");
+   // Background samples:
+   TChain chain_znunu("MiniTree");
 
-   chain.Add("/home/drkg4b/work/input_samples/BP-v1/BP-01/hist-*.root");
+   chain_znunu.Add("/home/drkg4b/work/input_samples/background/Znunu/*hist-output.root");
 
-   TChain chain1("MiniTree");
+   TChain chain_zmumu("MiniTree");
 
-   chain1.Add("/home/drkg4b/work/input_samples/signals/user.cclement.t02.mc14_13TeV.191040.MadGraphPythia_AUET2BMSTW2008LO_D5_400_1000_MET100_hist-output.root.19926114/*.root");
+   chain_zmumu.Add("/home/drkg4b/work/input_samples/background/Zmumu/*hist-output.root");
 
-   TChain chain2("MiniTree");
+   TChain chain_zee("MiniTree");
 
-   chain2.Add("/home/drkg4b/work/input_samples/signals/compressed/model1/*.root");
+   chain_zee.Add("/home/drkg4b/work/input_samples/background/Zee/*hist-output.root");
 
-   TChain chain3("MiniTree");
+   TChain chain_ztautau("MiniTree");
 
-   chain3.Add("/home/drkg4b/work/input_samples/signals/compressed/model2/*.root");
+   chain_ztautau.Add("/home/drkg4b/work/input_samples/background/Ztautau/*hist-output.root");
 
-   TChain chain4("MiniTree");
+   TChain chain_wmunu("MiniTree");
 
-   chain4.Add("/home/drkg4b/work/input_samples/background/ttbar/*.root");
+   chain_wmunu.Add("/home/drkg4b/work/input_samples/background/Wmunu/*hist-output.root");
 
-   TChain chain5("MiniTree");
+   TChain chain_wenu("MiniTree");
 
-   chain5.Add("/home/drkg4b/work/input_samples/background/ttbar_jvt/*.root");
+   chain_wenu.Add("/home/drkg4b/work/input_samples/background/Wenu/*hist-output.root");
 
-   // TChain chain1("MiniTree");
+   TChain chain_wtaunu("MiniTree");
 
-   // chain1.Add("/home/drkg4b/work/input_samples/cutFlow-00/hist-*ZnunuMassive*.root");
+   chain_wtaunu.Add("/home/drkg4b/work/input_samples/background/Wtaunu/*hist-output.root");
+
+   TChain chain_ttbar("MiniTree");
+
+   chain_ttbar.Add("/home/drkg4b/work/input_samples/background/ttbar/*hist-output.root");
+
+   // Signal samples:
+   TChain chain_d5("MiniTree");
+
+   chain_d5.Add("/home/drkg4b/work/input_samples/signals/user.cclement.t02.mc14_13TeV.191040.MadGraphPythia_AUET2BMSTW2008LO_D5_400_1000_MET100_hist-output.root.19926114/*.root");
+
+   TChain chain_comp1("MiniTree");
+
+   chain_comp1.Add("/home/drkg4b/work/input_samples/signals/compressed/model1/*.root");
+
+   TChain chain_comp2("MiniTree");
+
+   chain_comp2.Add("/home/drkg4b/work/input_samples/signals/compressed/model2/*.root");
+
+   // CutFlow samples:
+   TChain chain_cutflow("MiniTree");
+
+   chain_cutflow.Add("/home/drkg4b/work/input_samples/cutFlow_p1872/*.root");
+
 
    // Construct the samples to run on:
    SH::SampleHandler sh;
 
-   sh.add(SH::makeFromTChain("ZnunuSamples", chain));
-   sh.add(SH::makeFromTChain("D5", chain1));
-   sh.add(SH::makeFromTChain("Compressed1", chain2));
-   sh.add(SH::makeFromTChain("Compressed2", chain3));
-   // sh.add(SH::makeFromTChain("ttbarSamples", chain4));
+   // sh.add(SH::makeFromTChain("ZnunuSamples", chain_znunu));
+   // sh.add(SH::makeFromTChain("ZmumuSamples", chain_zmumu));
+   // sh.add(SH::makeFromTChain("ZeeSamples", chain_zee));
+   // sh.add(SH::makeFromTChain("ZtautauSamples", chain_ztautau));
+   // sh.add(SH::makeFromTChain("WmunuSamples", chain_wmunu));
+   // sh.add(SH::makeFromTChain("WenuSamples", chain_wenu));
+   // sh.add(SH::makeFromTChain("WtaunuSamples", chain_wtaunu));
+   // sh.add(SH::makeFromTChain("ttbarSamples", chain_ttbar));
+   // sh.add(SH::makeFromTChain("D5", chain_d5));
+   // sh.add(SH::makeFromTChain("Compressed1", chain_comp1));
+   // sh.add(SH::makeFromTChain("Compressed2", chain_comp2));
    // sh.add(SH::makeFromTChain("ttbarJVTSamples", chain5));
-   // sh.add(SH::makeFromTChain("cutFlowSamples", chain2));
+   sh.add(SH::makeFromTChain("cutFlowSamples", chain_cutflow));
 
    // print what we found:
    sh.print();
@@ -98,6 +128,9 @@ int main(int argc, char *argv[])
 
    // Set log level:
    // alg->msg().setLevel( MSG::DEBUG );
+
+   // Remove submission dir, NOT recommended:
+   job.options()->setDouble (EL::Job::optRemoveSubmitDir, 1);
 
    // Run the job using the local/direct driver:
    EL::DirectDriver driver;

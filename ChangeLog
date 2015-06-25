@@ -1,4 +1,21 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 16:49:22 2015 +0200
+
+	runMiniReader.cxx: Adding TChains to run on all backgrounds:
+
+	+ sh.add(SH::makeFromTChain("ZnunuSamples", chain_znunu));
+	+ sh.add(SH::makeFromTChain("ZmumuSamples", chain_zmumu));
+	+ sh.add(SH::makeFromTChain("ZeeSamples", chain_zee));
+	+ sh.add(SH::makeFromTChain("ZtautauSamples", chain_ztautau));
+	+ sh.add(SH::makeFromTChain("WmunuSamples", chain_wmunu));
+	+ sh.add(SH::makeFromTChain("WenuSamples", chain_wenu));
+	+ sh.add(SH::makeFromTChain("WtaunuSamples", chain_wtaunu));
+	+ sh.add(SH::makeFromTChain("ttbarSamples", chain_ttbar));
+	+ sh.add(SH::makeFromTChain("D5", chain_d5));
+	+ sh.add(SH::makeFromTChain("Compressed1", chain_comp1));
+	+ sh.add(SH::makeFromTChain("Compressed2", chain_comp2));
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 16:46:38 2015 +0200
 
 	SensitivityCutsApplication.cxx: Changed the DoSensitivityPlot
