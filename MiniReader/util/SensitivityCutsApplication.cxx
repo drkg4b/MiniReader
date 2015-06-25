@@ -38,17 +38,14 @@ int main(int argc, char *argv[])
   // Book the MVA method:
   sens.RegisterMVA(weight_dir.c_str(), "TMVAClassification", "CutsGA");
 
-  sens.PrintCuts();
-
-  std::string plot_name = out_dir + sig_name + use_var;
-
   sens.SetSigBkgEvent();
   sens.GetEfficiencyPerBin(sig_name + use_var);
+  sens.PrintCuts();
   sens.SetTotalSigEvents();
   sens.SetTotalBkgEvents();
+  sens.CalculateBinError();
   sens.CalculateSensitivity();
-
-  sens.DoSensitivityPlot(plot_name);
+  sens.DoSensitivityPlot(out_dir, sig_name, use_var);
 
   // Get elapsed time:
   end = std::chrono::system_clock::now();

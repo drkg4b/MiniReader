@@ -1,4 +1,25 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 16:46:38 2015 +0200
+
+	SensitivityCutsApplication.cxx: Changed the DoSensitivityPlot
+	function signature, moved PrintCuts() after GetEfficiencyPerBin().
+
+	-  sens.PrintCuts();
+	-
+	-  std::string plot_name = out_dir + sig_name + use_var;
+	-
+	sens.SetSigBkgEvent();
+	sens.GetEfficiencyPerBin(sig_name + use_var);
+	+  sens.PrintCuts();
+	sens.SetTotalSigEvents();
+	sens.SetTotalBkgEvents();
+	+  sens.CalculateBinError();
+	sens.CalculateSensitivity();
+	-
+	-  sens.DoSensitivityPlot(plot_name);
+	+  sens.DoSensitivityPlot(out_dir, sig_name, use_var);
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 16:06:55 2015 +0200
 
 	SensitivityPlot.cxx: Fixed indexing problem in PrintCuts(),
