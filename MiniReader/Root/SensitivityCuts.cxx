@@ -10,19 +10,10 @@ SensitivityCuts::SensitivityCuts(std::string out_suffix)
   m_out_file = new TFile(out_name.c_str(), "RECREATE");
 
   // Create the factory object:
-  // m_factory = std::make_shared<TMVA::Factory>("TMVAClassification", m_out_file,
-  // 						   "!V:!Silent:Color:DrawProgressBar:"
-  // 						   "Transformations=I;N;D;P;U;G,D:"
-  // 						   "AnalysisType=Classification");
   m_factory = CxxUtils::make_unique<TMVA::Factory>("TMVAClassification", m_out_file,
   						   "!V:!Silent:Color:DrawProgressBar:"
   						   "Transformations=I;N;D;P;U;G,D:"
   						   "AnalysisType=Classification");
-
-  // m_factory = new TMVA::Factory("TMVAClassification", m_out_file,
-  // 				"!V:!Silent:Color:DrawProgressBar:"
-  // 				"Transformations=I;N;D;P;U;G,D:"
-  // 				"AnalysisType=Classification");
 
   std::string weight_dir = "weight" + out_suffix;
 
@@ -50,7 +41,7 @@ void SensitivityCuts::SetEventWeights(std::string var)
 ////////////////////////////////////////////////////////////////////////////////
 ////
 ////////////////////////////////////////////////////////////////////////////////
-void SensitivityCuts::RunFactory(std::string signal_name, std::string back_name)
+void SensitivityCuts::RunFactory(std::string signal_name, std::vector<std::string> back_names)
 {
   // Get signal tree:
   TFile sig_file(signal_name.c_str());
@@ -59,12 +50,28 @@ void SensitivityCuts::RunFactory(std::string signal_name, std::string back_name)
 
   m_factory->AddSignalTree(sig_tree);
 
+  std::vector<TFile*> bkg_files_vec;
+  std::vector<TTree*> bkg_tree_vec;
+
   // Get background tree:
-  TFile bkg_file(back_name.c_str());
+  for(size_t i = 0; i < back_names.size(); ++i) {
 
-  TTree *bkg_tree = static_cast<TTree *>(bkg_file.Get("SensTree"));
+    TFile *bkg_file = new TFile(back_names[i].c_str());
 
-  m_factory->AddBackgroundTree(bkg_tree);
+    bkg_files_vec.push_back(bkg_file);
+    bkg_tree_vec.push_back(static_cast<TTree *>(bkg_files_vec[i]->Get("SensTree")));
+
+    m_factory->AddBackgroundTree(bkg_tree_vec[i]);
+  }
+
+  // for(size_t i = 0; i < back_names.size(); ++i) {
+
+  //   TFile bkg_file(back_name.c_str());
+
+  //   TTree *bkg_tree = static_cast<TTree *>(bkg_file.Get("SensTree"));
+
+  //   m_factory->AddBackgroundTree(bkg_tree);
+  // }
 
   // Apply additional cuts on the signal and background samples (can be different)
   TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";

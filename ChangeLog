@@ -1,4 +1,51 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 14:01:04 2015 +0200
+
+	Added the possibility to run over multiple samples to
+	SensitivityCuts.cxx
+
+	+void SensitivityCuts::RunFactory(std::string signal_name,
+	std::vector<std::string> back_names)
+	{
+	// Get signal tree:
+	TFile sig_file(signal_name.c_str());
+	@@ -59,12 +50,28 @@ void
+	SensitivityCuts::RunFactory(std::string signal_name, std::string
+	back_name)
+
+	m_factory->AddSignalTree(sig_tree);
+
+	+  std::vector<TFile*> bkg_files_vec;
+	+  std::vector<TTree*> bkg_tree_vec;
+	+
+	// Get background tree:
+	-  TFile bkg_file(back_name.c_str());
+	+  for(size_t i = 0; i < back_names.size(); ++i) {
+	+
+	+    TFile *bkg_file = new TFile(back_names[i].c_str());
+	+
+	+    bkg_files_vec.push_back(bkg_file);
+	+    bkg_tree_vec.push_back(static_cast<TTree
+	*>(bkg_files_vec[i]->Get("SensTree")));
+	+
+	+    m_factory->AddBackgroundTree(bkg_tree_vec[i]);
+	+  }
+	+
+	+  // for(size_t i = 0; i < back_names.size(); ++i) {
+	+
+	+  //   TFile bkg_file(back_name.c_str());
+
+	-  TTree *bkg_tree = static_cast<TTree
+	*>(bkg_file.Get("SensTree"));
+	+  //   TTree *bkg_tree = static_cast<TTree
+	*>(bkg_file.Get("SensTree"));
+
+	-  m_factory->AddBackgroundTree(bkg_tree);
+	+  //   m_factory->AddBackgroundTree(bkg_tree);
+	+  // }
+	}
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 13:57:40 2015 +0200
 
 	Removing variables that are no longer branches in the tree
