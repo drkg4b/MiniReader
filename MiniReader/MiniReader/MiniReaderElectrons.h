@@ -24,8 +24,6 @@ class MiniReaderElectrons {
   std::vector<double> *m_ele_charge;
   std::vector<double> *m_ele_d0;
   std::vector<double> *m_ele_z0;
-  std::vector<double> *m_ele_topoetcone_corr30;
-  std::vector<double> *m_ele_topoetcone_corr40;
   std::vector<double> *m_ele_ptcone20;
   std::vector<double> *m_ele_ptcone30;
   std::vector<double> *m_ele_ptcone40;

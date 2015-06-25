@@ -1,3 +1,15 @@
+Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jun 24 10:30:46 2015 +0200
+
+	Removed no more existing branches from MiniReaderElectrons.h
+
+	Removed
+
+	std::vector<double> *m_ele_topoetcone_corr30;
+	std::vector<double> *m_ele_topoetcone_corr40;
+
+	because the branches no more exist in the tree.
+
 22-05-2015 Gabriele Bertoli <gbertoli@cern.ch>
 	* Implementing automatic naming for output files in the
 	  Sensitivity studies
