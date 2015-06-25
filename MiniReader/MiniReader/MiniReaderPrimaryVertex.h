@@ -16,11 +16,7 @@ class MiniReaderPrimaryVertex {
   int m_pvtx_n;
 
   std::vector<int>    *m_pvtx_ntracks;
-  std::vector<double> *m_pvtx_x;
-  std::vector<double> *m_pvtx_y;
   std::vector<double> *m_pvtx_z;
-  std::vector<double> *m_pvtx_ndof;
-  std::vector<double> *m_pvtx_chi2;
 
  public:
 
