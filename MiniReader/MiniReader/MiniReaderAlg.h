@@ -110,6 +110,7 @@ class MiniReaderAlg : public EL::Algorithm {
 
   std::string m_sample_name; //!
 
+  // FIX FOR THE COMPRESSED SPECTRA:
   float m_process_xs13; //!
   float m_process_eff13; //!
 

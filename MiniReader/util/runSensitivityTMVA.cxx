@@ -32,9 +32,13 @@ int main(int argc, char **argv)
 
     signal_sample = "D5_";
 
-  if (signal_name.find("Compressed1") != std::string::npos)
+  if (signal_name.find("Compressed_450_435") != std::string::npos)
 
-    signal_sample = "Compressed1_";
+    signal_sample = "Compressed_450_435_";
+
+  if (signal_name.find("Compressed_450_425") != std::string::npos)
+
+    signal_sample = "Compressed_450_425_";
 
   std::string init_object = signal_sample + use_var;
 

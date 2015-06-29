@@ -1,7 +1,7 @@
 #!/bin/bash
 # usage: ssh -t gbert@bublx28.fysik.su.se 'bash -is' < sendTMVA.sh
 
-cd /data/gbert/MonoJetAnalysis/MiniReader_v1/trunk/
+cd /data/gbert/MonoJetAnalysis/MiniReader/
 setupATLAS
 rcSetup
 
@@ -21,13 +21,17 @@ fi
 # out.log and 2>&1 (redirect the stderr to stdout).
 
 # Compressed spectra:
-runSensitivityTMVA ../outDir-TMVA/hist-Compressed1.root ../outDir-TMVA/hist-all_bkg.root n_jet30 < /dev/null > Compressed_n_jet30.log 2>&1 &
-runSensitivityTMVA ../outDir-TMVA/hist-Compressed1.root ../outDir-TMVA/hist-all_bkg.root n_jet40 < /dev/null > Compressed_n_jet40.log 2>&1 &
-runSensitivityTMVA ../outDir-TMVA/hist-Compressed1.root ../outDir-TMVA/hist-all_bkg.root n_jet50 < /dev/null > Compressed_n_jet50.log 2>&1 &
+runSensitivityTMVA ../outDir-TMVA/hist-Compressed_450_435.root ../outDir-TMVA/hist-all_bkg.root n_jet30 < /dev/null > Compressed_450_435_n_jet30.log 2>&1 &
+runSensitivityTMVA ../outDir-TMVA/hist-Compressed_450_435.root ../outDir-TMVA/hist-all_bkg.root n_jet40 < /dev/null > Compressed_450_435_n_jet40.log 2>&1 &
+runSensitivityTMVA ../outDir-TMVA/hist-Compressed_450_435.root ../outDir-TMVA/hist-all_bkg.root n_jet50 < /dev/null > Compressed_450_435_n_jet50.log 2>&1 &
+
+runSensitivityTMVA ../outDir-TMVA/hist-Compressed_450_425.root ../outDir-TMVA/hist-all_bkg.root n_jet30 < /dev/null > Compressed_450_425_n_jet30.log 2>&1 &
+runSensitivityTMVA ../outDir-TMVA/hist-Compressed_450_425.root ../outDir-TMVA/hist-all_bkg.root n_jet40 < /dev/null > Compressed_450_425_n_jet40.log 2>&1 &
+runSensitivityTMVA ../outDir-TMVA/hist-Compressed_450_425.root ../outDir-TMVA/hist-all_bkg.root n_jet50 < /dev/null > Compressed_450_425_n_jet50.log 2>&1 &
 
 # D5
-runSensitivityTMVA ../outDir-TMVA/hist-D5.root ../outDir-TMVA/hist-all_bkg.root n_jet30 < /dev/null > D5_n_jet30.log 2>&1 &
-runSensitivityTMVA ../outDir-TMVA/hist-D5.root ../outDir-TMVA/hist-all_bkg.root n_jet40 < /dev/null > D5_n_jet40.log 2>&1 &
-runSensitivityTMVA ../outDir-TMVA/hist-D5.root ../outDir-TMVA/hist-all_bkg.root n_jet50 < /dev/null > D5_n_jet50.log 2>&1 &
+# runSensitivityTMVA ../outDir-TMVA/hist-D5.root ../outDir-TMVA/hist-all_bkg.root n_jet30 < /dev/null > D5_n_jet30.log 2>&1 &
+# runSensitivityTMVA ../outDir-TMVA/hist-D5.root ../outDir-TMVA/hist-all_bkg.root n_jet40 < /dev/null > D5_n_jet40.log 2>&1 &
+# runSensitivityTMVA ../outDir-TMVA/hist-D5.root ../outDir-TMVA/hist-all_bkg.root n_jet50 < /dev/null > D5_n_jet50.log 2>&1 &
 
 exit

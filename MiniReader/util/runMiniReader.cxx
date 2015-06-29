@@ -72,16 +72,18 @@ int main(int argc, char *argv[])
 
    chain_d5.Add("/home/drkg4b/work/input_samples/signals/user.cclement.t02.mc14_13TeV.191040.MadGraphPythia_AUET2BMSTW2008LO_D5_400_1000_MET100_hist-output.root.19926114/*.root");
 
-   TChain chain_comp1("MiniTree");
+   TChain chain_comp_450_435("MiniTree_NoSys");
 
-   chain_comp1.Add("/home/drkg4b/work/input_samples/signals/compressed/model1/*.root");
+   chain_comp_450_435.Add("/home/drkg4b/work/input_samples/signals/compressed/"
+			  "MERGE.mc15.371858.madgraphpythia8evtgen_a14nnpdf23lo_ss_direct_450_435_met100.mc15.hist-output.root/*.root");
 
-   TChain chain_comp2("MiniTree");
+   TChain chain_comp_450_425("MiniTree_NoSys");
 
-   chain_comp2.Add("/home/drkg4b/work/input_samples/signals/compressed/model2/*.root");
+   chain_comp_450_425.Add("/home/drkg4b/work/input_samples/signals/compressed/"
+			  "MERGE.mc15.371865.madgraphpythia8evtgen_a14nnpdf23lo_ss_direct_450_425_met100.mc15.hist-output.root/*.root");
 
    // CutFlow samples:
-   TChain chain_cutflow("MiniTree");
+   TChain chain_cutflow("MiniTree_NoSys");
 
    chain_cutflow.Add("/home/drkg4b/work/input_samples/cutFlow_p1872/*.root");
 
@@ -89,19 +91,19 @@ int main(int argc, char *argv[])
    // Construct the samples to run on:
    SH::SampleHandler sh;
 
-   // sh.add(SH::makeFromTChain("ZnunuSamples", chain_znunu));
-   // sh.add(SH::makeFromTChain("ZmumuSamples", chain_zmumu));
-   // sh.add(SH::makeFromTChain("ZeeSamples", chain_zee));
-   // sh.add(SH::makeFromTChain("ZtautauSamples", chain_ztautau));
-   // sh.add(SH::makeFromTChain("WmunuSamples", chain_wmunu));
-   // sh.add(SH::makeFromTChain("WenuSamples", chain_wenu));
-   // sh.add(SH::makeFromTChain("WtaunuSamples", chain_wtaunu));
-   // sh.add(SH::makeFromTChain("ttbarSamples", chain_ttbar));
+   sh.add(SH::makeFromTChain("ZnunuSamples", chain_znunu));
+   sh.add(SH::makeFromTChain("ZmumuSamples", chain_zmumu));
+   sh.add(SH::makeFromTChain("ZeeSamples", chain_zee));
+   sh.add(SH::makeFromTChain("ZtautauSamples", chain_ztautau));
+   sh.add(SH::makeFromTChain("WmunuSamples", chain_wmunu));
+   sh.add(SH::makeFromTChain("WenuSamples", chain_wenu));
+   sh.add(SH::makeFromTChain("WtaunuSamples", chain_wtaunu));
+   sh.add(SH::makeFromTChain("ttbarSamples", chain_ttbar));
    // sh.add(SH::makeFromTChain("D5", chain_d5));
-   // sh.add(SH::makeFromTChain("Compressed1", chain_comp1));
-   // sh.add(SH::makeFromTChain("Compressed2", chain_comp2));
+   sh.add(SH::makeFromTChain("Compressed_450_435", chain_comp_450_435));
+   sh.add(SH::makeFromTChain("Compressed_450_425", chain_comp_450_425));
    // sh.add(SH::makeFromTChain("ttbarJVTSamples", chain5));
-   sh.add(SH::makeFromTChain("cutFlowSamples", chain_cutflow));
+   // sh.add(SH::makeFromTChain("cutFlowSamples", chain_cutflow));
 
    // print what we found:
    sh.print();

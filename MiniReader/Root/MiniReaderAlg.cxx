@@ -13,7 +13,7 @@
 
 MiniReaderAlg :: MiniReaderAlg() : m_submitDir("submitDir"), m_eventCounter(0),
 				   m_current_sample_name("no_sample"),
-				   m_lumi(5000), m_sample_weight(0),
+				   m_lumi(1000), m_sample_weight(0),
 				   m_n_bad_jets(0), m_met_cut(0), m_jet1_pt(0),
 				   m_ele_mult_cut(0), m_mu_mult_cut(0),
 				   m_n_jet_cut(0), m_dphi_jetmet_cut(0),
@@ -98,45 +98,60 @@ EL::StatusCode MiniReaderAlg :: changeInput(bool firstFile)
 
   TH1F *h1 = (TH1F *)(file->Get("h_TrackNeventsWgt"));
 
-  m_sample_weight = h1->GetBinContent(1);
+  int bin_all = h1->GetXaxis()->FindBin("All");
+
+  m_sample_weight = h1->GetBinContent(bin_all);
 
   std::string file_name = file->GetName();
 
-  if(file_name.find("5088310") != std::string::npos) {
+  // FIX FOR COMPRESSED SPECTRA MISSING NUMBERS:
+  if(file_name.find("371858") != std::string::npos) {
 
-    m_process_xs13 = 0.42481E+01;
-    m_process_eff13 = .5585;
+    m_process_xs13 = 6.8773;
+    m_process_eff13 = .39627;
   }
 
-  if(file_name.find("5088315") != std::string::npos) {
+  if(file_name.find("371865") != std::string::npos) {
 
-    m_process_xs13 = 0.19164E+01;
-    m_process_eff13 = .4639;
+    m_process_xs13 = 6.8773;
+    m_process_eff13 = 0.39627;
   }
 
-  if(file_name.find("5088318") != std::string::npos) {
+  // if(file_name.find("5088310") != std::string::npos) {
 
-    m_process_xs13 = 0.60441E+00;
-    m_process_eff13 = .4877;
-  }
+  //   m_process_xs13 = 0.42481E+01;
+  //   m_process_eff13 = .5585;
+  // }
 
-  if(file_name.find("5088323") != std::string::npos) {
+  // if(file_name.find("5088315") != std::string::npos) {
 
-    m_process_xs13 = 0.19826E+01;
-    m_process_eff13 = .5486;
-  }
+  //   m_process_xs13 = 0.19164E+01;
+  //   m_process_eff13 = .4639;
+  // }
 
-  if(file_name.find("5088327") != std::string::npos) {
+  // if(file_name.find("5088318") != std::string::npos) {
 
-    m_process_xs13 = 0.94110E+00;
-    m_process_eff13 = .4331;
-  }
+  //   m_process_xs13 = 0.60441E+00;
+  //   m_process_eff13 = .4877;
+  // }
 
-  if(file_name.find("5088330") != std::string::npos) {
+  // if(file_name.find("5088323") != std::string::npos) {
 
-    m_process_xs13 = 0.31134E+00;
-    m_process_eff13 = .4763;
-  }
+  //   m_process_xs13 = 0.19826E+01;
+  //   m_process_eff13 = .5486;
+  // }
+
+  // if(file_name.find("5088327") != std::string::npos) {
+
+  //   m_process_xs13 = 0.94110E+00;
+  //   m_process_eff13 = .4331;
+  // }
+
+  // if(file_name.find("5088330") != std::string::npos) {
+
+  //   m_process_xs13 = 0.31134E+00;
+  //   m_process_eff13 = .4763;
+  // }
 
   return EL::StatusCode::SUCCESS;
 }
@@ -191,7 +206,7 @@ EL::StatusCode MiniReaderAlg :: execute()
     event_weight = m_cross.m_process_xs13 *
                    m_cross.m_process_kfactor13 *
                    m_cross.m_process_eff13 *
-                   m_info.m_global_event_weight *
+                   m_info.m_mc_event_weight *
                    m_lumi /  m_sample_weight;
 
   // WARNING FIX FOR AN ERROR IN THE CROSS SECTION IN THE INPUT TREE
@@ -199,15 +214,25 @@ EL::StatusCode MiniReaderAlg :: execute()
 
     event_weight *= 1000;
 
-  if(m_current_sample_name == "Compressed1" || m_current_sample_name == "Compressed2") {
+
+  // FIX FOR THE KFACTOR NOT IN THE ROOT FILE:
+  if(m_current_sample_name == "Compressed_450_435" ||
+     m_current_sample_name == "Compressed_450_425") {
 
     float process_kfactor13 = 1.7;
 
     event_weight = m_process_xs13 *
                    m_process_eff13 *
                    process_kfactor13 *
-                   m_info.m_global_event_weight *
+                   m_info.m_mc_event_weight *
                    m_lumi / m_sample_weight;
+
+    // event_weight = m_cross.m_process_xs13 *
+    //                m_cross.m_process_eff13 *
+    //                process_kfactor13 *
+    //                m_info.m_global_event_weight *
+    //                m_lumi / m_sample_weight;
+
   }
 
   // WARNING Quick FIX TO BE CHANGED!!!!!!!!!!!!!!
@@ -216,8 +241,6 @@ EL::StatusCode MiniReaderAlg :: execute()
     event_weight = 1.;
 
   if (isZnunuBaseLine()) {
-
-
 
     if (isM0()) {
 
