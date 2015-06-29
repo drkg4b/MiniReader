@@ -1,4 +1,13 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Jun 29 16:17:32 2015 +0200
+
+	NminOnePlot.cxx: Fixed THStack plotting problem.
+
+	THStack not needed because the background samples are already
+	merged with hadd. Added the missing ET plot with the cut suggested
+	by TMVA for the jet1_pt and the n_jet variable.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Jun 29 14:11:43 2015 +0000
 
 	MiniReaderAlg.h, MiniReaderAlg.cxx, runMiniReader.cxx, runSensitivityTMVA.cxx,

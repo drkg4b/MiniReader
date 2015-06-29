@@ -4,6 +4,7 @@
 #include <TGraph.h>
 #include <TCanvas.h>
 #include <THStack.h>
+#include <TLegend.h>
 #include <TF1.h>
 #include <TH1.h>
 
@@ -441,19 +442,33 @@ void plotEtMissStack(std::tuple<TTree *, TTree *> tree_tuple, const std::vector<
   h0->SetFillColor(kMagenta);
   h1->SetFillColor(kBlue);
 
-  hs->Add(h0);
-  hs->Add(h1);
+  // hs->Add(h0);
+  // hs->Add(h1);
 
   TCanvas c1;
 
-  // h0->Draw();
-  hs->Draw();
+  c1.SetLogy();
 
-  hs->GetHistogram()->GetXaxis()->SetTitle("#slash{E}_{T} [MeV]");
-  hs->GetHistogram()->GetYaxis()->SetTitle("Entries");
-  // hs->GetHistogram()->GetYaxis()->SetLogy();
+  hs->SetMaximum(1.5 * h1->GetMaximum());
 
-  hs->Draw();
+  TLegend leg;
+
+  leg.AddEntry(h0, "Compressed Spectra");
+  leg.AddEntry(h1, "All Backgrounds");
+
+  h0->GetXaxis()->SetTitle("#slash{E}_{T} [MeV]");
+  h0->GetYaxis()->SetTitle("Entries");
+
+  h1->Draw("hist");
+  h0->Draw("same");
+  leg.Draw("same");
+
+  // h0->Rebin(4);
+  // h1->Rebin(4);
+
+  // hs->Draw("hist");
+
+  // h0->Draw("same");
 
   c1.Print("EtMissStack.pdf");
 }
