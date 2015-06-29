@@ -1,4 +1,29 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Jun 29 14:11:43 2015 +0000
+
+	MiniReaderAlg.h, MiniReaderAlg.cxx, runMiniReader.cxx, runSensitivityTMVA.cxx,
+	sendTMVA.sh: Modified to run on the new data sets.
+
+	runMiniReader.cxx:
+	Changed the TTree name from MiniTree to MiniTree_NoSys for
+	the compressed spectra.
+	Changed the TChain names.
+
+	MiniReaderAlg.cxx:
+	Changed the luminosity initialization value to 1fb.
+	Changed cross section and efficiency factors for the
+	compressed spectra.
+	Improved the search for the "All" bin.
+	Now using mc_event_weight instead of the
+	global_event_weight due to the addition of pile up.
+
+	runSensitivityTMVA.cxx:
+	Changed output filename for compressed spectra signal.
+
+	sendTMVA.sh:
+	adapted to use the new names for the signal samples
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jun 24 16:51:10 2015 +0200
 
 	runSensitivityTMVA.cxx: Modified to run on all backgrounds.
