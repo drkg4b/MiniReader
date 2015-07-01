@@ -1,4 +1,9 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jul 1 16:32:01 2015 +0200
+
+    update_changelog.sh: Adding small handy script to automatically update the ChangeLog.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jul 1 16:21:00 2015 +0200
 
      MiniReaderAlg.h, MiniReaderJets.h, MiniReaderAlg.cxx, MiniReaderJet.cxx: Switch
