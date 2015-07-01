@@ -1,4 +1,12 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jul 1 16:03:43 2015 +0200
+
+    HistoBaseClass.h, HistoBaseClass.cxx: Added a new base class for plotting
+    histograms.
+    
+    Assed a base class with common functions to define histograms.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jul 1 15:53:14 2015 +0200
 
     SensitivityCutsApplication.cxx: Changed signal sample output files name.
