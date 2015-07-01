@@ -1,4 +1,12 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jul 1 15:10:03 2015 +0200
+
+    sendTMVA.sh: Changed to run on the new signal samples with all backgrounds.
+    
+    Added bash arrays to handle multiple backgrounds and corrected the root names
+    for the new signal samples.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Jun 29 16:17:32 2015 +0200
 
 	NminOnePlot.cxx: Fixed THStack plotting problem.
