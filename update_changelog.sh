@@ -9,4 +9,6 @@ rm tmp && mv ChangeLog ChangeLog_bkp && mv ChangeLog_tmp ChangeLog
 
 git add ChangeLog
 
-git commit --amend
+# The -C option will use the previous commit message without asking to change it
+# and also the timestamp
+git commit -C HEAD --amend

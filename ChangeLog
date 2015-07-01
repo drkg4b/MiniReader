@@ -1,4 +1,9 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jul 1 16:37:39 2015 +0200
+
+    update_changelog.sh: Added an option to automatially use the previous commit message.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jul 1 16:32:01 2015 +0200
 
     update_changelog.sh: Adding small handy script to automatically update the ChangeLog.
