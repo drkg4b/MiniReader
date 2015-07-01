@@ -21,9 +21,13 @@ int main(int argc, char *argv[])
 
     sig_name = "D5_";
 
-  if (sig_sample.find("Compressed1") != std::string::npos)
+ if (sig_sample.find("Compressed_450_435") != std::string::npos)
 
-    sig_name = "Compressed1_";
+    sig_name = "Compressed_450_435_";
+
+  if (sig_sample.find("Compressed_450_425") != std::string::npos)
+
+    sig_name = "Compressed_450_425_";
 
   // Create the object:
   SensitivityPlot sens(sig_sample, bkg_sample);

@@ -1,4 +1,12 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jul 1 15:53:14 2015 +0200
+
+    SensitivityCutsApplication.cxx: Changed signal sample output files name.
+    
+    Changed the output name of the files for the plots. Now they are more specific
+    to the cinematic of the process.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jul 1 15:10:03 2015 +0200
 
     sendTMVA.sh: Changed to run on the new signal samples with all backgrounds.
