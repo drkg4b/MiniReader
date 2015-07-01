@@ -1,14 +1,18 @@
 #ifndef MINIREADER_MINIREADERJETS_H
 #define MINIREADER_MINIREADERJETS_H
 
+// Local Incluede(s):
+#include "MiniReader/HistoBaseClass.h"
+
 // ROOT include(s):
 #include <TTree.h>
 
 // STL include(s):
 #include <vector>
+#include <iostream>
 #include <algorithm>
 
-class MiniReaderJets {
+class MiniReaderJets : public HistoBaseClass {
 
   friend class MiniReaderAlg;
 
@@ -50,6 +54,8 @@ class MiniReaderJets {
   void ReadJetBranches(TTree *);
   void FillJetTreeVariables();
   void SkimJets();
+  void InitJetHisto();
+  void FillJetHisto(const std::string &, const std::string &, const double);
 };
 
 #endif // MINIREADER_MINIREADERJETS_H

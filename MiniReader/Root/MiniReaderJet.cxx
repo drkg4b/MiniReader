@@ -36,7 +36,7 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_phi", &m_jet_phi);
   tree->SetBranchAddress("jet_e", &m_jet_e);
   tree->SetBranchAddress("jet_jvf", &m_jet_jvf);
-  // tree->SetBranchAddress("jet_jvt", &m_jet_jvt);
+  tree->SetBranchAddress("jet_jvt", &m_jet_jvt);
   tree->SetBranchAddress("jet_emf", &m_jet_emf);
   tree->SetBranchAddress("jet_chf", &m_jet_chf);
   tree->SetBranchAddress("jet_fmax", &m_jet_fmax);
@@ -63,6 +63,9 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_passFilter", &m_jet_passFilter);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//// Select good jets
+////////////////////////////////////////////////////////////////////////////////
 void MiniReaderJets::SkimJets()
 {
   using namespace GoodJetCuts;
@@ -71,7 +74,7 @@ void MiniReaderJets::SkimJets()
   std::vector<double> jet_eta;
   std::vector<double> jet_phi;
   std::vector<double> jet_jvf;
-  // std::vector<double> jet_jvt;
+  std::vector<double> jet_jvt;
   std::vector<double> jet_flavour_weight;
   std::vector<double> jet_constscale_eta;
 
@@ -85,7 +88,7 @@ void MiniReaderJets::SkimJets()
       jet_eta.push_back(m_jet_eta->at(i));
       jet_phi.push_back(m_jet_phi->at(i));
       jet_jvf.push_back(m_jet_jvf->at(i));
-      // jet_jvt.push_back(m_jet_jvt->at(i));
+      jet_jvt.push_back(m_jet_jvt->at(i));
       jet_flavour_weight.push_back(m_jet_flavour_weight->at(i));
       jet_constscale_eta.push_back(m_jet_constscale_eta->at(i));
     }
@@ -96,13 +99,16 @@ void MiniReaderJets::SkimJets()
   *m_jet_eta = jet_eta;
   *m_jet_phi = jet_phi;
   *m_jet_jvf = jet_jvf;
-  // *m_jet_jvt = jet_jvt;
+  *m_jet_jvt = jet_jvt;
   *m_jet_flavour_weight = jet_flavour_weight;
   *m_jet_constscale_eta = jet_constscale_eta;
 
   std::sort(m_jet_pt->begin(), m_jet_pt->end(), std::greater<double>());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//// Fill variables for the TTree for TMVA analysis
+////////////////////////////////////////////////////////////////////////////////
 void MiniReaderJets::FillJetTreeVariables()
 {
   m_jet1_pt = m_jet_pt->at(0);
@@ -125,4 +131,21 @@ void MiniReaderJets::FillJetTreeVariables()
 
       m_n_jet50++;
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//// Initialize the histograms for the jet class
+////////////////////////////////////////////////////////////////////////////////
+void MiniReaderJets::InitJetHisto()
+{
+  DefineHisto("jet1_pt", 100, 0, 1100E3);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//// Fill jet class histograms
+////////////////////////////////////////////////////////////////////////////////
+void MiniReaderJets::FillJetHisto(const std::string &reg, const std::string &suf,
+				  const double weight)
+{
+  m_HistoContainerMap[reg + "jet1_pt" + suf]->Fill(m_jet1_pt, weight);
 }

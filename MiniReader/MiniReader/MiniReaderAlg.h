@@ -29,10 +29,16 @@
 #include "MiniReader/MiniReaderTruthParticles.h"
 
 // STL include(s):
-#include <string>
 #include <algorithm>
+#include <string>
+#include <tuple>
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
+
+using MiniReaderObj = std::tuple<const MiniReaderElectrons &, const
+  MiniReaderMuons&, const MiniReaderJets &, const MiniReaderMissingET &, const
+  MiniReaderEventInfo &, const MiniReaderCrossSection &, const
+  MiniReaderPrimaryVertex &, const MiniReaderTruthParticles &>;
 
 class MiniReaderAlg : public EL::Algorithm {
   // put your configuration variables here as public variables.
@@ -63,6 +69,7 @@ class MiniReaderAlg : public EL::Algorithm {
   MiniReaderTruthParticles m_truth; //!
 
   int m_eventCounter; //!
+
   std::string m_current_sample_name; //!
 
   // Luminosity:
@@ -107,8 +114,6 @@ class MiniReaderAlg : public EL::Algorithm {
 
   // Plot functions:
   void PlotJetEfficency(); //!
-
-  std::string m_sample_name; //!
 
   // FIX FOR THE COMPRESSED SPECTRA:
   float m_process_xs13; //!

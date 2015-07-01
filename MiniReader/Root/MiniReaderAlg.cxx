@@ -64,6 +64,12 @@ EL::StatusCode MiniReaderAlg :: histInitialize()
   // Initialize all the histograms:
   InitHisto();
 
+  m_jet.InitJetHisto();
+
+  for(const auto &histo_itr : m_jet.GetHistoMap())
+
+    wk()->addOutput(histo_itr.second);
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -240,15 +246,30 @@ EL::StatusCode MiniReaderAlg :: execute()
 
     event_weight = 1.;
 
+  // Making a tuple to pass to the fill functions:
+  MiniReaderObj MiniObjects = std::make_tuple(std::cref(m_el), std::cref(m_mu),
+					      std::cref(m_jet),std::cref(m_met),
+					      std::cref(m_info), std::cref(m_cross),
+					      std::cref(m_pvtx),std::cref( m_truth));
+
+  std::string region;
+  std::string suffix;
+
   if (isZnunuBaseLine()) {
 
+    region = "SR_";
+
     if (isM0()) {
+
+      suffix = "_M0";
 
       // Fill Histos:
       FillMET(event_weight);
       FillEventInfo(event_weight);
       FillJets(event_weight);
       FillScatterPlots(event_weight);
+
+      m_jet.FillJetHisto(region, suffix, event_weight);
 
       // Fill sensitivity study tree:
       m_event_weight = event_weight;

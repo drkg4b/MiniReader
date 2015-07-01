@@ -1,4 +1,21 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Wed Jul 1 16:21:00 2015 +0200
+
+     MiniReaderAlg.h, MiniReaderJets.h, MiniReaderAlg.cxx, MiniReaderJet.cxx: Switch
+     to the new histogram interface.
+    
+    MiniReaderJets.cxx:
+    Testing the HistoBaseClass on jets, added InitJetHisto() and FillJetHisto()
+    functions in the MiniReaderJets class and calling them in the MiniReaderAlg.
+    
+    MiniReaderAlg.cxx:
+    Added a call to the new functions in the MiniReaderJets class.
+    
+    MiniReaderAlg.h:
+    Added a typedef for a tuple to be passed as argument to the Fill functions to
+    allow cross class variables for the plots.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jul 1 16:03:43 2015 +0200
 
     HistoBaseClass.h, HistoBaseClass.cxx: Added a new base class for plotting
