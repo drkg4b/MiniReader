@@ -150,7 +150,7 @@ void SensitivityPlot::WriteCutsToFile(double max_pos, const std::string
       mcuts->GetCuts(m_effS_vec[i], cutsMin, cutsMax);
 
       // cannot comapre float need to use this hack:
-      if(std::fabs(m_effS_vec[i] - max_pos) < .0001)
+      if(std::fabs(m_effS_vec[i] - max_pos) < .005)
 
 	out_file << "!";
 
@@ -230,13 +230,13 @@ TGraph SensitivityPlot::SistParam()
   x[5] = 600000;
   x[6] = 700000;
 
-  y[0] = .0264;
-  y[1] = .0282;
-  y[2] = .0328;
-  y[3] = .0344;
-  y[4] = .0375;
-  y[5] = .0576;
-  y[6] = .0822;
+  y[0] = .0264 * std::sqrt(5);
+  y[1] = .0282 * std::sqrt(5);
+  y[2] = .0328 * std::sqrt(5);
+  y[3] = .0344 * std::sqrt(5);
+  y[4] = .0375 * std::sqrt(5);
+  y[5] = .0576 * std::sqrt(5);
+  y[6] = .0822 * std::sqrt(5);
 
   TCanvas c1;
 

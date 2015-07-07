@@ -1,4 +1,16 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Tue Jul 7 18:14:26 2015 +0200
+
+    SensitivityPlot.cxx: Scaling to 1fb^-1 the parametrization for the systematics,
+    fixed marking of best cut in output log file.
+    
+    -      if(std::fabs(m_effS_vec[i] - max_pos) < .0001)
+    +      if(std::fabs(m_effS_vec[i] - max_pos) < .005)
+    
+    in SistParam() multiplied by sqrt(5) to scale the systematic values calculated
+    for 5fb^-1 to 1fb^-1.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Tue Jul 7 18:00:50 2015 +0200
 
     MiniReaderAlg.h, MiniReaderAlg.cxx: Moving objects tuples to appropriate
