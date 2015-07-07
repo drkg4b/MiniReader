@@ -247,10 +247,8 @@ EL::StatusCode MiniReaderAlg :: execute()
     event_weight = 1.;
 
   // Making a tuple to pass to the fill functions:
-  MiniReaderObj MiniObjects = std::make_tuple(std::cref(m_el), std::cref(m_mu),
-					      std::cref(m_jet),std::cref(m_met),
-					      std::cref(m_info), std::cref(m_cross),
-					      std::cref(m_pvtx),std::cref( m_truth));
+  PassToJets MiniObjects = std::make_tuple(std::cref(m_pvtx),
+					   std::cref(m_info));
 
   std::string region;
   std::string suffix;
@@ -269,7 +267,7 @@ EL::StatusCode MiniReaderAlg :: execute()
       FillJets(event_weight);
       FillScatterPlots(event_weight);
 
-      m_jet.FillJetHisto(region, suffix, event_weight);
+      m_jet.FillJetHisto(region, suffix, event_weight, MiniObjects);
 
       // Fill sensitivity study tree:
       m_event_weight = event_weight;

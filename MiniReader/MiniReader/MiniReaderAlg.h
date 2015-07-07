@@ -31,14 +31,8 @@
 // STL include(s):
 #include <algorithm>
 #include <string>
-#include <tuple>
 
 #define PR(x) std::cout << #x << " = " << x << std::endl
-
-using MiniReaderObj = std::tuple<const MiniReaderElectrons &, const
-  MiniReaderMuons&, const MiniReaderJets &, const MiniReaderMissingET &, const
-  MiniReaderEventInfo &, const MiniReaderCrossSection &, const
-  MiniReaderPrimaryVertex &, const MiniReaderTruthParticles &>;
 
 class MiniReaderAlg : public EL::Algorithm {
   // put your configuration variables here as public variables.
