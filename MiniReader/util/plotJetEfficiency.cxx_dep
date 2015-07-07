@@ -16,6 +16,8 @@
 // Atlas Style:
 #include "MiniReader/AtlasStyle.h"
 
+#define PR(x) std::cout << #x << " = " << x << std::endl
+
 void plotJetEfficiency(std::string in_sample, std::string out_dir)
 {
   SetAtlasStyle();
@@ -28,25 +30,21 @@ void plotJetEfficiency(std::string in_sample, std::string out_dir)
 
     processing_sample = "Znunu_";
 
-  if (in_sample.find("ttbar") != std::string::npos)
-
-    processing_sample = "ttbar_";
-
-  if (in_sample.find("JVT") != std::string::npos)
-
-    processing_sample = "ttbarJVT_";
-
   if (in_sample.find("D5") != std::string::npos)
 
     processing_sample = "D5_";
 
-  if (in_sample.find("Compressed1") != std::string::npos)
+  if (in_sample.find("Compressed_450_435") != std::string::npos)
 
-    processing_sample = "Compressed1_";
+    processing_sample = "Compressed_450_435_";
 
-  if (in_sample.find("Compressed2") != std::string::npos)
+  if (in_sample.find("Compressed_450_425") != std::string::npos)
 
-    processing_sample = "Compressed2_";
+    processing_sample = "Compressed_450_425_";
+
+  std::vector<std::string> region = {"SR_"};
+  std::vector<std::string> suf_vec = {"_M0"};
+
 
   for (int j = 0; j < 2; ++j) {
 
@@ -91,6 +89,11 @@ void plotJetEfficiency(std::string in_sample, std::string out_dir)
         TGraphAsymmErrors *g4 = new TGraphAsymmErrors();
 
         std::string n_jets = std::to_string(i) + "jets";
+
+	PR(plot_pref);
+	PR(n_jets);
+	PR(jvf_acc);
+	PR(den_plot);
 
         g1->Divide((TH1F *)file.Get((plot_pref + n_jets + "_jetpt30" + jvf_acc).c_str()),
                    (TH1F *)file.Get(den_plot.c_str()), "cl=0.683 b(1,1) mode");
@@ -165,6 +168,7 @@ void plotJetEfficiency(std::string in_sample, std::string out_dir)
       }
     }
   }
+
   if (processing_sample == "Znunu_") {
 
     TCanvas *c1 = new TCanvas();

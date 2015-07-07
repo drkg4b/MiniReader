@@ -1,4 +1,10 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Tue Jul 7 18:28:07 2015 +0200
+
+    plotJetEfficiency.cxx: Deprecating old plotJetEfficiency.cxx in favor of the
+    new that reads the new naming convention for the histograms.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Tue Jul 7 18:26:29 2015 +0200
 
     MiniReaderSelectionCuts.h: Changed cut values for the Jet efficiency studies.
