@@ -1,5 +1,8 @@
 #include "MiniReader/MiniReaderEventInfo.h"
 
+////////////////////////////////////////////////////////////////////////////////
+//// Default constructor of the class
+////////////////////////////////////////////////////////////////////////////////
 MiniReaderEventInfo::MiniReaderEventInfo()
 {
   m_EventNumber = 0;
@@ -11,6 +14,9 @@ MiniReaderEventInfo::MiniReaderEventInfo()
   m_mc_event_weight = 0;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//// Read the branches of the TTree
+////////////////////////////////////////////////////////////////////////////////
 void MiniReaderEventInfo::ReadEventInfoBranches(TTree *tree)
 {
   tree->SetBranchAddress("EventNumber", &m_EventNumber);
@@ -20,4 +26,12 @@ void MiniReaderEventInfo::ReadEventInfoBranches(TTree *tree)
   tree->SetBranchAddress("averageInteractionsPerCrossing", &m_averageInteractionsPerCrossing);
   tree->SetBranchAddress("global_event_weight", &m_global_event_weight);
   tree->SetBranchAddress("mc_event_weight", &m_mc_event_weight);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//// Getter fot the average numbero of interaction per bunch crossing
+////////////////////////////////////////////////////////////////////////////////
+float MiniReaderEventInfo::GetAvgIntPerCross() const
+{
+  return m_averageInteractionsPerCrossing;
 }

@@ -1,4 +1,17 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Tue Jul 7 17:44:13 2015 +0200
+
+    MiniReaderEventInfo.h MiniReaderPrimaryVertex.h MiniReaderEventInfo.cxx
+    MiniReaderPrimaryVertex.cxx: Added getters for variables needed in the
+    MiniReaderJets class.
+    
+    MiniReaderEventInfo.h, MiniReaderEventInfo.cxx:
+    +  float GetAvgIntPerCross() const;
+    
+     MiniReaderPrimaryVertex.h, MiniReaderPrimaryVertex.cxx:
+    +  int GetPvtxN() const;
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Tue Jul 7 17:16:51 2015 +0200
 
     MiniReaderJets.h, MiniReaderJet.cxx: Added function to perform JVT and Jet

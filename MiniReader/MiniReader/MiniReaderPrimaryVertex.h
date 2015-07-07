@@ -22,6 +22,7 @@ class MiniReaderPrimaryVertex {
 
   MiniReaderPrimaryVertex();
   void ReadPrimaryVertexBranches(TTree *);
+  int GetPvtxN() const;
 };
 
 #endif // MINIREADER_MINIREADERPRIMARYVERTEX_H

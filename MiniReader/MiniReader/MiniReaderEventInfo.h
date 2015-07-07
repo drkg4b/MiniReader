@@ -25,6 +25,7 @@ class MiniReaderEventInfo {
 
   MiniReaderEventInfo();
   void ReadEventInfoBranches(TTree *);
+  float GetAvgIntPerCross() const;
 };
 
 #endif // MINIREADER_MINIREADERRUNPARAM_H
