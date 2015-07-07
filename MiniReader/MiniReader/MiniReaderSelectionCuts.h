@@ -21,10 +21,10 @@ namespace M9Cuts {
 
 namespace ZnunuCuts {
 
-  static constexpr const int N_JETS = 5; // WARNING this should be 5
+  static constexpr const int N_JETS = 999; // WARNING this should be 5
   static constexpr const float DPHI_JETMET = .4;
-  static constexpr const float MET_HARD = 400000.;
-  static constexpr const float JET_PT_HARD = 400000.; // Changed from 400000 to study asymmetric cuts
+  static constexpr const float MET_HARD = 250000.;
+  static constexpr const float JET_PT_HARD = 250000.; // Changed from 400000 to study asymmetric cuts
 }
 
 namespace EventFilter {

@@ -1,4 +1,17 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Tue Jul 7 18:26:29 2015 +0200
+
+    MiniReaderSelectionCuts.h: Changed cut values for the Jet efficiency studies.
+    
+    -  static constexpr const int N_JETS = 5; // WARNING this should be 5
+    +  static constexpr const int N_JETS = 999; // WARNING this should be 5
+       static constexpr const float DPHI_JETMET = .4;
+    -  static constexpr const float MET_HARD = 400000.;
+    -  static constexpr const float JET_PT_HARD = 400000.; // Changed from 400000 to study asymmetric cuts
+    +  static constexpr const float MET_HARD = 250000.;
+    +  static constexpr const float JET_PT_HARD = 250000.; // Changed from 400000 to study asymmetric cuts
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Tue Jul 7 18:14:26 2015 +0200
 
     SensitivityPlot.cxx: Scaling to 1fb^-1 the parametrization for the systematics,
