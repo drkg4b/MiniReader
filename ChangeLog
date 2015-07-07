@@ -1,4 +1,20 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Tue Jul 7 17:16:51 2015 +0200
+
+    MiniReaderJets.h, MiniReaderJet.cxx: Added function to perform JVT and Jet
+    efficiency plots.
+    
+    MiniReaderJets.h:
+    Added PassToJets tuple to pass to FillJetPlot() function variables from other
+    classes.
+    Added fillNjetPt() fillNjetPtJVT() template functions to perform the JVT and
+    Jet efficiency plots.
+    
+    MiniReaderJets.cxx:
+    Added few histograms to perfrom JVT and Jet efficiency studies using the new
+    naming sistem that supports different regions (control and signal regions).
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Wed Jul 1 16:37:39 2015 +0200
 
     update_changelog.sh: Added an option to automatially use the previous commit message.

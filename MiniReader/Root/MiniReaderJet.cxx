@@ -139,13 +139,322 @@ void MiniReaderJets::FillJetTreeVariables()
 void MiniReaderJets::InitJetHisto()
 {
   DefineHisto("jet1_pt", 100, 0, 1100E3);
+  DefineHisto("n_jets", 10, 0, 10);
+
+  DefineHisto("n_pvtx_noCut", 8, 0, 40);
+
+  std::vector<std::string> plot_pref = {"n_pvtx_", "mu_"};
+  std::vector<std::string> njets = {"3jets_", "4jets_", "5jets_"};
+  std::vector<std::string> jetpt = {"jetpt30", "jetpt40", "jetpt50", "jetpt70"};
+  std::vector<std::string> jvt_val = {"", "_jvt14", "_jvt64", "_jvt92"};
+
+  for(size_t i = 0; i < plot_pref.size(); ++i) {
+    for(size_t j = 0; j < njets.size(); ++j) {
+      for (size_t k = 0; k < jetpt.size(); ++k) {
+	for(size_t n = 0; n < jvt_val.size(); ++n) {
+
+	  std::string histo_name = plot_pref[i] + njets[j] + jetpt[k] +
+	    jvt_val[n];
+
+	  DefineHisto(histo_name, 8, 0, 40);
+	}
+      }
+    }
+  }
+
+  // DefineHisto("n_pvtx_3jets_jetpt30", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt40", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt50", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt70", 8, 0, 40);
+
+  // DefineHisto("mu_3jets_jetpt30", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt40", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt50", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt70", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_4jets_jetpt30", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt40", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt50", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt70", 8, 0, 40);
+
+  // DefineHisto("mu_4jets_jetpt30", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt40", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt50", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt70", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_5jets_jetpt30", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt40", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt50", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt70", 8, 0, 40);
+
+  // DefineHisto("mu_5jets_jetpt30", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt40", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt50", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt70", 8, 0, 40);
+
+  // // Histo for JVT studies:
+  // DefineHisto("n_pvtx_3jets_jetpt30_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt40_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt50_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt70_jvt14", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_3jets_jetpt30_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt40_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt50_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt70_jvt64", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_3jets_jetpt30_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt40_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt50_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_3jets_jetpt70_jvt92", 8, 0, 40);
+
+  // DefineHisto("mu_3jets_jetpt30_jvt14", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt40_jvt14", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt50_jvt14", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt70_jvt14", 8, 0, 40);
+
+  // DefineHisto("mu_3jets_jetpt30_jvt64", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt40_jvt64", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt50_jvt64", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt70_jvt64", 8, 0, 40);
+
+  // DefineHisto("mu_3jets_jetpt30_jvt92", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt40_jvt92", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt50_jvt92", 8, 0, 40);
+  // DefineHisto("mu_3jets_jetpt70_jvt92", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_4jets_jetpt30_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt40_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt50_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt70_jvt14", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_4jets_jetpt30_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt40_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt50_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt70_jvt64", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_4jets_jetpt30_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt40_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt50_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_4jets_jetpt70_jvt92", 8, 0, 40);
+
+  // DefineHisto("mu_4jets_jetpt30_jvt14", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt40_jvt14", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt50_jvt14", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt70_jvt14", 8, 0, 40);
+
+  // DefineHisto("mu_4jets_jetpt30_jvt64", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt40_jvt64", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt50_jvt64", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt70_jvt64", 8, 0, 40);
+
+  // DefineHisto("mu_4jets_jetpt30_jvt92", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt40_jvt92", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt50_jvt92", 8, 0, 40);
+  // DefineHisto("mu_4jets_jetpt70_jvt92", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_5jets_jetpt30_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt40_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt50_jvt14", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt70_jvt14", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_5jets_jetpt30_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt40_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt50_jvt64", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt70_jvt64", 8, 0, 40);
+
+  // DefineHisto("n_pvtx_5jets_jetpt30_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt40_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt50_jvt92", 8, 0, 40);
+  // DefineHisto("n_pvtx_5jets_jetpt70_jvt92", 8, 0, 40);
+
+  // DefineHisto("mu_5jets_jetpt30_jvt14", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt40_jvt14", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt50_jvt14", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt70_jvt14", 8, 0, 40);
+
+  // DefineHisto("mu_5jets_jetpt30_jvt64", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt40_jvt64", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt50_jvt64", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt70_jvt64", 8, 0, 40);
+
+  // DefineHisto("mu_5jets_jetpt30_jvt92", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt40_jvt92", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt50_jvt92", 8, 0, 40);
+  // DefineHisto("mu_5jets_jetpt70_jvt92", 8, 0, 40);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //// Fill jet class histograms
 ////////////////////////////////////////////////////////////////////////////////
 void MiniReaderJets::FillJetHisto(const std::string &reg, const std::string &suf,
-				  const double weight)
+				  const double weight, const PassToJets &obj_tuple)
 {
+  int n_pvtx = std::get<0>(obj_tuple).GetPvtxN();
+  float avgIntPerCross = std::get<1>(obj_tuple).GetAvgIntPerCross();
+
   m_HistoContainerMap[reg + "jet1_pt" + suf]->Fill(m_jet1_pt, weight);
+  m_HistoContainerMap[reg + "n_jets" + suf]->Fill(m_jet_mult, weight);
+  m_HistoContainerMap[reg + "n_pvtx_noCut" + suf]->Fill(n_pvtx, weight);
+
+  // Event survives if at most 3 jets or if there are more than 3 jets but the
+  // pt of the fourth is less than some threshold (Mind the vector counting start
+  // from 0):
+  std::vector<std::string> plot_pref = {"n_pvtx_", "mu_"};
+  std::vector<int> jetpt = {30, 40, 50, 70};
+  std::vector<std::string> jvt_val = {"", "_jvt14", "_jvt64", "_jvt92"};
+
+  avgIntPerCross = std::round(avgIntPerCross) + .5;
+
+  for(size_t i = 0; i < plot_pref.size(); ++i) {
+    for(int j = 3; j < 6; ++j) {
+      for (size_t k = 0; k < jetpt.size(); ++k) {
+	for(size_t n = 0; n < jvt_val.size(); ++n) {
+
+	  std::string histo_name = reg + plot_pref[i] + std::to_string(j) +
+	    "jets_jetpt" + std::to_string(jetpt[k]) + jvt_val[n] + suf;
+
+	  if(i == 0)
+
+	    fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, n_pvtx);
+
+	  else
+
+	    fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, avgIntPerCross);
+	}
+      }
+    }
+  }
+
+  // fillNjetPt(reg + "n_pvtx_3jets_jetpt30" + suf, 3, 30000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_3jets_jetpt40" + suf, 3, 40000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_3jets_jetpt50" + suf, 3, 50000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_3jets_jetpt70" + suf, 3, 70000, weight, n_pvtx);
+
+  // avgIntPerCross = std::round(avgIntPerCross) + .5;
+
+  // fillNjetPt(reg + "mu_3jets_jetpt30" + suf, 3, 30000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_3jets_jetpt40" + suf, 3, 40000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_3jets_jetpt50" + suf, 3, 50000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_3jets_jetpt70" + suf, 3, 70000, weight, avgIntPerCross);
+
+  // // Event survives if at most 4 jets or if there are more than 4 jets but the
+  // // pt of the fifth is less than some threshold (Mind the vector counting start
+  // // from 0):
+  // fillNjetPt(reg + "n_pvtx_4jets_jetpt30" + suf, 4, 30000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_4jets_jetpt40" + suf, 4, 40000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_4jets_jetpt50" + suf, 4, 50000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_4jets_jetpt70" + suf, 4, 70000, weight, n_pvtx);
+
+  // fillNjetPt(reg + "mu_4jets_jetpt30" + suf, 4, 30000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_4jets_jetpt40" + suf, 4, 40000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_4jets_jetpt50" + suf, 4, 50000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_4jets_jetpt70" + suf, 4, 70000, weight, avgIntPerCross);
+
+  // // Event survives if at most 4 jets or if there are more than 5 jets but the
+  // // pt of the sixth is less than some threshold (Mind the vector counting start
+  // // from 0):
+  // fillNjetPt(reg + "n_pvtx_5jets_jetpt30" + suf, 5, 30000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_5jets_jetpt40" + suf, 5, 40000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_5jets_jetpt50" + suf, 5, 50000, weight, n_pvtx);
+  // fillNjetPt(reg + "n_pvtx_5jets_jetpt70" + suf, 5, 70000, weight, n_pvtx);
+
+  // fillNjetPt(reg + "mu_5jets_jetpt30" + suf, 5, 30000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_5jets_jetpt40" + suf, 5, 40000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_5jets_jetpt50" + suf, 5, 50000, weight, avgIntPerCross);
+  // fillNjetPt(reg + "mu_5jets_jetpt70" + suf, 5, 70000, weight, avgIntPerCross);
+
+  // // Filling the JVT plot for different thresholds:
+  // // For 3 jets:
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt30_jvt14" + suf, 3, 30000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt40_jvt14" + suf, 3, 40000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt50_jvt14" + suf, 3, 50000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt70_jvt14" + suf, 3, 70000, .14, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt30_jvt64" + suf, 3, 30000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt40_jvt64" + suf, 3, 40000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt50_jvt64" + suf, 3, 50000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt70_jvt64" + suf, 3, 70000, .64, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt30_jvt92" + suf, 3, 30000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt40_jvt92" + suf, 3, 40000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt50_jvt92" + suf, 3, 50000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_3jets_jetpt70_jvt92" + suf, 3, 70000, .92, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt30_jvt14" + suf, 3, 30000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt40_jvt14" + suf, 3, 40000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt50_jvt14" + suf, 3, 50000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt70_jvt14" + suf, 3, 70000, .14, weight, avgIntPerCross);
+
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt30_jvt64" + suf, 3, 30000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt40_jvt64" + suf, 3, 40000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt50_jvt64" + suf, 3, 50000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt70_jvt64" + suf, 3, 70000, .64, weight, avgIntPerCross);
+
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt30_jvt92" + suf, 3, 30000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt40_jvt92" + suf, 3, 40000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt50_jvt92" + suf, 3, 50000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_3jets_jetpt70_jvt92" + suf, 3, 70000, .92, weight, avgIntPerCross);
+
+  // // For 4 jets:
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt30_jvt14" + suf, 4, 30000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt40_jvt14" + suf, 4, 40000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt50_jvt14" + suf, 4, 50000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt70_jvt14" + suf, 4, 70000, .14, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt30_jvt64" + suf, 4, 30000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt40_jvt64" + suf, 4, 40000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt50_jvt64" + suf, 4, 50000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt70_jvt64" + suf, 4, 70000, .64, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt30_jvt92" + suf, 4, 30000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt40_jvt92" + suf, 4, 40000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt50_jvt92" + suf, 4, 50000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_4jets_jetpt70_jvt92" + suf, 4, 70000, .92, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt30_jvt14" + suf, 4, 30000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt40_jvt14" + suf, 4, 40000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt50_jvt14" + suf, 4, 50000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt70_jvt14" + suf, 4, 70000, .14, weight, avgIntPerCross);
+
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt30_jvt64" + suf, 4, 30000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt40_jvt64" + suf, 4, 40000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt50_jvt64" + suf, 4, 50000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt70_jvt64" + suf, 4, 70000, .64, weight, avgIntPerCross);
+
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt30_jvt92" + suf, 4, 30000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt40_jvt92" + suf, 4, 40000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt50_jvt92" + suf, 4, 50000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_4jets_jetpt70_jvt92" + suf, 4, 70000, .92, weight, avgIntPerCross);
+
+  // // For 5 jets:
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt30_jvt14" + suf, 5, 30000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt40_jvt14" + suf, 5, 40000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt50_jvt14" + suf, 5, 50000, .14, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt70_jvt14" + suf, 5, 70000, .14, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt30_jvt64" + suf, 5, 30000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt40_jvt64" + suf, 5, 40000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt50_jvt64" + suf, 5, 50000, .64, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt70_jvt64" + suf, 5, 70000, .64, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt30_jvt92" + suf, 5, 30000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt40_jvt92" + suf, 5, 40000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt50_jvt92" + suf, 5, 50000, .92, weight, n_pvtx);
+  // fillNjetPtJVT(reg + "n_pvtx_5jets_jetpt70_jvt92" + suf, 5, 70000, .92, weight, n_pvtx);
+
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt30_jvt14" + suf, 5, 30000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt40_jvt14" + suf, 5, 40000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt50_jvt14" + suf, 5, 50000, .14, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt70_jvt14" + suf, 5, 70000, .14, weight, avgIntPerCross);
+
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt30_jvt64" + suf, 5, 30000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt40_jvt64" + suf, 5, 40000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt50_jvt64" + suf, 5, 50000, .64, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt70_jvt64" + suf, 5, 70000, .64, weight, avgIntPerCross);
+
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt30_jvt92" + suf, 5, 30000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt40_jvt92" + suf, 5, 40000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt50_jvt92" + suf, 5, 50000, .92, weight, avgIntPerCross);
+  // fillNjetPtJVT(reg + "mu_5jets_jetpt70_jvt92" + suf, 5, 70000, .92, weight, avgIntPerCross);
 }
