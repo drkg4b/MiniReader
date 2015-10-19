@@ -11,7 +11,6 @@ MiniReaderMuons::MiniReaderMuons()
   m_mu_charge = 0;
   m_mu_ptcone20 = 0;
   m_mu_ptcone30 = 0;
-  m_mu_ptcone40 = 0;
   m_mu_d0 = 0;
   m_mu_z0 = 0;
 
@@ -39,7 +38,6 @@ void MiniReaderMuons::ReadMuonBranches(TTree *tree)
   tree->SetBranchAddress("mu_charge", &m_mu_charge);
   tree->SetBranchAddress("mu_ptcone20", &m_mu_ptcone20);
   tree->SetBranchAddress("mu_ptcone30", &m_mu_ptcone30);
-  tree->SetBranchAddress("mu_ptcone40", &m_mu_ptcone40);
   tree->SetBranchAddress("mu_d0", &m_mu_d0);
   tree->SetBranchAddress("mu_z0", &m_mu_z0);
   tree->SetBranchAddress("mu_isCombinedMuon", &m_mu_isCombinedMuon);

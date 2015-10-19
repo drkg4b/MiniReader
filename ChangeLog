@@ -1,4 +1,11 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:06:39 2015 +0200
+
+    MiniReaderMuons.cxx, MiniReaderMuons.h: Removed no more used branch.
+    
+    -  std::vector<double> *m_mu_ptcone40;
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:05:03 2015 +0200
 
     MiniReaderEventInfo.cxx, MiniReaderEventInfo.h: Added sum of weights branch.

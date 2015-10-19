@@ -22,7 +22,6 @@ class MiniReaderMuons {
   std::vector<double> *m_mu_charge;
   std::vector<double> *m_mu_ptcone20;
   std::vector<double> *m_mu_ptcone30;
-  std::vector<double> *m_mu_ptcone40;
   std::vector<double> *m_mu_d0;
   std::vector<double> *m_mu_z0;
 
