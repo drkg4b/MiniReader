@@ -23,7 +23,7 @@ class MiniReaderCrossSection {
   float m_process_kfactor13;
   float m_process_eff13;
   float m_process_xsrelunc13;
-  std::string *m_process_name13;
+  // std::string *m_process_name13;
 
  public:
 

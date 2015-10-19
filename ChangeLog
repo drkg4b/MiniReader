@@ -1,4 +1,12 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:00:11 2015 +0200
+
+    MiniReaderCrossSection.h, MiniReaderCrossSection.cxx: Removed no more used branch.
+    
+    -  std::string *m_process_name13;
+    +  // std::string *m_process_name13;
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 17:59:20 2015 +0200
 
     MiniReaderAlg.h: Minor style adjustments
