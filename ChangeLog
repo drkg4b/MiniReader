@@ -1,4 +1,11 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:03:26 2015 +0200
+
+    MiniReaderElectrons.cxx, MiniReaderElectrons.h: Removed no more used branches.
+    
+    -  std::vector<double> *m_ele_ptcone40;
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:02:19 2015 +0200
 
     runMiniReader.cxx: Updated file list to use v105.
