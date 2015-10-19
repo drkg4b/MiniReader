@@ -1,4 +1,9 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:02:19 2015 +0200
+
+    runMiniReader.cxx: Updated file list to use v105.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:00:11 2015 +0200
 
     MiniReaderCrossSection.h, MiniReaderCrossSection.cxx: Removed no more used branch.
