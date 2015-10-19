@@ -13,11 +13,11 @@
 
 MiniReaderAlg :: MiniReaderAlg() : m_submitDir("submitDir"), m_eventCounter(0),
 				   m_current_sample_name("no_sample"),
-				   m_lumi(1000), m_sample_weight(0),
-				   m_n_bad_jets(0), m_met_cut(0), m_jet1_pt(0),
-				   m_ele_mult_cut(0), m_mu_mult_cut(0),
-				   m_n_jet_cut(0), m_dphi_jetmet_cut(0),
-				   m_met_hard_cut(0), m_jet1_pt_hard_cut(0)
+				   m_lumi(2000), m_n_bad_jets(0), m_met_cut(0),
+				   m_jet1_pt(0), m_ele_mult_cut(0),
+				   m_mu_mult_cut(0), m_n_jet_cut(0),
+				   m_dphi_jetmet_cut(0), m_met_hard_cut(0),
+				   m_jet1_pt_hard_cut(0)
 {
   // Here you put any code for the base initialization of variables,
   // e.g. initialize all pointers to 0.  Note that you should only put
@@ -100,28 +100,29 @@ EL::StatusCode MiniReaderAlg :: changeInput(bool firstFile)
   m_pvtx.ReadPrimaryVertexBranches(tree);
   m_truth.ReadTruthParticlesBranches(tree);
 
-  TFile *file = wk()->inputFile();
+  // OLD WAY TO GET THE SUM OF WEIGHTS:
+  // TFile *file = wk()->inputFile();
 
-  TH1F *h1 = (TH1F *)(file->Get("h_TrackNeventsWgt"));
+  // TH1F *h1 = (TH1F *)(file->Get("h_TrackNeventsWgt"));
 
-  int bin_all = h1->GetXaxis()->FindBin("All");
+  // int bin_all = h1->GetXaxis()->FindBin("All");
 
-  m_sample_weight = h1->GetBinContent(bin_all);
+  // m_sample_weight = h1->GetBinContent(bin_all);
 
-  std::string file_name = file->GetName();
+  // std::string file_name = file->GetName();
 
   // FIX FOR COMPRESSED SPECTRA MISSING NUMBERS:
-  if(file_name.find("371858") != std::string::npos) {
+  // if(file_name.find("371858") != std::string::npos) {
 
-    m_process_xs13 = 6.8773;
-    m_process_eff13 = .39627;
-  }
+  //   m_process_xs13 = 6.8773;
+  //   m_process_eff13 = .39627;
+  // }
 
-  if(file_name.find("371865") != std::string::npos) {
+  // if(file_name.find("371865") != std::string::npos) {
 
-    m_process_xs13 = 6.8773;
-    m_process_eff13 = 0.39627;
-  }
+  //   m_process_xs13 = 6.8773;
+  //   m_process_eff13 = 0.39627;
+  // }
 
   // if(file_name.find("5088310") != std::string::npos) {
 
@@ -193,7 +194,7 @@ EL::StatusCode MiniReaderAlg :: execute()
 
   wk()->tree()->GetEntry(wk()->treeEntry());
 
-  if (!m_truth.m_pass_zpt) return EL::StatusCode::SUCCESS;
+  // if (!m_truth.m_pass_zpt) return EL::StatusCode::SUCCESS;
 
   m_jet.SkimJets();
 
@@ -207,44 +208,51 @@ EL::StatusCode MiniReaderAlg :: execute()
     doCutFlow();
 
 
-  if(m_sample_weight != 0)
+  if(m_info.m_sum_of_weights != 0)
 
     event_weight = m_cross.m_process_xs13 *
                    m_cross.m_process_kfactor13 *
                    m_cross.m_process_eff13 *
                    m_info.m_mc_event_weight *
-                   m_lumi /  m_sample_weight;
+                   m_lumi /  m_info.m_sum_of_weights;
+
+  // PR(m_current_sample_name);
+  // PR(event_weight);
+  // PR(m_info.m_sum_of_weights);
+  // PR(m_cross.m_process_xs13);
+  // PR(m_cross.m_process_kfactor13);
+  // PR(m_cross.m_process_eff13);
+  // PR(m_info.m_mc_event_weight);
 
   // WARNING FIX FOR AN ERROR IN THE CROSS SECTION IN THE INPUT TREE
-  if(m_current_sample_name == "D5")
+  // if(m_current_sample_name == "D5")
 
-    event_weight *= 1000;
+  //   event_weight *= 1000;
 
 
   // FIX FOR THE KFACTOR NOT IN THE ROOT FILE:
-  if(m_current_sample_name == "Compressed_450_435" ||
-     m_current_sample_name == "Compressed_450_425") {
+  // if(m_current_sample_name == "Compressed_450_435" ||
+  //    m_current_sample_name == "Compressed_450_425") {
 
-    float process_kfactor13 = 1.7;
+  //   float process_kfactor13 = 1.7;
 
-    event_weight = m_process_xs13 *
-                   m_process_eff13 *
-                   process_kfactor13 *
-                   m_info.m_mc_event_weight *
-                   m_lumi / m_sample_weight;
+  //   event_weight = m_process_xs13 *
+  //                  m_process_eff13 *
+  //                  process_kfactor13 *
+  //                  m_info.m_mc_event_weight *
+  //                  m_lumi / m_info.m_sum_of_weughts;
 
     // event_weight = m_cross.m_process_xs13 *
     //                m_cross.m_process_eff13 *
     //                process_kfactor13 *
     //                m_info.m_global_event_weight *
-    //                m_lumi / m_sample_weight;
-
-  }
+    //                m_lumi / m_info.m_sum_of_weights;
+  // }
 
   // WARNING Quick FIX TO BE CHANGED!!!!!!!!!!!!!!
-  if(m_current_sample_name == "ttbarJVTSamples")
+  // if(m_current_sample_name == "ttbarJVTSamples")
 
-    event_weight = 1.;
+  //   event_weight = 1.;
 
   // Making a tuple to pass to the fill functions:
   PassToJets MiniObjects = std::make_tuple(std::cref(m_pvtx),

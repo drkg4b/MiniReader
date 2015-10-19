@@ -1,4 +1,9 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:14:14 2015 +0200
+
+    MiniReaderAlg.cxx: Commenting out some printouts.
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:10:05 2015 +0200
 
     MiniReaderJet.cxx: Removed exception handler for non existing branch. Added pile-up jet condition for good jets. Filling JVF for different thresholds.
