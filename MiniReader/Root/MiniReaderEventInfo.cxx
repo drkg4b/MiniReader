@@ -12,6 +12,7 @@ MiniReaderEventInfo::MiniReaderEventInfo()
   m_averageInteractionsPerCrossing = 0;
   m_global_event_weight = 0;
   m_mc_event_weight = 0;
+  m_sum_of_weights = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,6 +27,7 @@ void MiniReaderEventInfo::ReadEventInfoBranches(TTree *tree)
   tree->SetBranchAddress("averageInteractionsPerCrossing", &m_averageInteractionsPerCrossing);
   tree->SetBranchAddress("global_event_weight", &m_global_event_weight);
   tree->SetBranchAddress("mc_event_weight", &m_mc_event_weight);
+  tree->SetBranchAddress("sumOfWeights", &m_sum_of_weights);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

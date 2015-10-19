@@ -1,4 +1,11 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:05:03 2015 +0200
+
+    MiniReaderEventInfo.cxx, MiniReaderEventInfo.h: Added sum of weights branch.
+    
+    +  float m_sum_of_weights;
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:03:26 2015 +0200
 
     MiniReaderElectrons.cxx, MiniReaderElectrons.h: Removed no more used branches.

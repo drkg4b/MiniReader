@@ -20,6 +20,7 @@ class MiniReaderEventInfo {
   float m_averageInteractionsPerCrossing;
   float m_global_event_weight;
   float m_mc_event_weight;
+  float m_sum_of_weights;
 
  public:
 
