@@ -137,6 +137,7 @@ void MiniReaderJets::InitJetHisto()
   DefineHisto("n_jets", 10, 0, 10);
 
   DefineHisto("n_pvtx_noCut", 8, 0, 40);
+    DefineHisto("mu_noCut", 8, 0, 40);
 
   std::vector<std::string> plot_pref = {"n_pvtx_", "mu_"};
   std::vector<std::string> njets = {"3jets_", "4jets_", "5jets_"};
@@ -301,6 +302,8 @@ void MiniReaderJets::FillJetHisto(const std::string &reg, const std::string &suf
   std::vector<double> jvt_tresh = {999, .14, .64, .92}; // the first value is dummy
 
   avgIntPerCross = std::round(avgIntPerCross) + .5;
+
+  m_HistoContainerMap[reg + "mu_noCut" + suf]->Fill(avgIntPerCross, weight);
 
   for (size_t i = 0; i < plot_pref.size(); ++i) {
     for (int j = 3; j < 6; ++j) {

@@ -1,4 +1,12 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:48:45 2015 +0200
+
+    MiniReaderJet.cxx: Adding the average number of PV per bunch crossing plot with
+    no cuts.
+    
+    m_HistoContainerMap[reg + "mu_noCut" + suf]->Fill(avgIntPerCross, weight);
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:16:11 2015 +0200
 
     MiniReaderSelectionCuts.h: Using cuts for JVT studies.
