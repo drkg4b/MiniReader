@@ -1,4 +1,55 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:10:05 2015 +0200
+
+    MiniReaderJet.cxx: Removed exception handler for non existing branch. Added pile-up jet condition for good jets. Filling JVF for different thresholds.
+    
+    -
+    -  try {
+    -
+    -    tree->SetBranchAddress("jet_isnotbad", &m_jet_isnotbad);
+    -    throw 20;
+    -
+    -  } catch (int e)
+    -    {
+    -      tree->SetBranchAddress("jet_isbad", &m_jet_isnotbad);
+    -    }
+    -
+    +  tree->SetBranchAddress("jet_isnotbad", &m_jet_isnotbad);
+    
+    +    bool isPileup = m_jet_pt->at(i) < 50E3 &&
+    +                    std::fabs(m_jet_eta->at(i) < 2.4) /*&&
+    +                    std::fabs(m_jet_jvt->at(i)) > JVT_CUT*/;
+    
+    +          if(n == 0) {
+    +            if (i == 0)
+    +
+    +              fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, n_pvtx);
+    +
+    +            else
+    +
+    +              fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, avgIntPerCross);
+    +          }
+    +
+    +          else {
+    
+    -         std::string histo_name = reg + plot_pref[i] + std::to_string(j) +
+    -           "jets_jetpt" + std::to_string(jetpt[k]) + jvt_val[n] + suf;
+    +            if (i == 0)
+    
+    -         if(i == 0)
+    +              fillNjetPtJVT(histo_name, j, jetpt[k] * 1E3, jvt_tresh[n], weight, n_pvtx);
+    
+    -           fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, n_pvtx);
+    +            else
+    
+    -         else
+    +              fillNjetPtJVT(histo_name, j, jetpt[k] * 1E3, jvt_tresh[n], weight, avgIntPerCross);
+    
+    -           fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, avgIntPerCross);
+    -       }
+    +          }
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:08:40 2015 +0200
 
     MiniReaderJets.h: Considering JVF absolute value instead.

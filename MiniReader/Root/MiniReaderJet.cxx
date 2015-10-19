@@ -49,17 +49,7 @@ void MiniReaderJets::ReadJetBranches(TTree *tree)
   tree->SetBranchAddress("jet_Ce", &m_jet_Ce);
   tree->SetBranchAddress("jet_passOR", &m_jet_passOR);
   tree->SetBranchAddress("jet_isbase", &m_jet_isbase);
-
-  try {
-
-    tree->SetBranchAddress("jet_isnotbad", &m_jet_isnotbad);
-    throw 20;
-
-  } catch (int e)
-    {
-      tree->SetBranchAddress("jet_isbad", &m_jet_isnotbad);
-    }
-
+  tree->SetBranchAddress("jet_isnotbad", &m_jet_isnotbad);
   tree->SetBranchAddress("jet_passFilter", &m_jet_passFilter);
 }
 
@@ -78,11 +68,16 @@ void MiniReaderJets::SkimJets()
   std::vector<double> jet_flavour_weight;
   std::vector<double> jet_constscale_eta;
 
-  for(int i = 0; i < m_jet_mult; ++i) {
+  for (int i = 0; i < m_jet_mult; ++i) {
 
-    if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) > PT_CUT) {
-    // if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) >
-    //    PT_CUT && std::fabs(m_jet_eta->at(i)) < 2.4 /*&& m_jet_jvf->at(i) > .5*/) {
+    bool isPileup = m_jet_pt->at(i) < 50E3 &&
+                    std::fabs(m_jet_eta->at(i) < 2.4) /*&&
+                                                        std::fabs(m_jet_jvt->at(i)) > JVT_CUT*/;
+
+    if (m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) >
+        PT_CUT && !isPileup) {
+      // if(m_jet_passOR->at(i) && m_jet_passFilter->at(i) && m_jet_pt->at(i) >
+      //    PT_CUT && std::fabs(m_jet_eta->at(i)) < 2.4 /*&& m_jet_jvf->at(i) > .5*/) {
 
       jet_pt.push_back(m_jet_pt->at(i));
       jet_eta.push_back(m_jet_eta->at(i));
@@ -117,17 +112,17 @@ void MiniReaderJets::FillJetTreeVariables()
   m_n_jet40 = 0;
   m_n_jet50 = 0;
 
-  for(int i = 0; i < m_jet_mult; ++i) {
+  for (int i = 0; i < m_jet_mult; ++i) {
 
-    if(m_jet_pt->at(i) > 30000)
+    if (m_jet_pt->at(i) > 30000)
 
       m_n_jet30++;
 
-    if(m_jet_pt->at(i) > 40000)
+    if (m_jet_pt->at(i) > 40000)
 
       m_n_jet40++;
 
-    if(m_jet_pt->at(i) > 50000)
+    if (m_jet_pt->at(i) > 50000)
 
       m_n_jet50++;
   }
@@ -148,16 +143,16 @@ void MiniReaderJets::InitJetHisto()
   std::vector<std::string> jetpt = {"jetpt30", "jetpt40", "jetpt50", "jetpt70"};
   std::vector<std::string> jvt_val = {"", "_jvt14", "_jvt64", "_jvt92"};
 
-  for(size_t i = 0; i < plot_pref.size(); ++i) {
-    for(size_t j = 0; j < njets.size(); ++j) {
+  for (size_t i = 0; i < plot_pref.size(); ++i) {
+    for (size_t j = 0; j < njets.size(); ++j) {
       for (size_t k = 0; k < jetpt.size(); ++k) {
-	for(size_t n = 0; n < jvt_val.size(); ++n) {
+        for (size_t n = 0; n < jvt_val.size(); ++n) {
 
-	  std::string histo_name = plot_pref[i] + njets[j] + jetpt[k] +
-	    jvt_val[n];
+          std::string histo_name = plot_pref[i] + njets[j] + jetpt[k] +
+                                   jvt_val[n];
 
-	  DefineHisto(histo_name, 8, 0, 40);
-	}
+          DefineHisto(histo_name, 8, 0, 40);
+        }
       }
     }
   }
@@ -288,7 +283,7 @@ void MiniReaderJets::InitJetHisto()
 //// Fill jet class histograms
 ////////////////////////////////////////////////////////////////////////////////
 void MiniReaderJets::FillJetHisto(const std::string &reg, const std::string &suf,
-				  const double weight, const PassToJets &obj_tuple)
+                                  const double weight, const PassToJets &obj_tuple)
 {
   int n_pvtx = std::get<0>(obj_tuple).GetPvtxN();
   float avgIntPerCross = std::get<1>(obj_tuple).GetAvgIntPerCross();
@@ -303,25 +298,41 @@ void MiniReaderJets::FillJetHisto(const std::string &reg, const std::string &suf
   std::vector<std::string> plot_pref = {"n_pvtx_", "mu_"};
   std::vector<int> jetpt = {30, 40, 50, 70};
   std::vector<std::string> jvt_val = {"", "_jvt14", "_jvt64", "_jvt92"};
+  std::vector<double> jvt_tresh = {999, .14, .64, .92}; // the first value is dummy
 
   avgIntPerCross = std::round(avgIntPerCross) + .5;
 
-  for(size_t i = 0; i < plot_pref.size(); ++i) {
-    for(int j = 3; j < 6; ++j) {
+  for (size_t i = 0; i < plot_pref.size(); ++i) {
+    for (int j = 3; j < 6; ++j) {
       for (size_t k = 0; k < jetpt.size(); ++k) {
-	for(size_t n = 0; n < jvt_val.size(); ++n) {
+        for (size_t n = 0; n < jvt_val.size(); ++n) {
 
-	  std::string histo_name = reg + plot_pref[i] + std::to_string(j) +
-	    "jets_jetpt" + std::to_string(jetpt[k]) + jvt_val[n] + suf;
+          std::string histo_name = reg + plot_pref[i] + std::to_string(j) +
+                                   "jets_jetpt" + std::to_string(jetpt[k]) + jvt_val[n] + suf;
 
-	  if(i == 0)
 
-	    fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, n_pvtx);
+          if(n == 0) {
+            if (i == 0)
 
-	  else
+              fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, n_pvtx);
 
-	    fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, avgIntPerCross);
-	}
+            else
+
+              fillNjetPt(histo_name, j, jetpt[k] * 1E3, weight, avgIntPerCross);
+          }
+
+          else {
+
+            if (i == 0)
+
+              fillNjetPtJVT(histo_name, j, jetpt[k] * 1E3, jvt_tresh[n], weight, n_pvtx);
+
+            else
+
+              fillNjetPtJVT(histo_name, j, jetpt[k] * 1E3, jvt_tresh[n], weight, avgIntPerCross);
+
+          }
+        }
       }
     }
   }
