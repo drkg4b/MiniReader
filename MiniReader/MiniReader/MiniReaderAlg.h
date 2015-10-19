@@ -113,8 +113,6 @@ class MiniReaderAlg : public EL::Algorithm {
   float m_process_xs13; //!
   float m_process_eff13; //!
 
-  float m_sample_weight; //!
-
   float m_event_weight; //!
 
   // Sensitivity study TMVA tree:

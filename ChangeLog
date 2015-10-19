@@ -1,4 +1,9 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 17:59:20 2015 +0200
+
+    MiniReaderAlg.h: Minor style adjustments
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Tue Jul 7 18:28:07 2015 +0200
 
     plotJetEfficiency.cxx: Deprecating old plotJetEfficiency.cxx in favor of the
