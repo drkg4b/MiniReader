@@ -1,4 +1,12 @@
 Author: Gabriele Bertoli <gbertoli@cern.ch>
+Date:   Mon Oct 19 18:08:40 2015 +0200
+
+    MiniReaderJets.h: Considering JVF absolute value instead.
+    
+    -    if(m_jet_jvt->at(i) > jvt_tresh)
+    +    if(std::fabs(m_jet_jvt->at(i)) > jvt_tresh)
+
+Author: Gabriele Bertoli <gbertoli@cern.ch>
 Date:   Mon Oct 19 18:06:39 2015 +0200
 
     MiniReaderMuons.cxx, MiniReaderMuons.h: Removed no more used branch.

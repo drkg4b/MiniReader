@@ -94,7 +94,7 @@ void MiniReaderJets::fillNjetPtJVT(const std::string &name, int n_jet, int
 
   for(int i = 0; i < m_jet_mult; ++i) {
 
-    if(m_jet_jvt->at(i) > jvt_tresh)
+    if(std::fabs(m_jet_jvt->at(i)) > jvt_tresh)
 
       n_jet_jvt++;
   }
